@@ -1,29 +1,25 @@
 package fish.payara;
 
+import lombok.Getter;
+import lombok.Setter;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
-public class PointsOfInterestResponse {
+@Getter
+@Setter
+public class PointsOfInterestResponse implements Serializable {
     private List<PointOfInterest> pointsOfInterest;
+
+    public BigDecimal getTotalCost() {
+        return pointsOfInterest
+                .stream()
+                .map(PointOfInterest::getCost)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
 
     private String error;
 
-    public PointsOfInterestResponse() {
-    }
-
-    public List<PointOfInterest> getPointsOfInterest() {
-        return pointsOfInterest;
-    }
-
-    public void setPointsOfInterest(List<PointOfInterest> pointsOfInterest) {
-        this.pointsOfInterest = pointsOfInterest;
-    }
-
-    public String getError() {
-        return error;
-    }
-
-    public void setError(String error) {
-        this.error = error;
-    }
 
 }

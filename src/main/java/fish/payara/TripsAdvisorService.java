@@ -1,6 +1,7 @@
 package fish.payara;
 
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
+import com.theokanning.openai.completion.chat.ChatCompletionResult;
 import com.theokanning.openai.completion.chat.ChatMessage;
 import com.theokanning.openai.service.OpenAiService;
 import jakarta.annotation.PostConstruct;
@@ -11,7 +12,9 @@ import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
+import javax.cache.Cache;
 import java.io.StringReader;
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +32,8 @@ public class TripsAdvisorService {
     @Inject
     @ConfigProperty(name = "openai.timeout")
     private int apiTimeout;
+    @Inject
+    Cache<String, PointsOfInterestResponse> cache;
 
     private static final String GPT_MODEL = "gpt-3.5-turbo";
 
@@ -56,11 +61,16 @@ public class TripsAdvisorService {
     }
 
     public PointsOfInterestResponse suggestPointsOfInterest(String city, int budget) {
+
 //        String poi = cityTripsRepository.findPointsOfInterest(city, budget, "US");
 
+        if (cache.containsKey(city.toUpperCase())) {
+            return cache.get(city.toUpperCase());
+        }
         try {
             String request = String.format("I want to visit %s and have a budget of %d dollars", city, budget);
             var poi = sendMessage(request);
+
 
             List<PointOfInterest> poiList = generaPointsOfInterest(poi);
 
@@ -68,6 +78,7 @@ public class TripsAdvisorService {
             PointsOfInterestResponse response = new PointsOfInterestResponse();
             response.setPointsOfInterest(poiList);
 
+            cache.put(city.toUpperCase(), response);
             return response;
         } catch (Exception e) {
             e.printStackTrace();
@@ -92,8 +103,9 @@ public class TripsAdvisorService {
                 .build();
 
         StringBuilder builder = new StringBuilder();
+        ChatCompletionResult chatCompletion = openAiService.createChatCompletion(chatCompletionRequest);
 
-        openAiService.createChatCompletion(chatCompletionRequest).getChoices().forEach(choice -> builder.append(choice.getMessage().getContent()));
+        chatCompletion.getChoices().forEach(choice -> builder.append(choice.getMessage().getContent()));
 
         return builder.toString();
     }
@@ -108,10 +120,14 @@ public class TripsAdvisorService {
 
         for (int i = 0; i < placesArray.size(); i++) {
             JsonObject jsonObject = placesArray.getJsonObject(i);
-            PointOfInterest poi = new PointOfInterest(
-                    jsonObject.getString("place_name"),
-                    jsonObject.getString("place_short_info"),
-                    jsonObject.getInt("place_visit_cost"));
+            PointOfInterest poi =
+                    PointOfInterest
+                            .builder()
+                            .info(jsonObject.getString("place_short_info"))
+                            .cost(BigDecimal.valueOf(jsonObject.getInt("place_visit_cost")))
+                            .name(jsonObject.getString("place_name"))
+                            .build();
+
 
             poiList.add(poi);
         }
