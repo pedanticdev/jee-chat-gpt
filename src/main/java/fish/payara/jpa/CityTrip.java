@@ -1,4 +1,4 @@
-package com.yugabyte.com.jpa;
+package fish.payara.jpa;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

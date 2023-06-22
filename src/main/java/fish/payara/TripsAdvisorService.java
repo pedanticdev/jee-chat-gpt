@@ -1,35 +1,33 @@
-package com.yugabyte.com;
-
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+package fish.payara;
 
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatMessage;
 import com.theokanning.openai.service.OpenAiService;
-import com.yugabyte.com.jpa.CityTrip;
-import com.yugabyte.com.jpa.CityTripRepository;
-
 import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.json.Json;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonObject;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-@Service
+import java.io.StringReader;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+
+@ApplicationScoped
 public class TripsAdvisorService {
 
-    @Autowired
-    private CityTripRepository cityTripsRepository;
 
-    private static OpenAiService openAiService;
+    private OpenAiService openAiService;
 
-    @Value("${openai.key}")
+    @Inject
+    @ConfigProperty(name = "open.api.key")
     private String apiKey;
 
-    @Value("${openai.timeout}")
+    @Inject
+    @ConfigProperty(name = "openai.timeout")
     private int apiTimeout;
 
     private static final String GPT_MODEL = "gpt-3.5-turbo";
@@ -58,28 +56,20 @@ public class TripsAdvisorService {
     }
 
     public PointsOfInterestResponse suggestPointsOfInterest(String city, int budget) {
-        String poi = cityTripsRepository.findPointsOfInterest(city, budget, "US");
+//        String poi = cityTripsRepository.findPointsOfInterest(city, budget, "US");
 
         try {
-            List<PointOfInterest> poiList;
+            String request = String.format("I want to visit %s and have a budget of %d dollars", city, budget);
+            var poi = sendMessage(request);
 
-            if (poi != null) {
-                poiList = generaPointsOfInterest(poi);
-            } else {
-                String request = String.format("I want to visit %s and have a budget of %d dollars", city, budget);
-                poi = sendMessage(request);
+            List<PointOfInterest> poiList = generaPointsOfInterest(poi);
 
-                poiList = generaPointsOfInterest(poi);
-
-                cityTripsRepository.save(new CityTrip(city, budget, poi, "US"));
-            }
 
             PointsOfInterestResponse response = new PointsOfInterestResponse();
             response.setPointsOfInterest(poiList);
 
             return response;
         } catch (Exception e) {
-            System.err.println("Failed to parse: " + poi);
             e.printStackTrace();
 
             PointsOfInterestResponse response = new PointsOfInterestResponse();
@@ -90,6 +80,7 @@ public class TripsAdvisorService {
     }
 
     private String sendMessage(String message) {
+
         ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
                 .builder()
                 .model(GPT_MODEL)
@@ -102,28 +93,26 @@ public class TripsAdvisorService {
 
         StringBuilder builder = new StringBuilder();
 
-        openAiService.createChatCompletion(chatCompletionRequest).getChoices().forEach(choice -> {
-            builder.append(choice.getMessage().getContent());
-        });
+        openAiService.createChatCompletion(chatCompletionRequest).getChoices().forEach(choice -> builder.append(choice.getMessage().getContent()));
 
         return builder.toString();
     }
 
     private List<PointOfInterest> generaPointsOfInterest(String json) {
-        JSONObject jsonResponse = new JSONObject(json);
-        JSONArray places = jsonResponse.getJSONArray("places");
 
-        List<PointOfInterest> poiList = new ArrayList<>(places.length());
+        JsonObject jsonObjectResponse = Json.createReader(new StringReader(json)).readObject();
+        JsonArray placesArray = jsonObjectResponse.getJsonArray("places");
 
-        for (int i = 0; i < places.length(); i++) {
-            JSONObject place = places.getJSONObject(i);
 
+        List<PointOfInterest> poiList = new ArrayList<>(placesArray.size());
+
+        for (int i = 0; i < placesArray.size(); i++) {
+            JsonObject jsonObject = placesArray.getJsonObject(i);
             PointOfInterest poi = new PointOfInterest(
-                    place.getString("place_name"),
-                    place.getString("place_short_info"),
-                    place.getInt("place_visit_cost"));
+                    jsonObject.getString("place_name"),
+                    jsonObject.getString("place_short_info"),
+                    jsonObject.getInt("place_visit_cost"));
 
-            System.out.println(poi);
             poiList.add(poi);
         }
 

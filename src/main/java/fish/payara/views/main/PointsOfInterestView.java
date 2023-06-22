@@ -1,39 +1,42 @@
-package com.yugabyte.com.views.main;
+package fish.payara.views.main;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
-import com.vaadin.flow.theme.lumo.Lumo;
-import com.yugabyte.com.PointOfInterest;
-import com.yugabyte.com.PointsOfInterestResponse;
-import com.yugabyte.com.TripsAdvisorService;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.notification.Notification.Position;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.Route;
+import com.vaadin.flow.theme.lumo.Lumo;
+import fish.payara.PointOfInterest;
+import fish.payara.PointsOfInterestResponse;
+import fish.payara.TripsAdvisorService;
+import jakarta.annotation.PostConstruct;
+import jakarta.inject.Inject;
+import org.vaadin.firitin.components.orderedlayout.VVerticalLayout;
 
 import java.text.NumberFormat;
 import java.util.Locale;
 
-@PageTitle("TripOnBudget")
+@PageTitle("Trip On Budget")
 @Route("")
-public class PointsOfInterestView extends VerticalLayout {
+public class PointsOfInterestView extends VVerticalLayout {
 
-    private final TripsAdvisorService tripsAdvisorService;
-    private final Grid<PointOfInterest> grid;
-    private final Binder<SearchCriteria> binder;
-    private final Button searchButton;
+    @Inject
+    private TripsAdvisorService tripsAdvisorService;
+    private Grid<PointOfInterest> grid;
+    private Binder<SearchCriteria> binder;
+    private Button searchButton;
 
-    public PointsOfInterestView(TripsAdvisorService tripsAdvisorService) {
-        this.tripsAdvisorService = tripsAdvisorService;
+    @PostConstruct
+    private void init() {
 
         UI.getCurrent().getElement().setAttribute("theme", Lumo.DARK);
 

@@ -1,4 +1,4 @@
-package com.yugabyte.com;
+package fish.payara;
 
 import java.util.List;
 
