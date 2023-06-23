@@ -4,7 +4,6 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -12,14 +11,11 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.progressbar.ProgressBar;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.StreamReceiver;
-import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.theme.lumo.Lumo;
 import fish.payara.PointOfInterest;
 import fish.payara.PointsOfInterestResponse;
@@ -32,7 +28,6 @@ import lombok.Setter;
 import org.vaadin.firitin.components.DynamicFileDownloader;
 import org.vaadin.firitin.components.orderedlayout.VVerticalLayout;
 
-import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
@@ -54,7 +49,6 @@ public class PointsOfInterestView extends VVerticalLayout {
     DynamicFileDownloader pdfDownload;
     HorizontalLayout userInputLayout;
     private TextField totalTextField;
-    ProgressBar spinner;
     SearchCriteria searchCriteria;
     PointsOfInterestResponse response;
 
@@ -126,11 +120,12 @@ public class PointsOfInterestView extends VVerticalLayout {
         grid.setSelectionMode(Grid.SelectionMode.NONE);
         add(grid);
 
-        spinner = new ProgressBar();
-        spinner.setIndeterminate(true);
-        spinner.setVisible(false);
+        pdfDownload = new DynamicFileDownloader();
+        pdfDownload.setText("PDF");
+        pdfDownload.setFileName("itinerary_" + LocalDateTime.now(ZoneOffset.UTC) + ".pdf");
+//        pdfDownload.setDisableOnClick(true);
 
-        add(spinner);
+
     }
 
     private String renderCost(BigDecimal cost) {
@@ -140,10 +135,7 @@ public class PointsOfInterestView extends VVerticalLayout {
 
     private void searchPointsOfInterest() {
         // Bind the search criteria to the binder
-        spinner.setVisible(true);
         searchCriteria = new SearchCriteria();
-        UI current = UI.getCurrent();
-        current.setPollInterval(50);
 
         if (binder.writeBeanIfValid(searchCriteria)) {
             // Call the suggestPointsOfInterest method and update the grid with the results
@@ -154,17 +146,14 @@ public class PointsOfInterestView extends VVerticalLayout {
             if (response.getError() != null) {
                 showErrorMessage(String.format("Failed loading data from OpenAI GPT: %n%s", response.getError()));
             } else {
-//                if (pdfDownload.isAttached()) {
-//                    userInputLayout.remove(pdfDownload);
-//                }
+
                 grid.setItems(response.getPointsOfInterest());
                 totalTextField.setVisible(true);
                 totalTextField.setValue(renderCost(response.getTotalCost()));
                 downloadAsPDF();
                 userInputLayout.add(pdfDownload);
 
-                current.setPollInterval(-1);
-                spinner.setVisible(false);
+
             }
 
             searchButton.setEnabled(true);
@@ -172,17 +161,28 @@ public class PointsOfInterestView extends VVerticalLayout {
     }
 
     private void downloadAsPDF() {
-        pdfDownload = new DynamicFileDownloader(" pdf", "itinerary_" + LocalDateTime.now(ZoneOffset.UTC) + ".pdf",
-                out -> {
+//        pdfDownload = new DynamicFileDownloader(" pdf", "itinerary_" + LocalDateTime.now(ZoneOffset.UTC) + ".pdf",
+//                out -> {
+//
+//
+//                });
+//        pdfDownload.addComponentAsFirst(VaadinIcon.DOWNLOAD.create());
+//        pdfDownload.setDisableOnClick(true);
 
-                    ReportRequestContext requestContext = new ReportRequestContext();
-                    requestContext.setResponse(response);
-                    requestContext.setSearchCriteria(searchCriteria);
-                    requestContext.setOutputStream(out);
-                    reportService.writeAsPdf(requestContext);
-                });
         pdfDownload.addComponentAsFirst(VaadinIcon.DOWNLOAD.create());
-        pdfDownload.setDisableOnClick(true);
+
+        pdfDownload.setFileHandler(fh -> {
+            ReportRequestContext requestContext = new ReportRequestContext();
+            requestContext.setResponse(response);
+            requestContext.setSearchCriteria(searchCriteria);
+            requestContext.setOutputStream(fh);
+            reportService.writeAsPdf(requestContext);
+        });
+
+        if (!pdfDownload.isAttached()) {
+            userInputLayout.add(pdfDownload);
+            pdfDownload.setEnabled(true);
+        }
     }
 
     @Getter
