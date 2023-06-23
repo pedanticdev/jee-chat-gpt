@@ -47,7 +47,7 @@ public class ReportService {
 
             // Add properties to the context
             IContext ctx = report.createContext();
-            ctx.put("city", requestContext.getSearchCriteria().getCity());
+            ctx.put("city", requestContext.getSearchCriteria().getCity().toUpperCase());
             ctx.put("total", requestContext.getResponse().getTotalCost());
 
             // instruct XDocReport to inspect InvoiceRow entity as well
