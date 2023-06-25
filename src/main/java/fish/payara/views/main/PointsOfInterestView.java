@@ -137,11 +137,7 @@ public class PointsOfInterestView extends VVerticalLayout {
         pdfDownload.setText("PDF");
         pdfDownload.setFileName("itinerary_" + LocalDateTime.now(ZoneOffset.UTC) + ".pdf");
 
-        binder.addStatusChangeListener(l -> {
-            if (!searchButton.isEnabled() && !l.hasValidationErrors()) {
-                searchButton.setEnabled(true);
-            }
-        });
+//        binder.addStatusChangeListener(l -> searchButton.setEnabled(!searchButton.isEnabled() && !l.hasValidationErrors()));
 
     }
 
