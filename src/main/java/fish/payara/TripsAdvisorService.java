@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @ApplicationScoped
 public class TripsAdvisorService {
@@ -33,7 +34,7 @@ public class TripsAdvisorService {
     @ConfigProperty(name = "openai.timeout")
     private int apiTimeout;
     @Inject
-    Cache<String, PointsOfInterestResponse> cache;
+    Cache<Integer, PointsOfInterestResponse> cache;
 
     private static final String GPT_MODEL = "gpt-3.5-turbo";
 
@@ -60,15 +61,15 @@ public class TripsAdvisorService {
         System.out.println("Connected to the OpenAI API");
     }
 
-    public PointsOfInterestResponse suggestPointsOfInterest(String city, int budget) {
+    public PointsOfInterestResponse suggestPointsOfInterest(String city, BigDecimal budget) {
 
-//        String poi = cityTripsRepository.findPointsOfInterest(city, budget, "US");
+        int cacheKey = generateKey(city, budget);
 
-        if (cache.containsKey(city.toUpperCase())) {
-            return cache.get(city.toUpperCase());
+        if (cache.containsKey(cacheKey)) {
+            return cache.get(cacheKey);
         }
         try {
-            String request = String.format("I want to visit %s and have a budget of %d dollars", city, budget);
+            String request = String.format("I want to visit %s and have a budget of %g dollars", city, budget);
             var poi = sendMessage(request);
 
 
@@ -78,7 +79,7 @@ public class TripsAdvisorService {
             PointsOfInterestResponse response = new PointsOfInterestResponse();
             response.setPointsOfInterest(poiList);
 
-            cache.put(city.toUpperCase(), response);
+            cache.put(cacheKey, response);
             return response;
         } catch (Exception e) {
             e.printStackTrace();
@@ -135,4 +136,7 @@ public class TripsAdvisorService {
         return poiList;
     }
 
+    private Integer generateKey(final String city, final BigDecimal budget) {
+        return city.toUpperCase(Locale.ENGLISH).hashCode() + budget.hashCode();
+    }
 }

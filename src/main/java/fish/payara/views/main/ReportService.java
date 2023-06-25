@@ -14,8 +14,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import java.io.*;
-import java.util.Locale;
+import java.io.InputStream;
 
 @ApplicationScoped
 public class ReportService {

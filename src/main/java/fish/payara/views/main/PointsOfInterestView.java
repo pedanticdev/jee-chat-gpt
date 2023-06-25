@@ -11,7 +11,6 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
@@ -27,6 +26,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.vaadin.firitin.components.DynamicFileDownloader;
 import org.vaadin.firitin.components.orderedlayout.VVerticalLayout;
+import org.vaadin.firitin.components.textfield.VNumberField;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
@@ -88,14 +88,19 @@ public class PointsOfInterestView extends VVerticalLayout {
                 .asRequired("City name is required")
                 .bind(SearchCriteria::getCity, SearchCriteria::setCity);
 
-        IntegerField budgetField = new IntegerField("Your budget:");
-        budgetField.setWidth("300px");
-        budgetField.getStyle().set("margin-right", "10px");
-        budgetField.setPlaceholder("dollars");
+
+        var budgetField = new VNumberField()
+                .withMin(1)
+                .withPlaceholder("Your budget")
+                .withStyle("margin-right", "10px")
+                .withWidth("300px")
+                .withRequired(true)
+                .withTitle("Enter your budget:");
 
         binder.forField(budgetField)
                 .asRequired("Budget is required")
                 .withValidator(budget -> budget > 0, "Budget must be greater than zero")
+                .withConverter(new DoubleToBigDecimalConverter())
                 .bind(SearchCriteria::getBudget, SearchCriteria::setBudget);
 
         // Create the search button
@@ -123,7 +128,6 @@ public class PointsOfInterestView extends VVerticalLayout {
         pdfDownload = new DynamicFileDownloader();
         pdfDownload.setText("PDF");
         pdfDownload.setFileName("itinerary_" + LocalDateTime.now(ZoneOffset.UTC) + ".pdf");
-//        pdfDownload.setDisableOnClick(true);
 
 
     }
@@ -151,7 +155,6 @@ public class PointsOfInterestView extends VVerticalLayout {
                 totalTextField.setVisible(true);
                 totalTextField.setValue(renderCost(response.getTotalCost()));
                 downloadAsPDF();
-                userInputLayout.add(pdfDownload);
 
 
             }
@@ -161,15 +164,7 @@ public class PointsOfInterestView extends VVerticalLayout {
     }
 
     private void downloadAsPDF() {
-//        pdfDownload = new DynamicFileDownloader(" pdf", "itinerary_" + LocalDateTime.now(ZoneOffset.UTC) + ".pdf",
-//                out -> {
-//
-//
-//                });
-//        pdfDownload.addComponentAsFirst(VaadinIcon.DOWNLOAD.create());
-//        pdfDownload.setDisableOnClick(true);
 
-        pdfDownload.addComponentAsFirst(VaadinIcon.DOWNLOAD.create());
 
         pdfDownload.setFileHandler(fh -> {
             ReportRequestContext requestContext = new ReportRequestContext();
@@ -180,8 +175,8 @@ public class PointsOfInterestView extends VVerticalLayout {
         });
 
         if (!pdfDownload.isAttached()) {
+            pdfDownload.addComponentAsFirst(VaadinIcon.DOWNLOAD.create());
             userInputLayout.add(pdfDownload);
-            pdfDownload.setEnabled(true);
         }
     }
 
@@ -189,7 +184,7 @@ public class PointsOfInterestView extends VVerticalLayout {
     @Setter
     public static class SearchCriteria {
         private String city;
-        private int budget;
+        private BigDecimal budget;
     }
 
     private void showErrorMessage(String errorMessage) {

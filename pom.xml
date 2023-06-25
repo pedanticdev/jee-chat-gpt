@@ -135,7 +135,7 @@
     </dependencies>
 
     <build>
-        <finalName>jee-chaptgpt</finalName>
+        <finalName>jee-chatgpt</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
