@@ -10,15 +10,14 @@ import jakarta.inject.Inject;
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.cache.Cache;
 import java.io.StringReader;
 import java.math.BigDecimal;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 @ApplicationScoped
 public class TripsAdvisorService {
@@ -112,28 +111,30 @@ public class TripsAdvisorService {
     }
 
     private List<PointOfInterest> generaPointsOfInterest(String json) {
+        try(JsonReader reader = Json.createReader(new StringReader(json))) {
 
-        JsonObject jsonObjectResponse = Json.createReader(new StringReader(json)).readObject();
-        JsonArray placesArray = jsonObjectResponse.getJsonArray("places");
-
-
-        List<PointOfInterest> poiList = new ArrayList<>(placesArray.size());
-
-        for (int i = 0; i < placesArray.size(); i++) {
-            JsonObject jsonObject = placesArray.getJsonObject(i);
-            PointOfInterest poi =
-                    PointOfInterest
-                            .builder()
-                            .info(jsonObject.getString("place_short_info"))
-                            .cost(BigDecimal.valueOf(jsonObject.getInt("place_visit_cost")))
-                            .name(jsonObject.getString("place_name"))
-                            .build();
+            JsonObject jsonObjectResponse = reader.readObject();
+            JsonArray placesArray = jsonObjectResponse.getJsonArray("places");
 
 
-            poiList.add(poi);
+            List<PointOfInterest> poiList = new ArrayList<>(placesArray.size());
+
+            for (int i = 0; i < placesArray.size(); i++) {
+                JsonObject jsonObject = placesArray.getJsonObject(i);
+                PointOfInterest poi =
+                        PointOfInterest
+                                .builder()
+                                .info(jsonObject.getString("place_short_info"))
+                                .cost(BigDecimal.valueOf(jsonObject.getInt("place_visit_cost")))
+                                .name(jsonObject.getString("place_name"))
+                                .build();
+
+
+                poiList.add(poi);
+            }
+
+            return poiList;
         }
-
-        return poiList;
     }
 
     private Integer generateKey(final String city, final BigDecimal budget) {
