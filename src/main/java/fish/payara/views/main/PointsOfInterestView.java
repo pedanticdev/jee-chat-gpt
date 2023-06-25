@@ -1,5 +1,6 @@
 package fish.payara.views.main;
 
+import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.ColumnTextAlign;
@@ -25,10 +26,12 @@ import jakarta.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
 import org.vaadin.firitin.components.DynamicFileDownloader;
+import org.vaadin.firitin.components.button.VButton;
 import org.vaadin.firitin.components.orderedlayout.VVerticalLayout;
 import org.vaadin.firitin.components.textfield.VNumberField;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -46,6 +49,7 @@ public class PointsOfInterestView extends VVerticalLayout {
     private Grid<PointOfInterest> grid;
     private Binder<SearchCriteria> binder;
     private Button searchButton;
+    private Button resetButton;
     DynamicFileDownloader pdfDownload;
     HorizontalLayout userInputLayout;
     private TextField totalTextField;
@@ -89,7 +93,7 @@ public class PointsOfInterestView extends VVerticalLayout {
                 .bind(SearchCriteria::getCity, SearchCriteria::setCity);
 
 
-        var budgetField = new VNumberField()
+        var budgetField = new VNumberField("Your Budget")
                 .withMin(1)
                 .withPlaceholder("Your budget")
                 .withStyle("margin-right", "10px")
@@ -109,8 +113,12 @@ public class PointsOfInterestView extends VVerticalLayout {
         searchButton.addClickListener(e -> searchPointsOfInterest());
         searchButton.setDisableOnClick(true);
 
+        resetButton = new VButton()
+                .withIcon(VaadinIcon.TRASH.create())
+                .withStyle("margin-top", "10px")
+                .withClickListener(b -> resetFields());
 
-        userInputLayout.add(cityField, budgetField, searchButton);
+        userInputLayout.add(cityField, budgetField, resetButton, searchButton);
 
         add(logoLayout, userInputLayout);
         totalTextField = new TextField();
@@ -121,7 +129,7 @@ public class PointsOfInterestView extends VVerticalLayout {
         grid.addColumn(PointOfInterest::getInfo).setHeader("Info").setFlexGrow(2);
         Grid.Column<PointOfInterest> costColumn = grid.addColumn(v -> renderCost(v.getCost()));
         costColumn.setFooter(totalTextField);
-        costColumn.setHeader("Price").setFlexGrow(0).setSortable(true).setTextAlign(ColumnTextAlign.END);
+        costColumn.setHeader("Cost").setFlexGrow(0).setSortable(true).setTextAlign(ColumnTextAlign.END);
         grid.setSelectionMode(Grid.SelectionMode.NONE);
         add(grid);
 
@@ -129,12 +137,22 @@ public class PointsOfInterestView extends VVerticalLayout {
         pdfDownload.setText("PDF");
         pdfDownload.setFileName("itinerary_" + LocalDateTime.now(ZoneOffset.UTC) + ".pdf");
 
+        binder.addStatusChangeListener(l -> {
+            if (!searchButton.isEnabled() && !l.hasValidationErrors()) {
+                searchButton.setEnabled(true);
+            }
+        });
 
     }
 
     private String renderCost(BigDecimal cost) {
         String formattedCost = NumberFormat.getCurrencyInstance(Locale.US).format(cost);
         return formattedCost.replaceAll("\\.00", "");
+    }
+
+    private void resetFields() {
+        binder.getFields().forEach(HasValue::clear);
+        searchButton.setEnabled(true);
     }
 
     private void searchPointsOfInterest() {

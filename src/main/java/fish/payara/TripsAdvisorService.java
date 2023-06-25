@@ -68,7 +68,7 @@ public class TripsAdvisorService {
             return cache.get(cacheKey);
         }
         try {
-            String request = String.format("I want to visit %s and have a budget of %g dollars", city, budget);
+            String request = String.format(Locale.ENGLISH, "I want to visit %s and have a budget of %,.2f dollars", city, budget);
             var poi = sendMessage(request);
 
 
