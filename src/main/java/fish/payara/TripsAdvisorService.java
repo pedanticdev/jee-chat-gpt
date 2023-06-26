@@ -101,7 +101,7 @@ public class TripsAdvisorService {
                                 new ChatMessage("system", SYSTEM_TASK_MESSAGE),
                                 new ChatMessage("user", message)))
                 .build();
-
+        System.out.println(SYSTEM_TASK_MESSAGE);
         StringBuilder builder = new StringBuilder();
         ChatCompletionResult chatCompletion = openAiService.createChatCompletion(chatCompletionRequest);
 

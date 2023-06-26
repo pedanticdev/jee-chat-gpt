@@ -31,7 +31,6 @@ import org.vaadin.firitin.components.orderedlayout.VVerticalLayout;
 import org.vaadin.firitin.components.textfield.VNumberField;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -69,7 +68,7 @@ public class PointsOfInterestView extends VVerticalLayout {
         title.getStyle().set("font-weight", "bold");
         title.getStyle().set("font-size", "20px");
 
-        Image logo = new Image("/images/trip_on_budget.png", "");
+        Image logo = new Image("images/trip_on_budget.png", "logo");
         logo.setMaxWidth("55px");
 
         logoLayout.setDefaultVerticalComponentAlignment(Alignment.CENTER);
