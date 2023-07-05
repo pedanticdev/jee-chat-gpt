@@ -131,6 +131,7 @@ public class PointsOfInterestView extends VVerticalLayout {
 
         currencyField = new ComboBox<>();
         currencyField.setItems(currencies.keySet());
+        currencyField.setPlaceholder("Pick a currency");
         userInputLayout.add(cityField, budgetField, currencyField, resetButton, searchButton);
 
         add(logoLayout, userInputLayout);
@@ -202,6 +203,9 @@ public class PointsOfInterestView extends VVerticalLayout {
 
 
         pdfDownload.setFileHandler(fh -> {
+            response.getPointsOfInterest().forEach(p-> p.setFormattedCost(renderCost(p.getCost())));
+            response.setTotalCostOfTrip(renderCost(response.getTotalCost()));
+
             ReportRequestContext requestContext = new ReportRequestContext();
             requestContext.setResponse(response);
             requestContext.setSearchCriteria(searchCriteria);

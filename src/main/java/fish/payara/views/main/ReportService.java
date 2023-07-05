@@ -12,11 +12,14 @@ import fr.opensagres.xdocreport.template.TemplateEngineKind;
 import fr.opensagres.xdocreport.template.formatter.FieldsMetadata;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import lombok.extern.java.Log;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.io.InputStream;
+import java.util.logging.Level;
 
 @ApplicationScoped
+@Log
 public class ReportService {
 
     @Inject
@@ -24,7 +27,14 @@ public class ReportService {
     private String template;
 
     private InputStream getTemplate() {
-        return ReportService.class.getResourceAsStream(template);
+        try {
+
+            return ReportService.class.getResourceAsStream(template);
+        } catch (Exception e) {
+            log.log(Level.SEVERE,  "An exception occurred reading the template ", e);
+            return null;
+        }
+
     }
 
     public void writeAsPdf(final ReportRequestContext requestContext) {
@@ -34,6 +44,9 @@ public class ReportService {
 
             // Get template stream (either the default or overridden by the user)
             InputStream in = getTemplate();
+            if (in == null) {
+                return;
+            }
 
             // Prepare the IXDocReport instance based on the template, using
             // Freemarker template engine
@@ -47,7 +60,7 @@ public class ReportService {
             // Add properties to the context
             IContext ctx = report.createContext();
             ctx.put("city", requestContext.getSearchCriteria().getCity().toUpperCase());
-            ctx.put("total", requestContext.getResponse().getTotalCost());
+            ctx.put("total", requestContext.getResponse().getTotalCostOfTrip());
 
             // instruct XDocReport to inspect InvoiceRow entity as well
             // which is given as list and iterated in a table

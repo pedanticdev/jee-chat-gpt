@@ -14,6 +14,7 @@ public class PointOfInterest implements Serializable {
     private String name;
     private String info;
     private BigDecimal cost;
+    private String formattedCost;
 
 
     @Override

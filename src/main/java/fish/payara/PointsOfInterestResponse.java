@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 public class PointsOfInterestResponse implements Serializable {
     private List<PointOfInterest> pointsOfInterest;
-
+    private String totalCostOfTrip;
     public BigDecimal getTotalCost() {
         return pointsOfInterest
                 .stream()
