@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   app:
-    image: jee/gpt
+    image: jee/gpt:jakarta10
     environment:
       OPEN_API_KEY: ${OPEN_API_KEY}
     volumes:
