@@ -44,7 +44,7 @@ public class TripsAdvisorService {
             The user will provide you with a city name and available budget. Considering the budget limit, you must suggest a list of places to visit.
             Allocate 30% of the budget to restaurants and bars.
             Allocate another 30% to shows, amusement parks, and other sightseeing.
-            And dedicate the remainder of the budget to shopping. Remember, the user must spend 90-100% of the budget.
+            And dedicate the remainder of the budget to shopping. Remember, the user must spend 90-100% of the budget. Do NOT go above 100% of the budget.
 
             Respond in a JSON format, including an array named 'places'. Each item of the array is another JSON object that includes 'place_name' as a text,
             'place_short_info' as a text, and 'place_visit_cost' as a number.

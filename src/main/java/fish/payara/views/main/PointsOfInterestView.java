@@ -3,6 +3,7 @@ package fish.payara.views.main;
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Image;
@@ -22,6 +23,7 @@ import fish.payara.PointsOfInterestResponse;
 import fish.payara.ReportRequestContext;
 import fish.payara.TripsAdvisorService;
 import jakarta.annotation.PostConstruct;
+import jakarta.ejb.Local;
 import jakarta.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,7 +36,7 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Locale;
+import java.util.*;
 
 @PageTitle("Trip On Budget")
 @Route("")
@@ -49,13 +51,23 @@ public class PointsOfInterestView extends VVerticalLayout {
     private Binder<SearchCriteria> binder;
     private Button searchButton;
     private Button resetButton;
-    DynamicFileDownloader pdfDownload;
-    HorizontalLayout userInputLayout;
+    private DynamicFileDownloader pdfDownload;
+    private HorizontalLayout userInputLayout;
     private TextField totalTextField;
-    SearchCriteria searchCriteria;
-    PointsOfInterestResponse response;
+    private SearchCriteria searchCriteria;
+    private PointsOfInterestResponse response;
+    private ComboBox<String> currencyField;
+    private static final Map<String, Locale> currencies = new HashMap<>();
+
+    static {
+        currencies.put("US Dollar ($)", Locale.US);
+        currencies.put("British Pound (\u00a3)", Locale.UK);
+        currencies.put("Euro (\u20ac)", Locale.GERMANY);
+    }
+
 
     @PostConstruct
+
     private void init() {
 
         UI.getCurrent().getElement().setAttribute("theme", Lumo.LIGHT);
@@ -117,7 +129,9 @@ public class PointsOfInterestView extends VVerticalLayout {
                 .withStyle("margin-top", "10px")
                 .withClickListener(b -> resetFields());
 
-        userInputLayout.add(cityField, budgetField, resetButton, searchButton);
+        currencyField = new ComboBox<>();
+        currencyField.setItems(currencies.keySet());
+        userInputLayout.add(cityField, budgetField, currencyField, resetButton, searchButton);
 
         add(logoLayout, userInputLayout);
         totalTextField = new TextField();
@@ -141,7 +155,15 @@ public class PointsOfInterestView extends VVerticalLayout {
     }
 
     private String renderCost(BigDecimal cost) {
-        String formattedCost = NumberFormat.getCurrencyInstance(Locale.US).format(cost);
+        String formattedCost;
+        String value = currencyField.getValue();
+
+        if (value != null && !value.isEmpty()) {
+
+            formattedCost = NumberFormat.getCurrencyInstance(currencies.get(value)).format(cost);
+            return formattedCost.replaceAll("\\.00", "");
+        }
+        formattedCost = NumberFormat.getCurrencyInstance(Locale.US).format(cost);
         return formattedCost.replaceAll("\\.00", "");
     }
 
