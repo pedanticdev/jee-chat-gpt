@@ -11,6 +11,7 @@ import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
+import lombok.extern.java.Log;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.cache.Cache;
@@ -18,8 +19,10 @@ import java.io.StringReader;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.*;
+import java.util.logging.Level;
 
 @ApplicationScoped
+@Log
 public class TripsAdvisorService {
 
 
@@ -101,8 +104,8 @@ public class TripsAdvisorService {
                                 new ChatMessage("system", SYSTEM_TASK_MESSAGE),
                                 new ChatMessage("user", message)))
                 .build();
-        System.out.println(SYSTEM_TASK_MESSAGE);
         StringBuilder builder = new StringBuilder();
+        log.log(Level.ALL, "Calling open AI service with the query " + chatCompletionRequest.toString());
         ChatCompletionResult chatCompletion = openAiService.createChatCompletion(chatCompletionRequest);
 
         chatCompletion.getChoices().forEach(choice -> builder.append(choice.getMessage().getContent()));

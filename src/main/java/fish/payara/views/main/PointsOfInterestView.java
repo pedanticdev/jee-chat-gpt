@@ -38,7 +38,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.*;
 
-@PageTitle("Trip On Budget")
+@PageTitle("Trip On Budget With ChatGPT")
 @Route("")
 public class PointsOfInterestView extends VVerticalLayout {
 
