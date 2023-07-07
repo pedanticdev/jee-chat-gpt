@@ -1,9 +1,21 @@
 package fish.payara;
 
+import java.io.StringReader;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.logging.Level;
+
+import javax.cache.Cache;
+
+import lombok.extern.java.Log;
+
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatCompletionResult;
 import com.theokanning.openai.completion.chat.ChatMessage;
 import com.theokanning.openai.service.OpenAiService;
+
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -11,30 +23,14 @@ import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
-import lombok.extern.java.Log;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
-
-import javax.cache.Cache;
-import java.io.StringReader;
-import java.math.BigDecimal;
-import java.time.Duration;
-import java.util.*;
-import java.util.logging.Level;
 
 @ApplicationScoped
 @Log
 public class TripsAdvisorService {
 
-
+    @Inject
     private OpenAiService openAiService;
 
-    @Inject
-    @ConfigProperty(name = "open.api.key")
-    private String apiKey;
-
-    @Inject
-    @ConfigProperty(name = "openai.timeout")
-    private int apiTimeout;
     @Inject
     Cache<Integer, PointsOfInterestResponse> cache;
 
@@ -54,14 +50,6 @@ public class TripsAdvisorService {
 
             Don't add anything else in the end after you respond with the JSON.
             """;
-
-    @PostConstruct
-    public void initGptService() {
-        openAiService = new OpenAiService(apiKey,
-                Duration.ofSeconds(apiTimeout));
-
-        System.out.println("Connected to the OpenAI API");
-    }
 
     public PointsOfInterestResponse suggestPointsOfInterest(String city, BigDecimal budget) {
 
