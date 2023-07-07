@@ -28,107 +28,103 @@ import jakarta.json.JsonReader;
 @Log
 public class TripsAdvisorService {
 
-    @Inject
-    private OpenAiService openAiService;
+	@Inject
+	private OpenAiService openAiService;
 
-    @Inject
-    Cache<Integer, PointsOfInterestResponse> cache;
+	@Inject
+	Cache<Integer, PointsOfInterestResponse> cache;
 
-    private static final String GPT_MODEL = "gpt-3.5-turbo";
+	private static final String GPT_MODEL = "gpt-3.5-turbo";
 
-    private static final String SYSTEM_TASK_MESSAGE = """
-            You are an API server that responds in a JSON format.
-            Don't say anything else. Respond only with the JSON.
+	private static final String SYSTEM_TASK_MESSAGE = """
+			You are an API server that responds in a JSON format.
+			Don't say anything else. Respond only with the JSON.
 
-            The user will provide you with a city name and available budget. Considering the budget limit, you must suggest a list of places to visit.
-            Allocate 30% of the budget to restaurants and bars.
-            Allocate another 30% to shows, amusement parks, and other sightseeing.
-            And dedicate the remainder of the budget to shopping. Remember, the user must spend 90-100% of the budget. Do NOT go above 100% of the budget.
+			The user will provide you with a city name and available budget. Considering the budget limit, you must suggest a list of places to visit.
+			Allocate 30% of the budget to restaurants and bars.
+			Allocate another 30% to shows, amusement parks, and other sightseeing.
+			And dedicate the remainder of the budget to shopping. Remember, the user must spend 90-100% of the budget. Do NOT go above 100% of the budget.
 
-            Respond in a JSON format, including an array named 'places'. Each item of the array is another JSON object that includes 'place_name' as a text,
-            'place_short_info' as a text, and 'place_visit_cost' as a number.
+			Respond in a JSON format, including an array named 'places'. Each item of the array is another JSON object that includes 'place_name' as a text,
+			'place_short_info' as a text, and 'place_visit_cost' as a number.
 
-            Don't add anything else in the end after you respond with the JSON.
-            """;
+			Don't add anything else in the end after you respond with the JSON.
+			""";
 
-    public PointsOfInterestResponse suggestPointsOfInterest(String city, BigDecimal budget) {
+	public PointsOfInterestResponse suggestPointsOfInterest(String city, BigDecimal budget) {
 
-        int cacheKey = generateKey(city, budget);
+		int cacheKey = generateKey(city, budget);
 
-        if (cache.containsKey(cacheKey)) {
-            return cache.get(cacheKey);
-        }
-        try {
-            String request = String.format(Locale.ENGLISH, "I want to visit %s and have a budget of %,.2f dollars", city, budget);
-            var poi = sendMessage(request);
+		if (cache.containsKey(cacheKey)) {
+			return cache.get(cacheKey);
+		}
+		try {
+			String request = String.format(Locale.ENGLISH, "I want to visit %s and have a budget of %,.2f dollars",
+					city, budget);
+			var poi = sendMessage(request);
 
+			List<PointOfInterest> poiList = generaPointsOfInterest(poi);
 
-            List<PointOfInterest> poiList = generaPointsOfInterest(poi);
+			PointsOfInterestResponse response = new PointsOfInterestResponse();
+			response.setPointsOfInterest(poiList);
 
+			cache.put(cacheKey, response);
+			return response;
+		} catch (Exception e) {
+			e.printStackTrace();
 
-            PointsOfInterestResponse response = new PointsOfInterestResponse();
-            response.setPointsOfInterest(poiList);
+			PointsOfInterestResponse response = new PointsOfInterestResponse();
+			response.setError(e.getMessage());
 
-            cache.put(cacheKey, response);
-            return response;
-        } catch (Exception e) {
-            e.printStackTrace();
+			return response;
+		}
+	}
 
-            PointsOfInterestResponse response = new PointsOfInterestResponse();
-            response.setError(e.getMessage());
+	private String sendMessage(String message) {
 
-            return response;
-        }
-    }
+		ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
+				.builder()
+				.model(GPT_MODEL)
+				.temperature(0.8)
+				.messages(
+						List.of(
+								new ChatMessage("system", SYSTEM_TASK_MESSAGE),
+								new ChatMessage("user", message)))
+				.build();
+		StringBuilder builder = new StringBuilder();
+		log.log(Level.ALL, "Calling open AI service with the query " + chatCompletionRequest.toString());
+		ChatCompletionResult chatCompletion = openAiService.createChatCompletion(chatCompletionRequest);
 
-    private String sendMessage(String message) {
+		chatCompletion.getChoices().forEach(choice -> builder.append(choice.getMessage().getContent()));
 
-        ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
-                .builder()
-                .model(GPT_MODEL)
-                .temperature(0.8)
-                .messages(
-                        List.of(
-                                new ChatMessage("system", SYSTEM_TASK_MESSAGE),
-                                new ChatMessage("user", message)))
-                .build();
-        StringBuilder builder = new StringBuilder();
-        log.log(Level.ALL, "Calling open AI service with the query " + chatCompletionRequest.toString());
-        ChatCompletionResult chatCompletion = openAiService.createChatCompletion(chatCompletionRequest);
+		return builder.toString();
+	}
 
-        chatCompletion.getChoices().forEach(choice -> builder.append(choice.getMessage().getContent()));
+	private List<PointOfInterest> generaPointsOfInterest(String json) {
+		try (JsonReader reader = Json.createReader(new StringReader(json))) {
 
-        return builder.toString();
-    }
+			JsonObject jsonObjectResponse = reader.readObject();
+			JsonArray placesArray = jsonObjectResponse.getJsonArray("places");
 
-    private List<PointOfInterest> generaPointsOfInterest(String json) {
-        try(JsonReader reader = Json.createReader(new StringReader(json))) {
+			List<PointOfInterest> poiList = new ArrayList<>(placesArray.size());
 
-            JsonObject jsonObjectResponse = reader.readObject();
-            JsonArray placesArray = jsonObjectResponse.getJsonArray("places");
+			for (int i = 0; i < placesArray.size(); i++) {
+				JsonObject jsonObject = placesArray.getJsonObject(i);
+				PointOfInterest poi = PointOfInterest
+						.builder()
+						.info(jsonObject.getString("place_short_info"))
+						.cost(BigDecimal.valueOf(jsonObject.getInt("place_visit_cost")))
+						.name(jsonObject.getString("place_name"))
+						.build();
 
+				poiList.add(poi);
+			}
 
-            List<PointOfInterest> poiList = new ArrayList<>(placesArray.size());
+			return poiList;
+		}
+	}
 
-            for (int i = 0; i < placesArray.size(); i++) {
-                JsonObject jsonObject = placesArray.getJsonObject(i);
-                PointOfInterest poi =
-                        PointOfInterest
-                                .builder()
-                                .info(jsonObject.getString("place_short_info"))
-                                .cost(BigDecimal.valueOf(jsonObject.getInt("place_visit_cost")))
-                                .name(jsonObject.getString("place_name"))
-                                .build();
-
-
-                poiList.add(poi);
-            }
-
-            return poiList;
-        }
-    }
-
-    private Integer generateKey(final String city, final BigDecimal budget) {
-        return city.toUpperCase(Locale.ENGLISH).hashCode() + budget.hashCode();
-    }
+	private Integer generateKey(final String city, final BigDecimal budget) {
+		return city.toUpperCase(Locale.ENGLISH).hashCode() + budget.hashCode();
+	}
 }

@@ -6,15 +6,15 @@ import com.vaadin.flow.data.converter.Converter;
 
 import java.math.BigDecimal;
 
-public class DoubleToBigDecimalConverter  implements Converter<Double, BigDecimal> {
+public class DoubleToBigDecimalConverter implements Converter<Double, BigDecimal> {
 
-    @Override
-    public Result<BigDecimal> convertToModel(Double presentation, ValueContext valueContext) {
-        return Result.ok(BigDecimal.valueOf(presentation));
-    }
+	@Override
+	public Result<BigDecimal> convertToModel(Double presentation, ValueContext valueContext) {
+		return Result.ok(BigDecimal.valueOf(presentation));
+	}
 
-    @Override
-    public Double convertToPresentation(BigDecimal model, ValueContext valueContext) {
-        return model.doubleValue();
-    }
+	@Override
+	public Double convertToPresentation(BigDecimal model, ValueContext valueContext) {
+		return model.doubleValue();
+	}
 }

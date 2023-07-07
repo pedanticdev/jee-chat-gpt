@@ -11,14 +11,13 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Builder
 public class PointOfInterest implements Serializable {
-    private String name;
-    private String info;
-    private BigDecimal cost;
-    private String formattedCost;
+	private String name;
+	private String info;
+	private BigDecimal cost;
+	private String formattedCost;
 
-
-    @Override
-    public String toString() {
-        return "PointOfInterest [name=" + name + ", info=" + info + ", cost=" + cost + "]";
-    }
+	@Override
+	public String toString() {
+		return "PointOfInterest [name=" + name + ", info=" + info + ", cost=" + cost + "]";
+	}
 }

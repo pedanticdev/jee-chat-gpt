@@ -10,16 +10,16 @@ import java.util.List;
 @Getter
 @Setter
 public class PointsOfInterestResponse implements Serializable {
-    private List<PointOfInterest> pointsOfInterest;
-    private String totalCostOfTrip;
-    public BigDecimal getTotalCost() {
-        return pointsOfInterest
-                .stream()
-                .map(PointOfInterest::getCost)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
+	private List<PointOfInterest> pointsOfInterest;
+	private String totalCostOfTrip;
 
-    private String error;
+	public BigDecimal getTotalCost() {
+		return pointsOfInterest
+				.stream()
+				.map(PointOfInterest::getCost)
+				.reduce(BigDecimal.ZERO, BigDecimal::add);
+	}
 
+	private String error;
 
 }
