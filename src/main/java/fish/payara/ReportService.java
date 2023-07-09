@@ -1,7 +1,5 @@
-package fish.payara.views.main;
+package fish.payara;
 
-import fish.payara.PointOfInterest;
-import fish.payara.ReportRequestContext;
 import fr.opensagres.xdocreport.converter.ConverterTypeTo;
 import fr.opensagres.xdocreport.converter.ConverterTypeVia;
 import fr.opensagres.xdocreport.converter.Options;

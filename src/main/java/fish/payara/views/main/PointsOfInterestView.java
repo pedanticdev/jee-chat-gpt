@@ -1,13 +1,27 @@
 package fish.payara.views.main;
 
+import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+
+import lombok.Getter;
+import lombok.Setter;
+
+import org.vaadin.firitin.components.DynamicFileDownloader;
+import org.vaadin.firitin.components.button.VButton;
+import org.vaadin.firitin.components.orderedlayout.VVerticalLayout;
+import org.vaadin.firitin.components.textfield.VNumberField;
+
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasValue;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.Notification.Position;
@@ -17,29 +31,13 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.theme.lumo.Lumo;
-import fish.payara.PointOfInterest;
-import fish.payara.PointsOfInterestResponse;
-import fish.payara.ReportRequestContext;
-import fish.payara.TripsAdvisorService;
-import jakarta.annotation.PostConstruct;
-import jakarta.ejb.Local;
-import jakarta.inject.Inject;
-import lombok.Getter;
-import lombok.Setter;
-import org.vaadin.firitin.components.DynamicFileDownloader;
-import org.vaadin.firitin.components.button.VButton;
-import org.vaadin.firitin.components.orderedlayout.VVerticalLayout;
-import org.vaadin.firitin.components.textfield.VNumberField;
 
-import java.math.BigDecimal;
-import java.text.NumberFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.*;
+import fish.payara.*;
+import jakarta.annotation.PostConstruct;
+import jakarta.inject.Inject;
 
 @PageTitle("Trip On Budget With ChatGPT")
-@Route("")
+@Route(value = "budget-journey", layout = ParentAppLayout.class)
 public class PointsOfInterestView extends VVerticalLayout {
 
     @Inject
@@ -70,22 +68,8 @@ public class PointsOfInterestView extends VVerticalLayout {
 
     private void init() {
 
-        UI.getCurrent().getElement().setAttribute("theme", Lumo.LIGHT);
 
-        HorizontalLayout logoLayout = new HorizontalLayout();
-        logoLayout.setWidthFull();
-        logoLayout.setAlignItems(Alignment.BASELINE);
-
-        Label title = new Label("BudgetJourney");
-        title.getStyle().set("font-weight", "bold");
-        title.getStyle().set("font-size", "20px");
-
-        Image logo = new Image("images/trip_on_budget.png", "logo");
-        logo.setMaxWidth("55px");
-
-        logoLayout.setDefaultVerticalComponentAlignment(Alignment.CENTER);
-
-        logoLayout.add(logo, title);
+        Component logoLayout = ComponentUtil.generateTitleComponent("images/trip_on_budget.png","BudgetJourney");
 
         // Create the binder for the search criteria
         binder = new Binder<>(SearchCriteria.class);
@@ -151,7 +135,6 @@ public class PointsOfInterestView extends VVerticalLayout {
         pdfDownload.setText("PDF");
         pdfDownload.setFileName("itinerary_" + LocalDateTime.now(ZoneOffset.UTC) + ".pdf");
 
-//        binder.addStatusChangeListener(l -> searchButton.setEnabled(!searchButton.isEnabled() && !l.hasValidationErrors()));
 
     }
 

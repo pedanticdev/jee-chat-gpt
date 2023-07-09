@@ -1,14 +1,26 @@
 package fish.payara;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.math.BigDecimal;
+import java.net.URL;
+import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 
 import javax.cache.Cache;
+import javax.imageio.ImageIO;
 
+import com.theokanning.openai.image.CreateImageRequest;
+import com.theokanning.openai.image.Image;
+import com.theokanning.openai.image.ImageResult;
+import com.vaadin.flow.component.notification.Notification;
 import lombok.extern.java.Log;
 
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
@@ -23,6 +35,7 @@ import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
+import org.apache.commons.lang3.RandomStringUtils;
 
 @ApplicationScoped
 @Log
@@ -35,7 +48,8 @@ public class TripsAdvisorService {
 	Cache<Integer, PointsOfInterestResponse> cache;
 
 	private static final String GPT_MODEL = "gpt-3.5-turbo";
-
+	public static final String TEMP_FILE_DIR = "/src/main/resources/images/generated/";
+	public static final String FILE_SUFFIX = ".png";
 	private static final String SYSTEM_TASK_MESSAGE = """
 			You are an API server that responds in a JSON format.
 			Don't say anything else. Respond only with the JSON.
@@ -51,6 +65,7 @@ public class TripsAdvisorService {
 			Don't add anything else in the end after you respond with the JSON.
 			""";
 
+
 	public PointsOfInterestResponse suggestPointsOfInterest(String city, BigDecimal budget) {
 
 		int cacheKey = generateKey(city, budget);
@@ -62,12 +77,9 @@ public class TripsAdvisorService {
 			String request = String.format(Locale.ENGLISH, "I want to visit %s and have a budget of %,.2f dollars",
 					city, budget);
 			var poi = sendMessage(request);
-
 			List<PointOfInterest> poiList = generaPointsOfInterest(poi);
-
 			PointsOfInterestResponse response = new PointsOfInterestResponse();
 			response.setPointsOfInterest(poiList);
-
 			cache.put(cacheKey, response);
 			return response;
 		} catch (Exception e) {
@@ -78,6 +90,26 @@ public class TripsAdvisorService {
 
 			return response;
 		}
+	}
+
+	public String generateImage(final ImageGenerationRequest request) {
+		CreateImageRequest imageRequest = CreateImageRequest.builder()
+				.n(request.getNumberOfImages())
+				.prompt(request.getPrompt())
+				.size(request.getSize())
+				.build();
+		try {
+			ImageResult image = openAiService.createImage(imageRequest);
+			List<Image> data = image.getData();
+			if (data != null && !data.isEmpty()) {
+				return data.get(0).getUrl();
+			}
+
+		} catch (final Exception e) {
+			log.log(Level.SEVERE, "An exception occurred calling the OpenAI service", e);
+		}
+		return null;
+
 	}
 
 	private String sendMessage(String message) {
