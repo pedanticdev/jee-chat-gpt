@@ -1,41 +1,30 @@
 package fish.payara;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.StringReader;
 import java.math.BigDecimal;
-import java.net.URL;
-import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
 
 import javax.cache.Cache;
-import javax.imageio.ImageIO;
 
-import com.theokanning.openai.image.CreateImageRequest;
-import com.theokanning.openai.image.Image;
-import com.theokanning.openai.image.ImageResult;
-import com.vaadin.flow.component.notification.Notification;
 import lombok.extern.java.Log;
 
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatCompletionResult;
 import com.theokanning.openai.completion.chat.ChatMessage;
+import com.theokanning.openai.image.CreateImageRequest;
+import com.theokanning.openai.image.Image;
+import com.theokanning.openai.image.ImageResult;
 import com.theokanning.openai.service.OpenAiService;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
-import org.apache.commons.lang3.RandomStringUtils;
 
 @ApplicationScoped
 @Log
