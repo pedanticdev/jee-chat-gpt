@@ -30,8 +30,6 @@ import jakarta.json.JsonReader;
 @Log
 public class TripsAdvisorService {
 
-	public static final String TEMP_FILE_DIR = "/src/main/resources/images/generated/";
-	public static final String FILE_SUFFIX = ".png";
 	private static final String GPT_MODEL = "gpt-3.5-turbo";
 	private static final String SYSTEM_TASK_MESSAGE = """
 			You are an API server that responds in a JSON format.
