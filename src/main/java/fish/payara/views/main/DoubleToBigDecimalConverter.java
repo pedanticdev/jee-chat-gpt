@@ -1,10 +1,10 @@
 package fish.payara.views.main;
 
+import java.math.BigDecimal;
+
 import com.vaadin.flow.data.binder.Result;
 import com.vaadin.flow.data.binder.ValueContext;
 import com.vaadin.flow.data.converter.Converter;
-
-import java.math.BigDecimal;
 
 public class DoubleToBigDecimalConverter implements Converter<Double, BigDecimal> {
 

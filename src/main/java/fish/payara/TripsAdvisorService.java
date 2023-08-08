@@ -30,15 +30,9 @@ import jakarta.json.JsonReader;
 @Log
 public class TripsAdvisorService {
 
-	@Inject
-	private OpenAiService openAiService;
-
-	@Inject
-	Cache<Integer, PointsOfInterestResponse> cache;
-
-	private static final String GPT_MODEL = "gpt-3.5-turbo";
 	public static final String TEMP_FILE_DIR = "/src/main/resources/images/generated/";
 	public static final String FILE_SUFFIX = ".png";
+	private static final String GPT_MODEL = "gpt-3.5-turbo";
 	private static final String SYSTEM_TASK_MESSAGE = """
 			You are an API server that responds in a JSON format.
 			Don't say anything else. Respond only with the JSON.
@@ -53,7 +47,10 @@ public class TripsAdvisorService {
 
 			Don't add anything else in the end after you respond with the JSON.
 			""";
-
+	@Inject
+	Cache<Integer, PointsOfInterestResponse> cache;
+	@Inject
+	private OpenAiService openAiService;
 
 	public PointsOfInterestResponse suggestPointsOfInterest(String city, BigDecimal budget) {
 

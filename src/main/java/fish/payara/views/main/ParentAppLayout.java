@@ -27,14 +27,13 @@ public class ParentAppLayout extends AppLayout {
 		createDrawer();
 	}
 
-
 	private void createHeader() {
 		H1 logo = new H1("Jakarta EE GPT");
 		logo.addClassNames(
 				LumoUtility.FontSize.LARGE,
 				LumoUtility.Margin.MEDIUM);
 
-		var header = new HorizontalLayout(new DrawerToggle(), logo );
+		var header = new HorizontalLayout(new DrawerToggle(), logo);
 
 		header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
 		header.setWidthFull();
@@ -49,8 +48,8 @@ public class ParentAppLayout extends AppLayout {
 	private void createDrawer() {
 		var verticalLayout = new VerticalLayout();
 		var pointOfViewLink = generateComponent("Trip", VaadinIcon.AIRPLANE.create(), PointsOfInterestView.class);
-		var imageGen =generateComponent("AI Image", VaadinIcon.CAMERA.create(), GptImageGenerator.class);
-		var home =generateComponent("Home", VaadinIcon.HOME_O.create(), HomePage.class);
+		var imageGen = generateComponent("AI Image", VaadinIcon.CAMERA.create(), GptImageGenerator.class);
+		var home = generateComponent("Home", VaadinIcon.HOME_O.create(), HomePage.class);
 		verticalLayout.add(home, pointOfViewLink, imageGen);
 		addToDrawer(verticalLayout);
 	}

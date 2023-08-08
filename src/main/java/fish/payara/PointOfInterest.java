@@ -1,9 +1,9 @@
 package fish.payara;
 
-import lombok.*;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
+
+import lombok.*;
 
 @Getter
 @Setter

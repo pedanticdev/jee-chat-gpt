@@ -1,6 +1,5 @@
 package fish.payara.views.main;
 
-import com.vaadin.flow.component.notification.Notification;
 import org.vaadin.firitin.components.button.VButton;
 import org.vaadin.firitin.components.orderedlayout.VVerticalLayout;
 
@@ -8,6 +7,7 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
@@ -24,13 +24,13 @@ import jakarta.inject.Inject;
 @Route(value = "image-gen", layout = ParentAppLayout.class)
 public class GptImageGenerator extends VVerticalLayout {
 
+	TextArea imagePrompt;
+	Image image;
 	@Inject
 	private TripsAdvisorService tripsAdvisorService;
 	private Binder<ImageGenerationRequest> binder;
 	private Button generateImageButton;
 	private Button resetButton;
-	TextArea imagePrompt;
-	Image image;
 
 	@PostConstruct
 	private void init() {

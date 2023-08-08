@@ -1,13 +1,15 @@
 package fish.payara;
 
+import java.time.Duration;
+
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+
 import com.theokanning.openai.service.OpenAiService;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
-
-import java.time.Duration;
 
 @ApplicationScoped
 public class OpenAIFactory {
