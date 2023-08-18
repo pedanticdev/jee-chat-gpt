@@ -1,7 +1,7 @@
-version: '3.7'
+version: '3.9'
 services:
   app:
-    image: jee/gpt:jakarta10
+    image: payarademo.azurecr.io/jakarta-gpt
     environment:
       OPEN_API_KEY: ${OPEN_API_KEY}
     volumes:
