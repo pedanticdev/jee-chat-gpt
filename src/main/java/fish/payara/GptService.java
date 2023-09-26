@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
 
-import javax.cache.Cache;
-
 import fish.payara.jpa.RecipeSuggestion;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
@@ -37,7 +35,11 @@ public class GptService {
 	@Inject
 	@ConfigProperty(name = "gpt.model")
 	private String gptModel;
+	@Inject
+	private OpenAiService openAiService;
 
+	@Inject
+	private CacheController cacheController;
 	private static final String SYSTEM_TASK_MESSAGE = """
 			You are an API server that responds in a JSON format.
 			Don't say anything else. Respond only with the JSON.
@@ -88,20 +90,14 @@ public class GptService {
 
 			Don't add anything else in the end after you respond with the JSON.
 			""";
-	@Inject
-	Cache<Integer, PointsOfInterestResponse> cache;
 
-	@Inject
-	Cache<Integer, RecipeSuggestion> recipeSuggestionCache;
-	@Inject
-	private OpenAiService openAiService;
 
 	public PointsOfInterestResponse suggestPointsOfInterest(final String city, final BigDecimal budget) {
 
 		int cacheKey = generateKey(city, budget);
 
-		 if (cache.containsKey(cacheKey)) {
-		 return cache.get(cacheKey);
+		 if (cacheController.isPointOfInterestCached(cacheKey)) {
+		 return cacheController.getResponse(cacheKey);
 		 }
 		try {
 			String request = String.format(Locale.ENGLISH, "I want to visit %s and have a budget of %,.2f dollars",
@@ -110,7 +106,7 @@ public class GptService {
 			List<PointOfInterest> poiList = generaPointsOfInterest(poi);
 			PointsOfInterestResponse response = new PointsOfInterestResponse();
 			response.setPointsOfInterest(poiList);
-			cache.put(cacheKey, response);
+			cacheController.cachePoi(cacheKey, response);
 			return response;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -168,8 +164,9 @@ public class GptService {
 	public RecipeSuggestion requestRecipe(final String recipe) {
 		RecipeSuggestion suggestion = null;
 		Integer cacheKey = generateKey(recipe, null);
-		if (recipeSuggestionCache.containsKey(cacheKey)) {
-			return recipeSuggestionCache.get(cacheKey);
+
+		if (cacheController.isRecipeCached(cacheKey)) {
+			return cacheController.getCachedRecipeSuggestion(cacheKey);
 		}
 
 		try (final Jsonb jsonb = JsonbBuilder.newBuilder().build()) {
@@ -189,7 +186,7 @@ public class GptService {
 			log.log(Level.INFO, String.format("JSON response from GPT %s", recipeString));
 
 			suggestion = jsonb.fromJson(recipeString.toString(), RecipeSuggestion.class);
-			recipeSuggestionCache.put(cacheKey, suggestion);
+			cacheController.cacheRecipeSuggestion(cacheKey, suggestion);
 
 			return suggestion;
 		} catch (final Exception e) {
