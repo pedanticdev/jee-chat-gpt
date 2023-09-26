@@ -155,9 +155,6 @@ public class GptService {
 
 		chatCompletion.getChoices().forEach(choice -> builder.append(choice.getMessage().getContent()));
 
-		RecipeSuggestion suggestion = requestRecipe("rice, chicken, garlic, lettuce");
-		System.out.println(JsonbBuilder.create().toJson(suggestion));
-
 		return builder.toString();
 	}
 
