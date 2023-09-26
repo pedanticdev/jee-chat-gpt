@@ -30,12 +30,12 @@ import jakarta.inject.Inject;
 @Route(value = "recipe-suggestions", layout = ParentAppLayout.class)
 public class RecipeView extends VVerticalLayout {
 
+	TextArea recipePrompt;
 	@Inject
 	private GptService gptService;
 	private Binder<GptRequestContext> binder;
 	private Button generateRecipebutton;
 	private VerticalLayout recipeLayout;
-	TextArea recipePrompt;
 	private Button resetButton;
 
 	@PostConstruct

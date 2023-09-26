@@ -1,5 +1,8 @@
 package fish.payara;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import javax.cache.Cache;
 import javax.cache.CacheManager;
 import javax.cache.Caching;
@@ -7,15 +10,13 @@ import javax.cache.configuration.MutableConfiguration;
 import javax.cache.expiry.CreatedExpiryPolicy;
 import javax.cache.expiry.Duration;
 
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+
 import fish.payara.jpa.RecipeSuggestion;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @ApplicationScoped
 public class CacheController {

@@ -7,10 +7,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
 
-import fish.payara.jpa.RecipeSuggestion;
-import jakarta.json.bind.Jsonb;
-import jakarta.json.bind.JsonbBuilder;
 import lombok.extern.java.Log;
+
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatCompletionResult;
@@ -20,26 +19,20 @@ import com.theokanning.openai.image.Image;
 import com.theokanning.openai.image.ImageResult;
 import com.theokanning.openai.service.OpenAiService;
 
+import fish.payara.jpa.RecipeSuggestion;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
 
 @ApplicationScoped
 @Log
 public class GptService {
 
-	@Inject
-	@ConfigProperty(name = "gpt.model")
-	private String gptModel;
-	@Inject
-	private OpenAiService openAiService;
-
-	@Inject
-	private CacheController cacheController;
 	private static final String SYSTEM_TASK_MESSAGE = """
 			You are an API server that responds in a JSON format.
 			Don't say anything else. Respond only with the JSON.
@@ -54,7 +47,6 @@ public class GptService {
 
 			Don't add anything else in the end after you respond with the JSON.
 			""";
-
 	private static final String RECIPE_SYSTEM_TASK_MESSAGE = """
 			You are an API server that responds in a JSON format.
 			Don't say anything else. Respond only with the JSON.
@@ -90,15 +82,21 @@ public class GptService {
 
 			Don't add anything else in the end after you respond with the JSON.
 			""";
-
+	@Inject
+	@ConfigProperty(name = "gpt.model")
+	private String gptModel;
+	@Inject
+	private OpenAiService openAiService;
+	@Inject
+	private CacheController cacheController;
 
 	public PointsOfInterestResponse suggestPointsOfInterest(final String city, final BigDecimal budget) {
 
 		int cacheKey = generateKey(city, budget);
 
-		 if (cacheController.isPointOfInterestCached(cacheKey)) {
-		 return cacheController.getResponse(cacheKey);
-		 }
+		if (cacheController.isPointOfInterestCached(cacheKey)) {
+			return cacheController.getResponse(cacheKey);
+		}
 		try {
 			String request = String.format(Locale.ENGLISH, "I want to visit %s and have a budget of %,.2f dollars",
 					city, budget);
