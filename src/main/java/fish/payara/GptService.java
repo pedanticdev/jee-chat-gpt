@@ -107,7 +107,7 @@ public class GptService {
 			cacheController.cachePoi(cacheKey, response);
 			return response;
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, "An error occurred getting point of interest suggestions ", e);
 
 			PointsOfInterestResponse response = new PointsOfInterestResponse();
 			response.setError(e.getMessage());
