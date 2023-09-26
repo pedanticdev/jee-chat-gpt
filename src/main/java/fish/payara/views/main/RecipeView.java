@@ -131,6 +131,7 @@ public class RecipeView extends VVerticalLayout {
 	}
 
 	private void resetFields() {
+		recipePrompt.clear();
 		recipeLayout.removeAll();
 	}
 }

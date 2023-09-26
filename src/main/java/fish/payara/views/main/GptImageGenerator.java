@@ -101,6 +101,7 @@ public class GptImageGenerator extends VVerticalLayout {
 	}
 
 	private void resetFields() {
+		imagePrompt.clear();
 		imagePrompt.setValue(null);
 		image.setVisible(false);
 	}
