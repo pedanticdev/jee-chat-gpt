@@ -47,10 +47,11 @@ public class ParentAppLayout extends AppLayout {
 
 	private void createDrawer() {
 		var verticalLayout = new VerticalLayout();
+		var home = generateComponent("Home", VaadinIcon.HOME_O.create(), HomePage.class);
 		var pointOfViewLink = generateComponent("Trip", VaadinIcon.AIRPLANE.create(), PointsOfInterestView.class);
 		var imageGen = generateComponent("AI Image", VaadinIcon.CAMERA.create(), GptImageGenerator.class);
-		var home = generateComponent("Home", VaadinIcon.HOME_O.create(), HomePage.class);
-		verticalLayout.add(home, pointOfViewLink, imageGen);
+		var recipeSuggestion = generateComponent("Recipes", VaadinIcon.COFFEE.create(), RecipeView.class);
+		verticalLayout.add(home, pointOfViewLink, imageGen, recipeSuggestion);
 		addToDrawer(verticalLayout);
 	}
 

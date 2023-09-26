@@ -15,8 +15,8 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-import fish.payara.ImageGenerationRequest;
-import fish.payara.TripsAdvisorService;
+import fish.payara.GptRequestContext;
+import fish.payara.GptService;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 
@@ -27,8 +27,8 @@ public class GptImageGenerator extends VVerticalLayout {
 	TextArea imagePrompt;
 	Image image;
 	@Inject
-	private TripsAdvisorService tripsAdvisorService;
-	private Binder<ImageGenerationRequest> binder;
+	private GptService gptService;
+	private Binder<GptRequestContext> binder;
 	private Button generateImageButton;
 	private Button resetButton;
 
@@ -44,12 +44,12 @@ public class GptImageGenerator extends VVerticalLayout {
 		imagePrompt.setHeight("500px");
 		imagePrompt.setClearButtonVisible(true);
 
-		binder = new Binder<>(ImageGenerationRequest.class);
+		binder = new Binder<>(GptRequestContext.class);
 		binder.forField(imagePrompt)
 				.asRequired("An image prompt is required")
 				// .withValidator(prompt -> (prompt.length() < 3 || prompt.length() > 1000),
 				// "The image generation prompt should be between 3 and 1000 characters")
-				.bind(ImageGenerationRequest::getPrompt, ImageGenerationRequest::setPrompt);
+				.bind(GptRequestContext::getPrompt, GptRequestContext::setPrompt);
 
 		image = new Image();
 		image.setAlt("AI generated image");
@@ -74,7 +74,7 @@ public class GptImageGenerator extends VVerticalLayout {
 				.withIcon(VaadinIcon.TRASH.create())
 				.withClickListener(b -> resetFields());
 		buttonLayout.setDefaultVerticalComponentAlignment(Alignment.CENTER);
-		buttonLayout.add(generateImageButton);
+		buttonLayout.add(generateImageButton, resetButton);
 
 		VerticalLayout userInputLayout = new VerticalLayout();
 		userInputLayout.add(inputOutputLayout, buttonLayout);
@@ -83,9 +83,9 @@ public class GptImageGenerator extends VVerticalLayout {
 	}
 
 	private void generateImage() {
-		ImageGenerationRequest request = new ImageGenerationRequest();
+		GptRequestContext request = new GptRequestContext();
 		if (binder.writeBeanIfValid(request)) {
-			String imageUrl = tripsAdvisorService.generateImage(request);
+			String imageUrl = gptService.generateImage(request);
 			if (imageUrl != null && !imageUrl.isEmpty()) {
 
 				image.setSrc(imageUrl);

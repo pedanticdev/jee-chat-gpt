@@ -49,7 +49,7 @@ public class PointsOfInterestView extends VVerticalLayout {
 	}
 
 	@Inject
-	private TripsAdvisorService tripsAdvisorService;
+	private GptService gptService;
 	@Inject
 	private ReportService reportService;
 	private Grid<PointOfInterest> grid;
@@ -159,7 +159,7 @@ public class PointsOfInterestView extends VVerticalLayout {
 		if (binder.writeBeanIfValid(searchCriteria)) {
 			// Call the suggestPointsOfInterest method and update the grid with the results
 
-			response = tripsAdvisorService
+			response = gptService
 					.suggestPointsOfInterest(searchCriteria.getCity(), searchCriteria.getBudget());
 
 			if (response.getError() != null) {

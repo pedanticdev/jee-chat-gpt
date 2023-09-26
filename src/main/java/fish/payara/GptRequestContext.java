@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Size;
 
 @Getter
 @Setter
-public class ImageGenerationRequest {
+public class GptRequestContext {
 	@NotEmpty
 	@Size(min = 3, max = 1000)
 	private String prompt;

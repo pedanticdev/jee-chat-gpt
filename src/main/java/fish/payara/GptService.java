@@ -9,6 +9,9 @@ import java.util.logging.Level;
 
 import javax.cache.Cache;
 
+import fish.payara.jpa.RecipeSuggestion;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
 import lombok.extern.java.Log;
 
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
@@ -25,12 +28,16 @@ import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @ApplicationScoped
 @Log
-public class TripsAdvisorService {
+public class GptService {
 
-	private static final String GPT_MODEL = "gpt-3.5-turbo";
+	@Inject
+	@ConfigProperty(name = "gpt.model")
+	private String gptModel;
+
 	private static final String SYSTEM_TASK_MESSAGE = """
 			You are an API server that responds in a JSON format.
 			Don't say anything else. Respond only with the JSON.
@@ -45,18 +52,57 @@ public class TripsAdvisorService {
 
 			Don't add anything else in the end after you respond with the JSON.
 			""";
+
+	private static final String RECIPE_SYSTEM_TASK_MESSAGE = """
+			You are an API server that responds in a JSON format.
+			Don't say anything else. Respond only with the JSON.
+
+			The structure of your response should be as follows
+
+			{
+			  "recipes": [
+			    {
+			      "recipeName": "",
+			      "comment": "",
+			      "ingredients": [],
+			      "cookingSteps": []
+
+			    }
+			  ]
+			}
+
+			A JSON object that has an array of "recipes"
+			Each recipe is an object with the following fields:
+			"recipeName" - Name of the recipe
+			"comment" - Any free-form comment you have about recipe. For eg where it originated from.
+			"ingredients" - An array of ingredients for the recipe. List each ingredient as a string in this array.
+			"cookingSteps" - An array of string, each string being a step in the recipe.
+
+			The user will provide you with a prompt of ingredients they have. Based on the given prompt containing one or more ingredients,
+			suggest recipes that can be prepared with the ingredients. Your response should fit in the above given JSON object.
+			The user may prompt you with just the ingredients or some other custom instruction.
+			Whatever the prompt is, look for ingredients and make your suggestions based on that and any other context you can understand from the prompt.
+
+			Remember you are an API server, you only respond in JSON.
+
+
+			Don't add anything else in the end after you respond with the JSON.
+			""";
 	@Inject
 	Cache<Integer, PointsOfInterestResponse> cache;
+
+	@Inject
+	Cache<Integer, RecipeSuggestion> recipeSuggestionCache;
 	@Inject
 	private OpenAiService openAiService;
 
-	public PointsOfInterestResponse suggestPointsOfInterest(String city, BigDecimal budget) {
+	public PointsOfInterestResponse suggestPointsOfInterest(final String city, final BigDecimal budget) {
 
 		int cacheKey = generateKey(city, budget);
 
-		if (cache.containsKey(cacheKey)) {
-			return cache.get(cacheKey);
-		}
+		 if (cache.containsKey(cacheKey)) {
+		 return cache.get(cacheKey);
+		 }
 		try {
 			String request = String.format(Locale.ENGLISH, "I want to visit %s and have a budget of %,.2f dollars",
 					city, budget);
@@ -76,7 +122,7 @@ public class TripsAdvisorService {
 		}
 	}
 
-	public String generateImage(final ImageGenerationRequest request) {
+	public String generateImage(final GptRequestContext request) {
 		CreateImageRequest imageRequest = CreateImageRequest.builder()
 				.n(request.getNumberOfImages())
 				.prompt(request.getPrompt())
@@ -96,11 +142,11 @@ public class TripsAdvisorService {
 
 	}
 
-	private String sendMessage(String message) {
+	private String sendMessage(final String message) {
 
 		ChatCompletionRequest chatCompletionRequest = ChatCompletionRequest
 				.builder()
-				.model(GPT_MODEL)
+				.model(gptModel)
 				.temperature(0.8)
 				.messages(
 						List.of(
@@ -113,11 +159,50 @@ public class TripsAdvisorService {
 
 		chatCompletion.getChoices().forEach(choice -> builder.append(choice.getMessage().getContent()));
 
+		RecipeSuggestion suggestion = requestRecipe("rice, chicken, garlic, lettuce");
+		System.out.println(JsonbBuilder.create().toJson(suggestion));
+
 		return builder.toString();
 	}
 
+	public RecipeSuggestion requestRecipe(final String recipe) {
+		RecipeSuggestion suggestion = null;
+		Integer cacheKey = generateKey(recipe, null);
+		if (recipeSuggestionCache.containsKey(cacheKey)) {
+			return recipeSuggestionCache.get(cacheKey);
+		}
+
+		try (final Jsonb jsonb = JsonbBuilder.newBuilder().build()) {
+			ChatCompletionRequest recipeRequest = ChatCompletionRequest
+					.builder()
+					.model(gptModel)
+					.temperature(0.8)
+					.messages(
+							List.of(
+									new ChatMessage("system", RECIPE_SYSTEM_TASK_MESSAGE),
+									new ChatMessage("user", recipe)))
+					.build();
+			StringBuilder recipeString = new StringBuilder();
+			ChatCompletionResult response = openAiService.createChatCompletion(recipeRequest);
+			response.getChoices().forEach(choice -> recipeString.append(choice.getMessage().getContent()));
+
+			log.log(Level.INFO, String.format("JSON response from GPT %s", recipeString));
+
+			suggestion = jsonb.fromJson(recipeString.toString(), RecipeSuggestion.class);
+			recipeSuggestionCache.put(cacheKey, suggestion);
+
+			return suggestion;
+		} catch (final Exception e) {
+			log.log(Level.SEVERE, "An error calling OpenAI", e);
+
+		}
+
+		return suggestion;
+
+	}
+
 	private List<PointOfInterest> generaPointsOfInterest(String json) {
-		try (JsonReader reader = Json.createReader(new StringReader(json))) {
+		try (final JsonReader reader = Json.createReader(new StringReader(json))) {
 
 			JsonObject jsonObjectResponse = reader.readObject();
 			JsonArray placesArray = jsonObjectResponse.getJsonArray("places");
@@ -140,7 +225,11 @@ public class TripsAdvisorService {
 		}
 	}
 
-	private Integer generateKey(final String city, final BigDecimal budget) {
-		return city.toUpperCase(Locale.ENGLISH).hashCode() + budget.hashCode();
+	private Integer generateKey(final String value, final BigDecimal budget) {
+		if (budget != null) {
+			return value.toUpperCase(Locale.ENGLISH).hashCode() + budget.hashCode();
+		}
+		return value.toUpperCase(Locale.ENGLISH).hashCode();
 	}
+
 }
