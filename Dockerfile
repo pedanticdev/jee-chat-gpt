@@ -1,4 +1,4 @@
-FROM payara/server-full:6.2023.8-jdk17
+FROM payara/server-full:6.2023.10-jdk17
 
 
 ENV PAYARA_ARGS --debug

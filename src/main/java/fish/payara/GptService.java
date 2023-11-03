@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
 
+import jakarta.annotation.Resource;
+import jakarta.enterprise.concurrent.ManagedExecutorService;
 import lombok.extern.java.Log;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
