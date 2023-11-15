@@ -12,8 +12,8 @@
 
     <properties>
 <!--        <maven.compiler.release>21</maven.compiler.release>-->
-        <maven.compiler.target>21</maven.compiler.target>
-        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
         <vaadin.version>24.1.10</vaadin.version>
         <selenium.version>4.8.1</selenium.version>
         <postgresql.version>42.5.4</postgresql.version>
@@ -125,7 +125,7 @@
         <dependency>
             <groupId>com.theokanning.openai-gpt3-java</groupId>
             <artifactId>service</artifactId>
-            <version>0.14.0</version>
+            <version>0.15.0</version>
         </dependency>
 
 
@@ -173,8 +173,8 @@
                             <version>${org.project-lombok.version}</version>
                         </path>
                     </annotationProcessorPaths>
-                    <source>17</source>
-                    <target>17</target>
+
+
 
                 </configuration>
             </plugin>

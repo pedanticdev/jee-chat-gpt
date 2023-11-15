@@ -15,7 +15,7 @@ import jakarta.inject.Singleton;
 public class OpenAIFactory {
 
 	@Inject
-	@ConfigProperty(name = "open.api.key")
+	@ConfigProperty(name = "OPEN_API_KEY")
 	private String apiKey;
 
 	@Inject
