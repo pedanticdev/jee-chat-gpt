@@ -35,7 +35,7 @@ class GptServiceTest {
 
      @Test
      void testSuggestPointsOfInterest_Cached() {
-         String city = "TestCity";
+         var city = "TestCity";
          BigDecimal budget = BigDecimal.valueOf(1000);
          int cacheKey = city.toUpperCase().hashCode() + budget.hashCode();
 
