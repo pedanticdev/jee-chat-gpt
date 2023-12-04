@@ -48,6 +48,7 @@ pipeline {
                         echo $DOCKERHUB_PASS | docker login -u $DOCKERHUB_USER --password-stdin
                         docker push $DOCKER_IMAGE
                     '''
+                    }
                 }
             }
         }
