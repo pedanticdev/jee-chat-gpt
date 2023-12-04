@@ -1,4 +1,4 @@
-name: Multi-Service Deployment To Payara Cloud
+name: Build and Push To Payara Cloud
 
 on:
   push:
