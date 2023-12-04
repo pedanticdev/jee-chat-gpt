@@ -3,6 +3,9 @@ FROM payara/server-full:6.2023.10-jdk17
 
 ENV PAYARA_ARGS --debug
 
+ARG OPEN_API_KEY
+ENV OPEN_API_KEY=${OPEN_API_KEY}
+
 COPY target/*.war ${DEPLOY_DIR}
 
 EXPOSE 8080
