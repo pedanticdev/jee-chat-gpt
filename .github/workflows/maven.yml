@@ -1,0 +1,40 @@
+name: Multi-Service Deployment To Payara Cloud
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build with Maven
+        run: mvn clean package -DskipTests
+
+      - name: Test with Maven
+        run: mvn test
+
+      - name: Download Payara Cloud CLI
+        if: success()
+        run: |
+          wget https://nexus.payara.fish/repository/payara-artifacts/fish/payara/cloud/pcl/1.1.0/pcl-1.1.0.jar -O pcl.jar
+          chmod +x pcl.jar
+
+      - name: Deploy to Payara Cloud
+        if: success()
+        env:
+          PCL_AUTH_TOKEN: ${{ secrets.PCL_AUTH_TOKEN }}
+        run: |
+          java -jar pcl.jar -n live-demo-dev upload -a jee-chatgpt target/*.war
