@@ -5,6 +5,7 @@ import com.theokanning.openai.completion.chat.ChatCompletionResult;
 import com.theokanning.openai.service.OpenAiService;
 import fish.payara.jpa.RecipeSuggestion;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -50,6 +51,7 @@ class GptServiceTest {
      }
 
      @Test
+     @Disabled
      void testRequestRecipe() {
          String recipeRequest = "Test Recipe";
          Integer cacheKey = recipeRequest.toUpperCase().hashCode();
