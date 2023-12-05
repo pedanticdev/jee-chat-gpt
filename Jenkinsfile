@@ -35,7 +35,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    def dockerImage = '$DOCKER_IMAGE'
+                    def dockerImage = '${env.DOCKER_IMAGE}'
                     sh "docker build -t ${dockerImage} ."
                 }
             }
@@ -46,7 +46,7 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'DockerHub', usernameVariable: 'DOCKERHUB_USER', passwordVariable: 'DOCKERHUB_PASS')]) {
                         sh '''
                         echo $DOCKERHUB_PASS | docker login -u $DOCKERHUB_USER --password-stdin
-                        docker push $DOCKER_IMAGE
+                        docker push ${env.DOCKER_IMAGE}
                     '''
                     }
                 }
