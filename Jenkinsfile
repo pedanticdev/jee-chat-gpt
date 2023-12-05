@@ -1,34 +1,41 @@
 final def MVN_OPTS = '-B -ntp'
 
 pipeline {
-    agent {label 'docker-agent'}
+    agent none
     environment {
         DOCKER_IMAGE = 'luqmanfish/jee-gpt-jenkins:0.1.1'
     }
     stages {
-        stage('Prepare') {
-            steps {
-                sh "./mvnw ${MVN_OPTS} --version"
+        stage('Maven Install') {
+            agent {
+                docker {
+                    image 'maven:3.9.6'
+                }
             }
-        }
-        stage('Build') {
-            steps {
-                sh "./mvnw ${MVN_OPTS} compile"
+            stage('Prepare') {
+                steps {
+                    sh "mvn ${MVN_OPTS} --version"
+                }
             }
-        }
-        stage('Unit Test') {
-            steps {
-                sh "./mvnw ${MVN_OPTS} test"
+            stage('Build') {
+                steps {
+                    sh "mvn ${MVN_OPTS} compile"
+                }
             }
-        }
-        stage('Integration Test') {
-            steps {
-                sh "./mvnw ${MVN_OPTS} integration-test"
+            stage('Unit Test') {
+                steps {
+                    sh "mvn ${MVN_OPTS} test"
+                }
             }
-        }
-        stage('Package') {
-            steps {
-                sh "./mvnw ${MVN_OPTS} clean package -Pproduction -DskipTests"
+            stage('Integration Test') {
+                steps {
+                    sh "mvn ${MVN_OPTS} integration-test"
+                }
+            }
+            stage('Package') {
+                steps {
+                    sh "mvn ${MVN_OPTS} clean package -Pproduction -DskipTests"
+                }
             }
         }
 
