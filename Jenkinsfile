@@ -1,7 +1,7 @@
 final def MVN_OPTS = '-B -ntp'
 
 pipeline {
-    agent any
+    agent {label 'docker-agent'}
     environment {
         DOCKER_IMAGE = 'luqmanfish/jee-gpt-jenkins:0.1.1'
     }
