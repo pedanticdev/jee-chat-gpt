@@ -35,7 +35,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    def dockerImage = '${env.DOCKER_IMAGE}'
+                    def dockerImage = "${env.DOCKER_IMAGE}"
                     sh "docker build -t ${dockerImage} ."
                 }
             }
