@@ -2,9 +2,9 @@ name: Build and Push To Payara Cloud
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "cloud-postgres" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "cloud-postgres" ]
 
 jobs:
   build:

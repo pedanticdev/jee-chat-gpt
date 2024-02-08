@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @NamedQuery(name = RecipeSuggestion.QUERY_NAME, query = "select r from RecipeSuggestion r where r.computedHashCode = :"
         + PointsOfInterestResponse.PARAM_NAME)
-@NamedQuery(name = RecipeSuggestion.QUERY_NAME, query = "select r from RecipeSuggestion r where r.computedHashCode in :"
+@NamedQuery(name = RecipeSuggestion.QUERY_NAME_ALL, query = "select r from RecipeSuggestion r where r.computedHashCode in :"
         + PointsOfInterestResponse.PARAM_NAME)
 public class RecipeSuggestion extends AbstractEntity {
     public static final String QUERY_NAME = "RecipeSuggestion.getByKey";

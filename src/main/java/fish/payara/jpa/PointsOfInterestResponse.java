@@ -14,7 +14,7 @@ import lombok.Setter;
 @Entity
 @NamedQuery(name = PointsOfInterestResponse.QUERY_NAME, query = "select p from PointsOfInterestResponse p where p.computedHashCode = :"
 		+ PointsOfInterestResponse.PARAM_NAME)
-@NamedQuery(name = RecipeSuggestion.QUERY_NAME, query = "select r from PointsOfInterestResponse r where r.computedHashCode in :"
+@NamedQuery(name = PointsOfInterestResponse.QUERY_NAME_ALL, query = "select r from PointsOfInterestResponse r where r.computedHashCode in :"
 		+ PointsOfInterestResponse.PARAM_NAME)
 public class PointsOfInterestResponse extends AbstractEntity {
 
