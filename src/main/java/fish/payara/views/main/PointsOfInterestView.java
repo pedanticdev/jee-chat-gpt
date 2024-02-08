@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import fish.payara.jpa.PointOfInterest;
+import fish.payara.jpa.PointsOfInterestResponse;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -3,6 +3,7 @@ package fish.payara;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatCompletionResult;
 import com.theokanning.openai.service.OpenAiService;
+import fish.payara.jpa.PointsOfInterestResponse;
 import fish.payara.jpa.RecipeSuggestion;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;

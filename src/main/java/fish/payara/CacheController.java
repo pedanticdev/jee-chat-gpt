@@ -3,6 +3,11 @@ package fish.payara;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+
 import javax.cache.Cache;
 import javax.cache.CacheManager;
 import javax.cache.Caching;
@@ -12,11 +17,8 @@ import javax.cache.expiry.Duration;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
+import fish.payara.jpa.PointsOfInterestResponse;
 import fish.payara.jpa.RecipeSuggestion;
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.PreDestroy;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 
 @ApplicationScoped
 public class CacheController {
@@ -40,10 +42,20 @@ public class CacheController {
 
 			MutableConfiguration<Integer, PointsOfInterestResponse> mutableConfig = new MutableConfiguration<>();
 			mutableConfig.setExpiryPolicyFactory(CreatedExpiryPolicy.factoryOf(Duration.FIVE_MINUTES));
+			mutableConfig.setReadThrough(true);
+			mutableConfig.setCacheLoaderFactory(PoiCacheLoaderFactoryImpl::new);
+			mutableConfig.setWriteThrough(true);
+			mutableConfig.setCacheWriterFactory(PoiCacheLoaderFactoryImpl::new);
+
 			pointsOfInterestCache = cacheManager.createCache("poiCache", mutableConfig);
 
 			MutableConfiguration<Integer, RecipeSuggestion> recipeCacheConfig = new MutableConfiguration<>();
 			recipeCacheConfig.setExpiryPolicyFactory(CreatedExpiryPolicy.factoryOf(Duration.FIVE_MINUTES));
+			recipeCacheConfig.setReadThrough(true);
+			recipeCacheConfig.setCacheLoaderFactory(RecipeCacheLoaderFactoryImpl::new);
+			recipeCacheConfig.setWriteThrough(true);
+			recipeCacheConfig.setCacheWriterFactory(RecipeCacheLoaderFactoryImpl::new);
+
 			recipeCache = cacheManager.createCache("recipeCache", recipeCacheConfig);
 
 		} else {
@@ -60,6 +72,8 @@ public class CacheController {
 	}
 
 	public void cachePoi(final Integer key, final PointsOfInterestResponse response) {
+		response.setComputedHashCode(key);
+
 		if (isCacheEnabled()) {
 			pointsOfInterestCache.put(key, response);
 		} else {
@@ -82,6 +96,7 @@ public class CacheController {
 	}
 
 	public void cacheRecipeSuggestion(final Integer key, final RecipeSuggestion recipeSuggestion) {
+		recipeSuggestion.setComputedHashCode(key);
 		if (isCacheEnabled()) {
 			recipeCache.put(key, recipeSuggestion);
 		} else {

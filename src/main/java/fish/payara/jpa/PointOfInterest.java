@@ -1,16 +1,17 @@
-package fish.payara;
+package fish.payara.jpa;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-
+import jakarta.persistence.Entity;
 import lombok.*;
+
+import java.math.BigDecimal;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PointOfInterest implements Serializable {
+@Entity
+public class PointOfInterest extends AbstractEntity {
 	private String name;
 	private String info;
 	private BigDecimal cost;

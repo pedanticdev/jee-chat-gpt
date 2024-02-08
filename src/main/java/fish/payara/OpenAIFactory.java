@@ -2,6 +2,8 @@ package fish.payara;
 
 import java.time.Duration;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import com.theokanning.openai.service.OpenAiService;
@@ -23,10 +25,15 @@ public class OpenAIFactory {
 	private int apiTimeout;
 
 	@Produces
+	@PersistenceContext
+	EntityManager entityManager;
+
+	@Produces
 	@Singleton
 	public OpenAiService produceService() {
 		return new OpenAiService(apiKey,
 				Duration.ofSeconds(apiTimeout));
 	}
+
 
 }

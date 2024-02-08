@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
 
-import jakarta.annotation.Resource;
-import jakarta.enterprise.concurrent.ManagedExecutorService;
+import fish.payara.jpa.PointOfInterest;
+import fish.payara.jpa.PointsOfInterestResponse;
 import lombok.extern.java.Log;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;

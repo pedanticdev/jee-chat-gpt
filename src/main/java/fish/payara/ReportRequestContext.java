@@ -2,6 +2,7 @@ package fish.payara;
 
 import java.io.OutputStream;
 
+import fish.payara.jpa.PointsOfInterestResponse;
 import lombok.Getter;
 import lombok.Setter;
 

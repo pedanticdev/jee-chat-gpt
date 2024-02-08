@@ -3,6 +3,7 @@ package fish.payara;
 import java.io.InputStream;
 import java.util.logging.Level;
 
+import fish.payara.jpa.PointOfInterest;
 import lombok.extern.java.Log;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
