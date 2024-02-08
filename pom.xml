@@ -3,7 +3,6 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <!-- Project from https://start.vaadin.com/ -->
     <groupId>fish.payara</groupId>
     <artifactId>budget-journey-gpt</artifactId>
     <name>BudgetJourney</name>
@@ -12,8 +11,8 @@
 
     <properties>
 <!--        <maven.compiler.release>21</maven.compiler.release>-->
-        <maven.compiler.target>17</maven.compiler.target>
-        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
         <vaadin.version>24.1.10</vaadin.version>
         <selenium.version>4.8.1</selenium.version>
         <postgresql.version>42.5.4</postgresql.version>
