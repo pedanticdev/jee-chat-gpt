@@ -37,4 +37,4 @@ jobs:
         env:
           PCL_AUTH_TOKEN: ${{ secrets.PCL_AUTH_TOKEN }}
         run: |
-          java -jar pcl.jar -n live-demo-dev upload -a jee-chatgpt target/*.war
+          java -jar pcl.jar -n live-demo-dev upload -a jee-gpt-jdk21 target/*.war
