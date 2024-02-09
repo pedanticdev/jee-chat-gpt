@@ -152,7 +152,7 @@ public class GptService {
 								new ChatMessage("user", message)))
 				.build();
 		StringBuilder builder = new StringBuilder();
-		log.log(Level.ALL, "Calling open AI service with the query " + chatCompletionRequest.toString());
+		log.log(Level.INFO, "Calling open AI service with the query " + chatCompletionRequest.toString());
 		ChatCompletionResult chatCompletion = openAiService.createChatCompletion(chatCompletionRequest);
 
 		chatCompletion.getChoices().forEach(choice -> builder.append(choice.getMessage().getContent()));
