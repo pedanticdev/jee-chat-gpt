@@ -18,6 +18,8 @@ public class RecipeSuggestion extends AbstractEntity {
     public static final String QUERY_NAME = "RecipeSuggestion.getByKey";
     public static final String QUERY_NAME_ALL = "RecipeSuggestion.getAllByKey";
 
+    private String recipePrompt;
+
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Recipe> recipes = new ArrayList<>();
 }

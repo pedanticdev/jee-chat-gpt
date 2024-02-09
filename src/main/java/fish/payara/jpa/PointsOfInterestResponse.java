@@ -27,6 +27,7 @@ public class PointsOfInterestResponse extends AbstractEntity {
 	private List<PointOfInterest> pointsOfInterest = new ArrayList<>();
 
 	private String totalCostOfTrip;
+	private String cityName;
 
 	private String error;
 

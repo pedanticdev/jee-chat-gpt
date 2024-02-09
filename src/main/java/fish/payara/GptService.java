@@ -106,6 +106,7 @@ public class GptService {
 			List<PointOfInterest> poiList = generaPointsOfInterest(poi);
 			PointsOfInterestResponse response = new PointsOfInterestResponse();
 			response.setPointsOfInterest(poiList);
+			response.setCityName(city.toUpperCase(Locale.ENGLISH));
 			cacheController.cachePoi(cacheKey, response);
 			return response;
 		} catch (Exception e) {
@@ -183,6 +184,7 @@ public class GptService {
 			log.log(Level.INFO, String.format("JSON response from GPT %s", recipeString));
 
 			suggestion = jsonb.fromJson(recipeString.toString(), RecipeSuggestion.class);
+			suggestion.setRecipePrompt(recipe.toUpperCase(Locale.ENGLISH));
 			cacheController.cacheRecipeSuggestion(cacheKey, suggestion);
 
 			return suggestion;
