@@ -5,6 +5,7 @@ import fish.payara.jpa.RecipeSuggestion;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 
 import javax.cache.Cache;
 import javax.cache.integration.CacheLoader;
@@ -42,12 +43,14 @@ public class PoiCacheLoaderFactoryImpl implements CacheLoader<Integer, PointsOfI
     }
 
     @Override
+    @Transactional
     public void write(Cache.Entry<? extends Integer, ? extends PointsOfInterestResponse> entry) throws CacheWriterException {
         entityManager.persist(entry);
 
     }
 
     @Override
+    @Transactional
     public void writeAll(Collection<Cache.Entry<? extends Integer, ? extends PointsOfInterestResponse>> entries) throws CacheWriterException {
         entries.forEach(e -> {
             PointsOfInterestResponse value = e.getValue();

@@ -27,6 +27,9 @@ public class CacheController {
 	@ConfigProperty(name = "cache.enabled", defaultValue = "false")
 	private Boolean cacheEnabled;
 
+	@Inject
+	private DBService dbService;
+
 	private Cache<Integer, PointsOfInterestResponse> pointsOfInterestCache;
 	private Cache<Integer, RecipeSuggestion> recipeCache;
 	private Map<Integer, PointsOfInterestResponse> pointsOfInterestCacheMap;
@@ -68,16 +71,23 @@ public class CacheController {
 		if (isCacheEnabled()) {
 			return pointsOfInterestCache.get(key);
 		}
-		return pointsOfInterestCacheMap.get(key);
+		if (pointsOfInterestCacheMap.containsKey(key)) {
+			return pointsOfInterestCacheMap.get(key);
+		}
+		PointsOfInterestResponse pointsOfInterestResponse = dbService.loadPoi(key);
+		if (pointsOfInterestResponse != null) {
+			pointsOfInterestCacheMap.put(key, pointsOfInterestResponse);
+		}
+		return pointsOfInterestResponse;
 	}
 
-	public void cachePoi(final Integer key, final PointsOfInterestResponse response) {
+	public void cachePoi(final Integer key, PointsOfInterestResponse response) {
 		response.setComputedHashCode(key);
 
 		if (isCacheEnabled()) {
 			pointsOfInterestCache.put(key, response);
 		} else {
-			pointsOfInterestCacheMap.put(key, response);
+			pointsOfInterestCacheMap.put(key, dbService.savePoi(response));
 		}
 	}
 
@@ -85,14 +95,18 @@ public class CacheController {
 		if (isCacheEnabled()) {
 			return pointsOfInterestCache.containsKey(key);
 		}
-		return pointsOfInterestCacheMap.containsKey(key);
+		return dbService.loadPoi(key) != null;
 	}
 
 	public RecipeSuggestion getCachedRecipeSuggestion(final Integer key) {
 		if (isCacheEnabled()) {
 			return recipeCache.get(key);
 		}
-		return recipeSuggestionMap.get(key);
+		RecipeSuggestion recipeSuggestion = dbService.loadRecipe(key);
+		if (recipeSuggestion != null) {
+			recipeSuggestionMap.put(key, recipeSuggestion);
+		}
+		return recipeSuggestion;
 	}
 
 	public void cacheRecipeSuggestion(final Integer key, final RecipeSuggestion recipeSuggestion) {
@@ -100,7 +114,7 @@ public class CacheController {
 		if (isCacheEnabled()) {
 			recipeCache.put(key, recipeSuggestion);
 		} else {
-			recipeSuggestionMap.put(key, recipeSuggestion);
+			recipeSuggestionMap.put(key, dbService.saveRecipe(recipeSuggestion));
 		}
 	}
 
@@ -108,8 +122,9 @@ public class CacheController {
 		if (isCacheEnabled()) {
 			return recipeCache.containsKey(key);
 		} else {
-			return recipeSuggestionMap.containsKey(key);
+			return dbService.loadRecipe(key) != null;
 		}
+
 	}
 
 	@PreDestroy

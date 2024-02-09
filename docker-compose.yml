@@ -1,7 +1,7 @@
 version: '3.9'
 services:
   app:
-    image: fish.payara/jakarta-gpt
+    image: fish.payara/jakarta-gpt-21
     environment:
       OPEN_API_KEY: ${OPEN_API_KEY}
     volumes:

@@ -39,7 +39,7 @@ import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 
 @PageTitle("Trip On Budget With ChatGPT")
-@Route(value = "budget-journey", layout = ParentAppLayout.class)
+@Route(value = "poi", layout = ParentAppLayout.class)
 public class PointsOfInterestView extends VVerticalLayout {
 
 	private static final Map<String, Locale> currencies = new HashMap<>();

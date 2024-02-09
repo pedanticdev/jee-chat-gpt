@@ -2,18 +2,31 @@ package fish.payara;
 
 import java.time.Duration;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
-
-import com.theokanning.openai.service.OpenAiService;
-
+import jakarta.annotation.sql.DataSourceDefinition;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
 import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.inject.Singleton;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+
+import com.theokanning.openai.service.OpenAiService;
+
+import lombok.Getter;
+
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @ApplicationScoped
+@DataSourceDefinition(name = "java:app/cloud-postgres",
+		className = "org.postgresql.ds.PGSimpleDataSource",
+		url = "jdbc:postgresql://ep-cold-bird-a2rlh7zi.eu-central-1.aws.neon.tech/p-cloud?sslmode=require",
+		databaseName = "p-cloud",
+		serverName = "ep-cold-bird-a2rlh7zi.eu-central-1.aws.neon.tech",
+		user = "sinaisix",
+		password = "uUDEst3Oxlk6")
+@Named
+@Getter
 public class OpenAIFactory {
 
 	@Inject
@@ -23,6 +36,10 @@ public class OpenAIFactory {
 	@Inject
 	@ConfigProperty(name = "openai.timeout")
 	private int apiTimeout;
+
+	@Inject
+	@ConfigProperty(name = "db.url")
+	private String dbUrl;
 
 	@Produces
 	@PersistenceContext
@@ -34,6 +51,5 @@ public class OpenAIFactory {
 		return new OpenAiService(apiKey,
 				Duration.ofSeconds(apiTimeout));
 	}
-
 
 }

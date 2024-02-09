@@ -18,6 +18,7 @@ import javax.cache.integration.CacheWriterException;
 
 import fish.payara.jpa.PointsOfInterestResponse;
 import fish.payara.jpa.RecipeSuggestion;
+import jakarta.transaction.Transactional;
 
 @ApplicationScoped
 public class RecipeCacheLoaderFactoryImpl
@@ -44,11 +45,13 @@ public class RecipeCacheLoaderFactoryImpl
 	}
 
 	@Override
+	@Transactional
 	public void write(Cache.Entry<? extends Integer, ? extends RecipeSuggestion> entry) throws CacheWriterException {
 		entityManager.persist(entry);
 	}
 
 	@Override
+	@Transactional
 	public void writeAll(Collection<Cache.Entry<? extends Integer, ? extends RecipeSuggestion>> entries)
 			throws CacheWriterException {
 		entries.forEach(e -> {
