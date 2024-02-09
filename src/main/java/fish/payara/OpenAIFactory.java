@@ -18,7 +18,13 @@ import lombok.Getter;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @ApplicationScoped
-@DataSourceDefinition(name = "java:app/cloud-postgres", className = "org.postgresql.ds.PGSimpleDataSource", url = "${MPCONFIG=db.url}", databaseName = "${MPCONFIG=db.name}", serverName = "${MPCONFIG=db.server}", user = "${MPCONFIG=db.user}", password = "${MPCONFIG=db.password}")
+@DataSourceDefinition(name = "java:app/cloud-postgres",
+		className = "org.postgresql.ds.PGSimpleDataSource",
+		url = "${MPCONFIG=db.url}",
+		databaseName = "${MPCONFIG=db.name}",
+		serverName = "${MPCONFIG=db.server}",
+		user = "${MPCONFIG=db.user}",
+		password = "${MPCONFIG=db.password}")
 @Named
 @Getter
 public class OpenAIFactory {
