@@ -41,6 +41,25 @@ public class OpenAIFactory {
 	@ConfigProperty(name = "db.url")
 	private String dbUrl;
 
+	@Inject
+	@ConfigProperty(name = "db.name")
+	private String dbName;
+
+	@Inject
+	@ConfigProperty(name = "db.server")
+	private String dbServer;
+
+	@Inject
+	@ConfigProperty(name = "db.user")
+	private String dbUser;
+
+	@Inject
+	@ConfigProperty(name = "db.password")
+	private String dbPassword;
+
+
+
+
 	@Produces
 	@PersistenceContext
 	EntityManager entityManager;
