@@ -1,13 +1,13 @@
 package fish.payara.views.main;
 
+import jakarta.annotation.PostConstruct;
+
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-
-import jakarta.annotation.PostConstruct;
 
 @PageTitle("Jakarta GPT Home")
 @Route(value = "", layout = ParentAppLayout.class)

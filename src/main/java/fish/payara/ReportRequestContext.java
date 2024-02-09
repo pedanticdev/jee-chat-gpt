@@ -2,10 +2,10 @@ package fish.payara;
 
 import java.io.OutputStream;
 
-import fish.payara.jpa.PointsOfInterestResponse;
 import lombok.Getter;
 import lombok.Setter;
 
+import fish.payara.jpa.PointsOfInterestResponse;
 import fish.payara.views.main.PointsOfInterestView;
 
 @Getter

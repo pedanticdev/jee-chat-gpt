@@ -10,7 +10,7 @@
     <packaging>war</packaging>
 
     <properties>
-<!--        <maven.compiler.release>21</maven.compiler.release>-->
+        <!--        <maven.compiler.release>21</maven.compiler.release>-->
         <maven.compiler.target>21</maven.compiler.target>
         <maven.compiler.source>21</maven.compiler.source>
         <vaadin.version>24.1.10</vaadin.version>
@@ -192,7 +192,6 @@
                             <version>${org.project-lombok.version}</version>
                         </path>
                     </annotationProcessorPaths>
-
 
 
                 </configuration>

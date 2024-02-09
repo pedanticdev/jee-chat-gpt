@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 
 import javax.cache.Cache;
 import javax.cache.integration.CacheLoader;
@@ -18,7 +19,6 @@ import javax.cache.integration.CacheWriterException;
 
 import fish.payara.jpa.PointsOfInterestResponse;
 import fish.payara.jpa.RecipeSuggestion;
-import jakarta.transaction.Transactional;
 
 @ApplicationScoped
 public class RecipeCacheLoaderFactoryImpl

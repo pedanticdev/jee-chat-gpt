@@ -1,9 +1,10 @@
 package fish.payara.jpa;
 
-import jakarta.persistence.Entity;
-import lombok.*;
-
 import java.math.BigDecimal;
+
+import jakarta.persistence.Entity;
+
+import lombok.*;
 
 @Getter
 @Setter

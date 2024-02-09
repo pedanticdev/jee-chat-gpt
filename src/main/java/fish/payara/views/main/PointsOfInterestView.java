@@ -8,15 +8,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import fish.payara.jpa.PointOfInterest;
-import fish.payara.jpa.PointsOfInterestResponse;
-import lombok.Getter;
-import lombok.Setter;
-
-import org.vaadin.firitin.components.DynamicFileDownloader;
-import org.vaadin.firitin.components.button.VButton;
-import org.vaadin.firitin.components.orderedlayout.VVerticalLayout;
-import org.vaadin.firitin.components.textfield.VNumberField;
+import jakarta.annotation.PostConstruct;
+import jakarta.inject.Inject;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasValue;
@@ -34,9 +27,19 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-import fish.payara.*;
-import jakarta.annotation.PostConstruct;
-import jakarta.inject.Inject;
+import lombok.Getter;
+import lombok.Setter;
+
+import org.vaadin.firitin.components.DynamicFileDownloader;
+import org.vaadin.firitin.components.button.VButton;
+import org.vaadin.firitin.components.orderedlayout.VVerticalLayout;
+import org.vaadin.firitin.components.textfield.VNumberField;
+
+import fish.payara.GptService;
+import fish.payara.ReportRequestContext;
+import fish.payara.ReportService;
+import fish.payara.jpa.PointOfInterest;
+import fish.payara.jpa.PointsOfInterestResponse;
 
 @PageTitle("Trip On Budget With ChatGPT")
 @Route(value = "poi", layout = ParentAppLayout.class)

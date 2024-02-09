@@ -2,7 +2,7 @@ name: Build and Push To Payara Cloud
 
 on:
   push:
-    branches: ["main", "cloud-postgres" ]
+    branches: [ "main", "cloud-postgres" ]
   pull_request:
     branches: [ "main" ]
 
@@ -21,7 +21,7 @@ jobs:
           cache: maven
 
       - name: Build with Maven
-        run:  mvn clean package -Pproduction  -DskipTests
+        run: mvn clean package -Pproduction  -DskipTests
 
       - name: Test with Maven
         run: mvn test

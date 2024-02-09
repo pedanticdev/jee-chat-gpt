@@ -3,11 +3,14 @@ package fish.payara;
 import java.io.InputStream;
 import java.util.logging.Level;
 
-import fish.payara.jpa.PointOfInterest;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+
 import lombok.extern.java.Log;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
+import fish.payara.jpa.PointOfInterest;
 import fr.opensagres.xdocreport.converter.ConverterTypeTo;
 import fr.opensagres.xdocreport.converter.ConverterTypeVia;
 import fr.opensagres.xdocreport.converter.Options;
@@ -16,8 +19,6 @@ import fr.opensagres.xdocreport.document.registry.XDocReportRegistry;
 import fr.opensagres.xdocreport.template.IContext;
 import fr.opensagres.xdocreport.template.TemplateEngineKind;
 import fr.opensagres.xdocreport.template.formatter.FieldsMetadata;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 
 @ApplicationScoped
 @Log

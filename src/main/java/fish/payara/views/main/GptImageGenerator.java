@@ -1,7 +1,7 @@
 package fish.payara.views.main;
 
-import org.vaadin.firitin.components.button.VButton;
-import org.vaadin.firitin.components.orderedlayout.VVerticalLayout;
+import jakarta.annotation.PostConstruct;
+import jakarta.inject.Inject;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
@@ -15,10 +15,11 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
+import org.vaadin.firitin.components.button.VButton;
+import org.vaadin.firitin.components.orderedlayout.VVerticalLayout;
+
 import fish.payara.GptRequestContext;
 import fish.payara.GptService;
-import jakarta.annotation.PostConstruct;
-import jakarta.inject.Inject;
 
 @PageTitle("Generate Images With ChatGPT")
 @Route(value = "image-gen", layout = ParentAppLayout.class)

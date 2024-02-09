@@ -1,5 +1,7 @@
 package fish.payara.views.main;
 
+import jakarta.annotation.PostConstruct;
+
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -14,8 +16,6 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.theme.lumo.Lumo;
 import com.vaadin.flow.theme.lumo.LumoUtility;
-
-import jakarta.annotation.PostConstruct;
 
 public class ParentAppLayout extends AppLayout {
 

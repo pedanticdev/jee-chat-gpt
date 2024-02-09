@@ -1,12 +1,12 @@
 package fish.payara.views.main;
 
-import lombok.experimental.UtilityClass;
-
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+
+import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ComponentUtil {

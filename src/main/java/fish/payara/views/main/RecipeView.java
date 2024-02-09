@@ -1,8 +1,7 @@
 package fish.payara.views.main;
 
-import org.apache.commons.lang3.text.WordUtils;
-import org.vaadin.firitin.components.button.VButton;
-import org.vaadin.firitin.components.orderedlayout.VVerticalLayout;
+import jakarta.annotation.PostConstruct;
+import jakarta.inject.Inject;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.accordion.Accordion;
@@ -20,11 +19,13 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
+import org.apache.commons.lang3.text.WordUtils;
+import org.vaadin.firitin.components.button.VButton;
+import org.vaadin.firitin.components.orderedlayout.VVerticalLayout;
+
 import fish.payara.GptRequestContext;
 import fish.payara.GptService;
 import fish.payara.jpa.RecipeSuggestion;
-import jakarta.annotation.PostConstruct;
-import jakarta.inject.Inject;
 
 @PageTitle("Get Recipe Suggestions From ChatGPT")
 @Route(value = "recipe-suggestions", layout = ParentAppLayout.class)
