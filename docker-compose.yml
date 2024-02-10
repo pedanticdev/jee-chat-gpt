@@ -4,6 +4,11 @@ services:
     image: fish.payara/jakarta-gpt-21
     environment:
       OPEN_API_KEY: ${OPEN_API_KEY}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_SERVER: ${DB_SERVER}
+      DB_USER: ${DB_USER}
+      DB_NAME: ${DB_NAME}
+      DB_URL: ${DB_URL}
     volumes:
       - ./deployments:/opt/payara/appserver/glassfish/domains/domain1/autodeploy
     ports:

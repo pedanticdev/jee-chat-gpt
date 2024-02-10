@@ -20,11 +20,11 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 @ApplicationScoped
 @DataSourceDefinition(name = "java:app/cloud-postgres",
 		className = "org.postgresql.ds.PGSimpleDataSource",
-		url = "${MPCONFIG=db.url}",
-		databaseName = "${MPCONFIG=db.name}",
-		serverName = "${MPCONFIG=db.server}",
-		user = "${MPCONFIG=db.user}",
-		password = "${MPCONFIG=db.password}")
+		url = "${MPCONFIG=DB_URL}",
+		databaseName = "${MPCONFIG=DB_NAME}",
+		serverName = "${MPCONFIG=DB_SERVER}",
+		user = "${MPCONFIG=DB_USER}",
+		password = "${MPCONFIG=DB_PASSWORD}")
 @Named
 @Getter
 public class OpenAIFactory {
