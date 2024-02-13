@@ -6,14 +6,11 @@ import jakarta.annotation.sql.DataSourceDefinition;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
 import com.theokanning.openai.service.OpenAiService;
-
-import lombok.Getter;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
@@ -25,8 +22,6 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 		serverName = "${MPCONFIG=DB_SERVER}",
 		user = "${MPCONFIG=DB_USER}",
 		password = "${MPCONFIG=DB_PASSWORD}")
-@Named
-@Getter
 public class OpenAIFactory {
 
 	@Produces
