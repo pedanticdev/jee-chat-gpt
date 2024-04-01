@@ -5,7 +5,7 @@
              version="3.0">
     <persistence-unit name="pcloud" transaction-type="JTA">
 
-        <jta-data-source>java:app/cloud-postgres</jta-data-source>
+        <jta-data-source>java:comp/DefaultDataSource</jta-data-source>
 
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>

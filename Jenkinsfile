@@ -28,7 +28,7 @@ pipeline {
         }
         stage('Package') {
             steps {
-                sh "./mvnw ${MVN_OPTS} clean package -Pproduction -DskipTests"
+                sh "./mvnw ${MVN_OPTS} clean package -DskipTests"
             }
         }
 

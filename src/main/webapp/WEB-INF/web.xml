@@ -6,7 +6,7 @@
         version="6.0">
 
     <welcome-file-list>
-        <welcome-file>landing.html</welcome-file>
+        <welcome-file>index.html</welcome-file>
     </welcome-file-list>
 
     <context-param>
@@ -39,10 +39,6 @@
         <param-value>true</param-value>
     </context-param>
 
-    <welcome-file-list>
-        <welcome-file>dashboard.xhtml</welcome-file>
-    </welcome-file-list>
-
     <context-param>
         <param-name>primefaces.THEME</param-name>
         <param-value>avalon-#{guestPreferences.theme}</param-value>
@@ -54,7 +50,7 @@
    
     <filter>
         <filter-name>Character Encoding Filter</filter-name>
-        <filter-class>org.primefaces.avalon.filter.CharacterEncodingFilter</filter-class>
+        <filter-class>fish.payara.views.main.CharacterEncodingFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>Character Encoding Filter</filter-name>
@@ -72,6 +68,10 @@
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
+    <context-param>
+        <param-name>org.omnifaces.FACES_VIEWS_SCAN_PATHS</param-name>
+        <param-value>/*.xhtml</param-value>
+    </context-param>
     <mime-mapping>
         <extension>ttf</extension>
         <mime-type>application/font-sfnt</mime-type>

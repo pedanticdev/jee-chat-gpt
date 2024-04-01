@@ -1,24 +1,23 @@
-<?xml version="1.0" encoding="utf-8"?>
-<faces-config version="2.0" xmlns="http://java.sun.com/xml/ns/javaee"
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="https://jakarta.ee/xml/ns/jakartaee"
+        xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-facesconfig_4_0.xsd"
+        version="4.0">
     
-    <name>gpt_journey</name>
+    <name>primefaces_avalon</name>
     
     <component>
         <component-type>org.primefaces.component.AvalonMenu</component-type>
-        <component-class>org.primefaces.avalon.component.AvalonMenu</component-class>
+        <component-class>fish.payara.views.main.component.AvalonMenu</component-class>
     </component>
     
     <render-kit>
         <renderer>
             <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.AvalonMenuRenderer</renderer-type>
-            <renderer-class>org.primefaces.avalon.component.AvalonMenuRenderer</renderer-class>
+            <renderer-class>fish.payara.views.main.component.AvalonMenuRenderer</renderer-class>
         </renderer>
     </render-kit>
-    <factory>
-        <exception-handler-factory>org.omnifaces.exceptionhandler.ViewExpiredExceptionHandlerFactory
-        </exception-handler-factory>
-    </factory>
+    
 </faces-config>

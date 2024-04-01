@@ -1,7 +1,7 @@
 version: '3.9'
 services:
   app:
-    image: fish.payara/jakarta-gpt-21
+
     environment:
       OPEN_API_KEY: ${OPEN_API_KEY}
       DB_PASSWORD: ${DB_PASSWORD}
@@ -21,3 +21,4 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: fish.payara/jee-gpt:${APP_IMAGE_TAG:-latest}
