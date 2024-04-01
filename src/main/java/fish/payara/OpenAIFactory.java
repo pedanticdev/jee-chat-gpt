@@ -22,7 +22,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 		serverName = "${MPCONFIG=DB_SERVER}",
 		user = "${MPCONFIG=DB_USER}",
 		password = "${MPCONFIG=DB_PASSWORD}",
-		properties = {"target_session_attrs=read-write"})
+		properties = {"targetServerType=primary"})
 public class OpenAIFactory {
 
 	@Produces
