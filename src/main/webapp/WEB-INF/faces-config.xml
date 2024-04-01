@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<faces-config version="2.0" xmlns="http://java.sun.com/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+    
+    <name>gpt_journey</name>
+    
+    <component>
+        <component-type>org.primefaces.component.AvalonMenu</component-type>
+        <component-class>org.primefaces.avalon.component.AvalonMenu</component-class>
+    </component>
+    
+    <render-kit>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.AvalonMenuRenderer</renderer-type>
+            <renderer-class>org.primefaces.avalon.component.AvalonMenuRenderer</renderer-class>
+        </renderer>
+    </render-kit>
+    <factory>
+        <exception-handler-factory>org.omnifaces.exceptionhandler.ViewExpiredExceptionHandlerFactory
+        </exception-handler-factory>
+    </factory>
+</faces-config>

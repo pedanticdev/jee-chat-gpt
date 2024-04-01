@@ -1,0 +1,503 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">Dashboard</ui:define>
+
+    <ui:define name="content">
+        <div class="dashboard grid">
+            <div class="col-12 md:col-6 lg:col-3">
+                <div class="widget-overview overview-box-1">
+                    <div class="overview-box-title">
+                        <i class="pi pi-inbox"/>
+                        <span>Unread Messages</span>
+                    </div>
+                    <div class="overview-box-count">150</div>
+                    <div class="overview-box-stats">12 less than yesterday</div>
+                </div>
+            </div>
+            <div class="col-12 md:col-6 lg:col-3">
+                <div class="widget-overview overview-box-2">
+                    <div class="overview-box-title">
+                        <i class="pi pi-map-marker"/>
+                        <span>Check-ins</span>
+                    </div>
+                    <div class="overview-box-count">532</div>
+                    <div class="overview-box-stats">46 more than yesterday</div>
+                </div>
+            </div>
+            <div class="col-12 md:col-6 lg:col-3">
+                <div class="widget-overview overview-box-3">
+                    <div class="overview-box-title">
+                        <i class="pi pi-folder"/>
+                        <span>Files</span>
+                    </div>
+                    <div class="overview-box-count">450</div>
+                    <div class="overview-box-stats">30 more than yesterday</div>
+                </div>
+            </div>
+            <div class="col-12 md:col-6 lg:col-3">
+                <div class="widget-overview overview-box-4">
+                    <div class="overview-box-title">
+                        <i class="pi pi-user"/>
+                        <span>Users</span>
+                    </div>
+                    <div class="overview-box-count">532</div>
+                    <div class="overview-box-stats">250 more than yesterday</div>
+                </div>
+            </div>
+
+            <div class="col-12 lg:col-6">
+                <div class="card widget-sale-table">
+                    <h5>Global Sales</h5>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th>Total Sales</th>
+                            <th>Change</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td><p:graphicImage name="images/dashboard/flag-brazil.png" library="avalon-layout"
+                                                width="45"/></td>
+                            <td>BRAZIL</td>
+                            <td>4234</td>
+                            <td>+35%</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><p:graphicImage name="images/dashboard/flag-china.png" library="avalon-layout"
+                                                width="45"/></td>
+                            <td>CHINA</td>
+                            <td>3214</td>
+                            <td>-25%</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td><p:graphicImage name="images/dashboard/flag-belgium.png" library="avalon-layout"
+                                                width="45"/></td>
+                            <td>BELGIUM</td>
+                            <td>2842</td>
+                            <td>+28%</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td><p:graphicImage name="images/dashboard/flag-france.png" library="avalon-layout"
+                                                width="45"/></td>
+                            <td>FRANCE</td>
+                            <td>1942</td>
+                            <td>+15%</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-12 lg:col-6">
+                <div class="card widget-statistics">
+                    <h5>Product Statistics</h5>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td class="col-overview col-wait">
+                                <div>W</div>
+                            </td>
+                            <td class="col-status">
+                                <span class="status-time">Last Update: 12m ago</span>
+                                <span class="status-text">Currently Waiting</span>
+                            </td>
+                            <td class="col-numbers">
+                                <div>253 <span>Shipments</span></div>
+                                <div>584 <span>Orders</span></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-overview col-success">
+                                <div>S</div>
+                            </td>
+                            <td class="col-status">
+                                <span class="status-time">Last Update: 12m ago</span>
+                                <span class="status-text">Successfully Completed</span>
+                            </td>
+                            <td class="col-numbers">
+                                <div>312 <span>Shipments</span></div>
+                                <div>409 <span>Orders</span></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-overview col-delay">
+                                <div>D</div>
+                            </td>
+                            <td class="col-status">
+                                <span class="status-time">Last Update: 6m ago</span>
+                                <span class="status-text">Delayed</span>
+                            </td>
+                            <td class="col-numbers">
+                                <div>122 <span>Shipments</span></div>
+                                <div>341 <span>Orders</span></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-overview col-preorder">
+                                <div>P</div>
+                            </td>
+                            <td class="col-status">
+                                <span class="status-time">Last Update: 15m ago</span>
+                                <span class="status-text">Preordered</span>
+                            </td>
+                            <td class="col-numbers">
+                                <div>221 <span>Shipments</span></div>
+                                <div>332 <span>Orders</span></div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-12 lg:col-4">
+                <div class="widget-graph">
+                    <div class="grid">
+                        <div class="col-4">
+                            <span class="graph-title">Logins</span>
+                            <span class="graph-value">52003</span>
+                            <span class="graph-change">+32</span>
+                        </div>
+                        <div class="col-8">
+                            <p:graphicImage name="images/dashboard/graph-1.svg" library="avalon-layout"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 lg:col-4">
+                <div class="widget-graph">
+                    <div class="grid">
+                        <div class="col-4">
+                            <span class="graph-title">Views</span>
+                            <span class="graph-value">532</span>
+                            <span class="graph-change">+24792</span>
+                        </div>
+                        <div class="col-8">
+                            <p:graphicImage name="images/dashboard/graph-2.svg" library="avalon-layout"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 lg:col-4">
+                <div class="widget-graph">
+                    <div class="grid">
+                        <div class="col-4">
+                            <span class="graph-title">Sales</span>
+                            <span class="graph-value">$5521</span>
+                            <span class="graph-change">+243</span>
+                        </div>
+                        <div class="col-8">
+                            <p:graphicImage name="images/dashboard/graph-3.svg" library="avalon-layout"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 md:col-6 lg:col-4">
+                <div class="card widget-task-list">
+                    <h5>Tasks</h5>
+                    <ul>
+                        <li>
+                            <p:selectBooleanCheckbox/>
+                            <span class="task-name">Sales Reports</span>
+                            <i class="pi pi-briefcase"/>
+                        </li>
+                        <li>
+                            <p:selectBooleanCheckbox/>
+                            <span class="task-name">Pay Invoices</span>
+                            <i class="pi pi-money-bill"/>
+                        </li>
+                        <li>
+                            <p:selectBooleanCheckbox/>
+                            <span class="task-name">Dinner with Tony</span>
+                            <i class="pi pi-comments"/>
+                        </li>
+                        <li>
+                            <p:selectBooleanCheckbox/>
+                            <span class="task-name">Client Meeting</span>
+                            <i class="pi pi-user"/>
+                        </li>
+                        <li>
+                            <p:selectBooleanCheckbox/>
+                            <span class="task-name">New Theme</span>
+                            <i class="pi pi-palette"/>
+                        </li>
+                        <li>
+                            <p:selectBooleanCheckbox/>
+                            <span class="task-name">Flight Ticket</span>
+                            <i class="pi pi-ticket"/>
+                        </li>
+                        <li>
+                            <p:selectBooleanCheckbox/>
+                            <span class="task-name">Generate Charts</span>
+                            <i class="pi pi-chart-bar"/>
+                        </li>
+                        <li>
+                            <p:selectBooleanCheckbox/>
+                            <span class="task-name">Call Client</span>
+                            <i class="pi pi-mobile"/>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-12 md:col-6 lg:col-4">
+                <div class="card ui-fluid widget-contact-form">
+                    <h5>Contact Us</h5>
+                    <div class="col-12">
+                        <p:selectOneMenu id="selectCity" autoWidth="false">
+                            <f:selectItem itemLabel="Select City" itemValue=""/>
+                            <f:selectItem itemLabel="New York" itemValue="New York"/>
+                            <f:selectItem itemLabel="Rome" itemValue="Rome"/>
+                            <f:selectItem itemLabel="London" itemValue="London"/>
+                            <f:selectItem itemLabel="Istanbul" itemValue="Istanbul"/>
+                            <f:selectItem itemLabel="Paris" itemValue="Paris"/>
+                        </p:selectOneMenu>
+                    </div>
+                    <div class="col-12">
+                        <p:inputText placeholder="Name"/>
+                    </div>
+                    <div class="col-12">
+                        <p:inputText placeholder="Email"/>
+                    </div>
+                    <div class="col-12">
+                        <p:inputText placeholder="Location"/>
+                    </div>
+                    <div class="col-12">
+                        <p:inputTextarea placeholder="Message" rows="1" autoResize="false"/>
+                    </div>
+                    <div class="col-12">
+                        <p:button value="Send" icon="pi pi-check"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 lg:col-4">
+                <div class="card widget-contacts">
+                    <h5>Team</h5>
+                    <ul>
+                        <li class="clearfix">
+                            <p:graphicImage name="images/avatar.png" library="avalon-layout" width="45"/>
+                            <div class="contact-info">
+                                <span class="name">Madison Hughes (me)</span>
+                                <span class="location">jane@pn-manhattan.com</span>
+                            </div>
+                            <div class="contact-actions">
+                                <span class="connection-status online">online</span>
+                                <i class="pi pi-fw pi-comment"/>
+                                <i class="pi pi-fw pi-reply"/>
+                            </div>
+                        </li>
+                        <li class="clearfix">
+                            <p:graphicImage name="images/avatar1.png" library="avalon-layout" width="45"/>
+                            <div class="contact-info">
+                                <span class="name">Joshua Williams</span>
+                                <span class="location">josh@pn-manhattan.com</span>
+                            </div>
+                            <div class="contact-actions">
+                                <span class="connection-status online">online</span>
+                                <i class="pi pi-fw pi-comment"/>
+                                <i class="pi pi-fw pi-reply"/>
+                            </div>
+                        </li>
+                        <li class="clearfix">
+                            <p:graphicImage name="images/avatar2.png" library="avalon-layout" width="45"/>
+                            <div class="contact-info">
+                                <span class="name">Emily Clark</span>
+                                <span class="location">emily@pn-manhattan.com</span>
+                            </div>
+                            <div class="contact-actions">
+                                <span class="connection-status offline">offline</span>
+                                <i class="pi pi-fw pi-comment"/>
+                                <i class="pi pi-fw pi-reply"/>
+                            </div>
+                        </li>
+                        <li class="clearfix">
+                            <p:graphicImage name="images/avatar3.png" library="avalon-layout" width="45"/>
+                            <div class="contact-info">
+                                <span class="name">Tim Johnson</span>
+                                <span class="location">tim@pn-manhattan.com</span>
+                            </div>
+                            <div class="contact-actions">
+                                <span class="connection-status online">online</span>
+                                <i class="pi pi-fw pi-comment"/>
+                                <i class="pi pi-fw pi-reply"/>
+                            </div>
+                        </li>
+                        <li class="clearfix">
+                            <p:graphicImage name="images/avatar4.png" library="avalon-layout" width="45"/>
+                            <div class="contact-info">
+                                <span class="name">David Stark</span>
+                                <span class="location">kelly@pn-manhattan.com</span>
+                            </div>
+                            <div class="contact-actions">
+                                <span class="connection-status offline">offline</span>
+                                <i class="pi pi-fw pi-comment"/>
+                                <i class="pi pi-fw pi-reply"/>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-12 lg:col-8">
+                <div class="card widget-chat">
+                    <h5>Chat</h5>
+                    <ul>
+                        <li class="clearfix message-from">
+                            <p:graphicImage name="images/avatar2.png" library="avalon-layout"/>
+                            <span>Retro occupy organic, stumptown shabby chic pour-over roof party DIY normcore.</span>
+                        </li>
+                        <li class="clearfix message-own">
+                            <p:graphicImage name="images/avatar.png" library="avalon-layout"/>
+                            <span>Actually artisan organic occupy, Wes Anderson ugh whatever pour-over gastropub selvage.</span>
+                        </li>
+                        <li class="clearfix message-from">
+                            <p:graphicImage name="images/avatar2.png" library="avalon-layout"/>
+                            <span>Chillwave craft beer tote bag stumptown quinoa hashtag.</span>
+                        </li>
+                        <li class="clearfix message-own">
+                            <p:graphicImage name="images/avatar.png" library="avalon-layout"/>
+                            <span>Dreamcatcher locavore iPhone chillwave, occupy trust fund slow-carb distillery art party narwhal.</span>
+                        </li>
+                        <li class="clearfix message-own">
+                            <span>Sed ut perspiciatis unde omnis iste natus.</span>
+                        </li>
+                        <li class="clearfix message-from">
+                            <p:graphicImage name="images/avatar2.png" library="avalon-layout"/>
+                            <span>Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse.</span>
+                        </li>
+                        <li class="clearfix message-own">
+                            <p:graphicImage name="images/avatar.png" library="avalon-layout"/>
+                            <span>At vero eos et accusamus.</span>
+                        </li>
+                    </ul>
+                    <div class="new-message">
+                        <div class="message-attachment">
+                            <i class="pi pi-paperclip"/>
+                        </div>
+                        <div class="message-input">
+                            <input type="text" placeholder="Write a message" class="ui-inputfield" />
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h5>Products</h5>
+                    <p:dataTable var="product" value="#{dataTableDemoView.products1}" reflow="true" rows="5"
+                                 paginator="true" paginatorPosition="bottom">
+
+                        <p:column headerText="Image">
+                            <p:graphicImage name="images/product/#{product.image}" library="demo" alt="#{product.image}"
+                                            style="width: 50px"/>
+                        </p:column>
+                        <p:column headerText="Name" sortBy="#{product.name}">
+                            <h:outputText value="#{product.name}"/>
+                        </p:column>
+                        <p:column headerText="Category" sortBy="#{product.category}">
+                            <h:outputText value="#{product.category}"/>
+                        </p:column>
+                        <p:column headerText="Price" sortBy="#{product.price}">
+                            <h:outputText value="$#{product.price}"/>
+                        </p:column>
+                        <p:column headerText="View">
+                            <p:button icon="pi pi-search" styleClass="ui-button-success mr-2"/>
+                            <p:button icon="pi pi-times" styleClass="ui-button-danger"/>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </div>
+
+            <div class="col-12 lg:col-4">
+                <div class="card widget-timeline ui-fluid">
+                    <div class="grid">
+                        <div class="col-3">
+                            <span class="event-time">just now</span>
+                            <i class="pi pi-globe" style="color:#3984b8"/>
+                        </div>
+                        <div class="col-9">
+                            <span class="event-owner" style="color:#3984b8">Katherine May</span>
+                            <span class="event-text">Lorem ipsun dolor amet</span>
+                            <div class="event-content">
+                                <p:graphicImage name="images/dashboard/bridge.png" library="avalon-layout" width="100"/>
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <span class="event-time">12h ago</span>
+                            <i class="pi pi-star" style="color:#f6ac2b"/>
+                        </div>
+                        <div class="col-9">
+                            <span class="event-owner" style="color:#f6ac2b">Brandon Santos</span>
+                            <span class="event-text">Ab nobis, magnam sunt eum. Laudantium, repudiandae, similique!.</span>
+                        </div>
+
+                        <div class="col-3">
+                            <span class="event-time">15h ago</span>
+                            <i class="pi pi-comment" style="color:#7e8dcd"/>
+                        </div>
+                        <div class="col-9">
+                            <span class="event-owner" style="color:#7e8dcd">Stephan Ward</span>
+                            <span class="event-text">Omnis veniam quibusdam ratione est repellat qui nam quisquam ab mollitia dolores ullam voluptates, similique, dignissimos.</span>
+                        </div>
+
+                        <div class="col-3">
+                            <span class="event-time">2d ago</span>
+                            <i class="pi pi-map-marker" style="color:#e175a0"/>
+                        </div>
+                        <div class="col-9">
+                            <span class="event-owner" style="color:#e175a0">Jason Smith</span>
+                            <span class="event-text">Laudantium, repudiandae, similique!</span>
+                            <div class="event-content">
+                                <p:graphicImage name="images/dashboard/map.png" library="avalon-layout"/>
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <span class="event-time">1w ago</span>
+                            <i class="pi pi-heart" style="color:#39b8b6"/>
+                        </div>
+                        <div class="col-9">
+                            <span class="event-owner">Kevin Cox</span>
+                            <span class="event-text">Quibusdam ratione est repellat qui nam quisquam veniam quibusdam ratione.</span>
+                        </div>
+
+                        <div class="col-3">
+                            <span class="event-time">2w ago</span>
+                            <i class="pi pi-compass" style="color:#3eb839"/>
+                        </div>
+                        <div class="col-9">
+                            <span class="event-owner" style="color:#3eb839">Walter White</span>
+                            <span class="event-text">I am the one who knocks!</span>
+                        </div>
+
+                        <div class="col-12 ui-fluid">
+                            <p:button value="Refresh" icon="pi pi-refresh"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="card">
+                    <h5>Calendar</h5>
+                    <h:form>
+                        <p:schedule value="#{calendarDemoView.eventModel}" leftHeaderTemplate="prev,next"/>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

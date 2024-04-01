@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>
+        <title>PrimeFaces Avalon</title>
+        <h:outputScript name="js/layout.js" library="avalon-layout" />
+    </h:head>
+
+    <h:body styleClass="login-body">
+        <div class="login-image"></div>
+        <div class="card login-panel ui-fluid">
+            <div class="login-panel-content">
+                <div class="grid">
+                    <div class="col-3" style="text-align:left;">
+                        <p:graphicImage name="images/login/icon-login.svg" library="avalon-layout" />
+                    </div>
+                    <div class="col-9" style="text-align:left;">
+                        <h2 class="welcome-text">Welcome Guest</h2>
+                        <span class="guest-sign-in">Sign in to Avalon Network</span>
+                    </div>
+                    <div class="col-12" style="text-align:left;">
+                        <h:panelGroup>
+                            <label class="login-label">Username</label>
+                            <div class="login-input">
+                                <p:inputText />
+                            </div>
+                        </h:panelGroup>
+                    </div>
+                    <div class="col-12" style="text-align:left;">
+                        <h:panelGroup>
+                            <label class="login-label">Password</label>
+                            <div class="login-input">
+                                <p:password />
+                            </div>
+                        </h:panelGroup>
+                    </div>
+                    <div class="col-12 md:col-6 button-pane">
+                        <p:button outcome="/dashboard" value="Sign In"/>
+                    </div>
+
+                    <div class="col-12 md:col-6 flex align-items-center justify-content-center">
+                        <p:link styleClass="forget-password">Forget Password?</p:link>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h:outputStylesheet name="css/primeflex.min.css" library="avalon-layout" />
+        <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="avalon-layout" />
+    </h:body>
+
+</html>

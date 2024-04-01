@@ -1,0 +1,176 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pu="http://primefaces.org/avalon">
+
+    <div class="topbar clearfix">
+        <div class="topbar-left">            
+            <p:graphicImage name="images/logo.png" library="avalon-layout" styleClass="topbar-logo"/>
+        </div>
+        
+        <div class="topbar-right">
+            <a id="menu-button" href="#">
+                <i class="pi pi-angle-left"/>
+            </a>
+            
+            <a id="topbar-menu-button" href="#">
+                <i class="pi pi-bars"/>
+            </a>
+            
+            <h:form id="topbar-items-form">
+                <ul class="topbar-items fadeInDown animated">
+                    <ui:fragment rendered="#{guestPreferences.profileMode == 'overlay'||guestPreferences.menuLayout == 'menu-layout-static menu-layout-horizontal'}">
+                        <li class="profile-item">
+                            <a href="#">                            
+                                <p:graphicImage name="images/avatar.png" library="avalon-layout" styleClass="profile-image" style="border: 0 none"/>
+                                <span class="topbar-item-name">Isabel Lopez</span>
+                                <span class="topbar-item-role">Marketing</span>
+                            </a>
+
+                            <ul class="layout-menu animated">
+                                <li role="menuitem">
+                                    <a href="#">
+                                        <i class="pi pi-fw pi-user"/>
+                                        <span>Profile</span>
+                                    </a>
+                                </li>
+                                <li role="menuitem">
+                                    <a href="#">
+                                        <i class="pi pi-fw pi-lock"/>
+                                        <span>Privacy</span>
+                                    </a>
+                                </li>
+                                <li role="menuitem">
+                                    <a href="#">
+                                        <i class="pi pi-fw pi-cog"/>
+                                        <span>Settings</span>
+                                    </a>
+                                </li>
+                                <li role="menuitem">
+                                    <a href="#">
+                                        <i class="pi pi-fw pi-sign-out"/>
+                                        <span>Logout</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ui:fragment>
+                    <li>
+                        <a href="#">
+                            <i class="topbar-icon pi pi-fw pi-cog"/>
+                            <span class="topbar-item-name">Settings</span>
+                        </a>
+                        <ul class="layout-menu animated">
+                            <li role="menuitem">
+                                <a href="#">
+                                    <i class="pi pi-fw pi-palette"/>
+                                    <span>Change Theme</span>
+                                </a>
+                            </li>
+                            <li role="menuitem">
+                                <a href="#">
+                                    <i class="pi pi-fw pi-star"/>
+                                    <span>Favorites</span>
+                                </a>
+                            </li>
+                            <li role="menuitem">
+                                <a href="#">
+                                    <i class="pi pi-fw pi-lock"/>
+                                    <span>Lock Screen</span>
+                                </a>
+                            </li>
+                            <li role="menuitem">
+                                <a href="#">
+                                    <i class="pi pi-fw pi-image"/>
+                                    <span>Wallpaper</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="topbar-icon animated swing pi pi-fw pi-envelope"/>
+                            <span class="topbar-badge animated rubberBand">5</span>
+                            <span class="topbar-item-name">Messages</span>
+                        </a>
+                        <ul class="layout-menu animated">
+                            <li role="menuitem">
+                                <a href="#" class="topbar-message">
+                                    <p:graphicImage name="images/avatar1.png" library="avalon-layout" width="35"/>
+                                    <span>Give me a call</span>
+                                </a>
+                            </li>
+                            <li role="menuitem">
+                                <a href="#" class="topbar-message">
+                                    <p:graphicImage name="images/avatar2.png" library="avalon-layout" width="35"/>
+                                    <span>Sales reports attached</span>
+                                </a>
+                            </li>
+                            <li role="menuitem">
+                                <a href="#" class="topbar-message">
+                                    <p:graphicImage name="images/avatar3.png" library="avalon-layout" width="35"/>
+                                    <span>About your invoice</span>
+                                </a>
+                            </li>
+                            <li role="menuitem">
+                                <a href="#" class="topbar-message">
+                                    <p:graphicImage name="images/avatar2.png" library="avalon-layout" width="35"/>
+                                    <span>Meeting today at 10pm</span>
+                                </a>
+                            </li>
+                            <li role="menuitem">
+                                <a href="#" class="topbar-message">
+                                    <p:graphicImage name="images/avatar4.png" library="avalon-layout" width="35"/>
+                                    <span>Out of office</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="topbar-icon pi pi-fw pi-bell"/>
+                            <span class="topbar-badge animated rubberBand">4</span>
+                            <span class="topbar-item-name">Notifications</span>
+                        </a>
+                        <ul class="layout-menu animated">
+                            <li role="menuitem">
+                                <a href="#">
+                                    <i class="pi pi-fw pi-sliders-h"/>
+                                    <span>Pending tasks</span>
+                                </a>
+                            </li>
+                            <li role="menuitem">
+                                <a href="#">
+                                    <i class="pi pi-fw pi-calendar"/>
+                                    <span>Meeting today at 3pm</span>
+                                </a>
+                            </li>
+                            <li role="menuitem">
+                                <a href="#">
+                                    <i class="pi pi-fw pi-download"/>
+                                    <span>Download documents</span>
+                                </a>
+                            </li>
+                            <li role="menuitem">
+                                <a href="#">
+                                    <i class="pi pi-fw pi-bookmark"/>
+                                    <span>Book flight</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="search-item">
+                        <div class="topbar-search">
+                            <input type="text" placeholder="Search" onkeypress="if (event.keyCode == 13) {return false;}"/>
+                            <i class="pi pi-search"/>
+                        </div>
+                    </li>
+                </ul>
+            </h:form>
+        </div>
+    </div>
+
+</ui:composition>
