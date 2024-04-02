@@ -2,24 +2,26 @@
                 xmlns:ui="jakarta.faces.facelets"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml"
-                xmlns:h="jakarta.faces.html"
-                xmlns:f="jakarta.faces.core">
-             
+>
+
     <ui:define name="title">Empty Page</ui:define>
 
     <ui:define name="content">
 
 
-
         <div class="grid grid-nogutter surface-section text-800">
             <div class="col-12 md:col-6 p-6 text-center md:text-left flex align-items-center ">
                 <section>
-                    <span class="block text-6xl font-bold mb-1">Jakarta EE GPT </span>
-                    <div class="text-6xl text-primary font-bold mb-3">Java meets AI</div>
-                    <p class="mt-0 mb-4 text-700 line-height-3">A Jakarta EE app built on the Open AI GPT API to help you plan your next trip, generate an AI image or get some recipe ideas!</p>
+                    <span class="block text-6xl font-bold mb-1">AI Travel Planner </span>
+                    <div class="text-6xl text-primary font-bold mb-3">Customized Itineraries, Images, and Recipes</div>
+                    <p class="mt-0 mb-4 text-700 line-height-3"> Design your ideal trip with the power of AI!
+                        Get personalized itineraries based on your budget and destination,
+                        visualize your journey with stunning AI-generated images, and discover delicious recipes tailored to your ingredients.
+                        Built with Jakarta EE, JSF, PrimeFaces, and integrated with the OpenAI GPT-4 API.
+                        Perfect for adventurous travelers, foodies, and those who want a unique, personalized travel experience.</p>
 
-                    <p:commandButton value="Learn More" type="button" class="mr-3 ui-button-raised"/>
-                    <p:commandButton value="Live Demo" type="button" class="ui-button-outlined"/>
+                    <p:button value="Get Started" type="button" class="mr-3 ui-button-raised" outcome="poi.xhtml"/>
+                    <!--                    <p:commandButton value="Live Demo" type="button" class="ui-button-outlined"/>-->
                 </section>
             </div>
             <div class="col-12 md:col-6 overflow-hidden">
