@@ -9,35 +9,38 @@
 
     <ui:define name="content">
         <h:form id="imageForm">
-            <p:splitter >
-                <p:splitterPanel  styleClass="flex align-items-center justify-content-center">
+            <p:splitter>
+                <p:splitterPanel styleClass="flex align-items-center justify-content-center">
                     <div class="grid">
-                    <div class="col-12 md:col-12">
-                    <div class="card ui-fluid">
-                    <div class="field">
-                        <p:outputLabel for="imagePrompt">Image Prompt</p:outputLabel>
+                        <div class="col-12 md:col-12">
+                            <div class="card ui-fluid">
+                                <div class="field">
+                                    <p:outputLabel for="imagePrompt">Image Prompt</p:outputLabel>
 
-                        <p:inputTextarea  id="imagePrompt" value="#{imageBean.imagePrompt}"  rows="7"/>
-                    </div></div></div></div>
+                                    <p:inputTextarea id="imagePrompt" value="#{imageBean.imagePrompt}" rows="7"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <p:ajaxStatus style="position: absolute;">
                         <f:facet name="start">
-                            <p:graphicImage library="primeicons" name="pi pi-spin pi-spinner" styleClass="ui-300" />
+                            <p:graphicImage library="primeicons" name="pi pi-spin pi-spinner" styleClass="ui-300"/>
                         </f:facet>
                         <f:facet name="complete">
-                            <h:outputText value="" />
+                            <h:outputText value=""/>
                         </f:facet>
                     </p:ajaxStatus>
                     <p:commandButton value="Generate Image" actionListener="#{imageBean.generateImage()}"
-                                     update="image" >
-                        <f:ajax  render="image" />
+                                     update="image">
+                        <f:ajax render="image"/>
 
                     </p:commandButton>
                 </p:splitterPanel>
 
                 <p:splitterPanel id="imagePanel" styleClass="flex align-items-center justify-content-center">
 
-                    <p:graphicImage id="image"   value="#{imageBean.generatedImage}"  />
+                    <p:graphicImage id="image" value="#{imageBean.generatedImage}"/>
                 </p:splitterPanel>
             </p:splitter>
         </h:form>
