@@ -6,7 +6,7 @@
         version="6.0">
 
     <welcome-file-list>
-        <welcome-file>poi.xhtml</welcome-file>
+        <welcome-file>index.xhtml</welcome-file>
     </welcome-file-list>
 
     <context-param>

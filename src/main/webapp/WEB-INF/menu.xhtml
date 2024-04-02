@@ -11,7 +11,12 @@
 
 
                 <pu:menu widgetVar="avalonMenuWidget" styleClass="layout-main-menu">
+                    <p:submenu id="m_homepage" label="Favorites" icon="pi pi-fw pi-home">
 
+                            <p:menuitem id="m_dashboard" value="Home" icon="pi pi-fw pi-home" outcome="/index.xhtml" />
+                            <p:menuitem id="m_dashboard_banking" value="Itinerary Suggestions" icon="pi pi-fw pi-globe" outcome="/poi.xhtml"/>
+
+                    </p:submenu>
                 </pu:menu>
             </div>
         </div>
