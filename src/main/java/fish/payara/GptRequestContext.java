@@ -16,4 +16,8 @@ public class GptRequestContext {
 	private String size = "512x512";
 	private int numberOfImages = 1;
 
+	public static GptRequestContext of() {
+		return new GptRequestContext();
+	}
+
 }

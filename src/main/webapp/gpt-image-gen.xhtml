@@ -1,0 +1,47 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core">
+
+    <ui:define name="title">Empty Page</ui:define>
+
+    <ui:define name="content">
+        <h:form id="imageForm">
+            <p:splitter >
+                <p:splitterPanel  styleClass="flex align-items-center justify-content-center">
+                    <div class="grid">
+                    <div class="col-12 md:col-12">
+                    <div class="card ui-fluid">
+                    <div class="field">
+                        <p:outputLabel for="imagePrompt">Image Prompt</p:outputLabel>
+
+                        <p:inputTextarea  id="imagePrompt" value="#{imageBean.imagePrompt}"  rows="7"/>
+                    </div></div></div></div>
+
+                    <p:ajaxStatus style="position: absolute;">
+                        <f:facet name="start">
+                            <p:graphicImage library="primeicons" name="pi pi-spin pi-spinner" styleClass="ui-300" />
+                        </f:facet>
+                        <f:facet name="complete">
+                            <h:outputText value="" />
+                        </f:facet>
+                    </p:ajaxStatus>
+                    <p:commandButton value="Generate Image" actionListener="#{imageBean.generateImage()}"
+                                     update="image" >
+                        <f:ajax  render="image" />
+
+                    </p:commandButton>
+                </p:splitterPanel>
+
+                <p:splitterPanel id="imagePanel" styleClass="flex align-items-center justify-content-center">
+
+                    <p:graphicImage id="image"   value="#{imageBean.generatedImage}"  />
+                </p:splitterPanel>
+            </p:splitter>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>
