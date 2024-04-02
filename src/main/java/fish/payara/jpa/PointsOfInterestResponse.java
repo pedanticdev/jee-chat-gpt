@@ -38,4 +38,7 @@ public class PointsOfInterestResponse extends AbstractEntity {
 				.reduce(BigDecimal.ZERO, BigDecimal::add);
 	}
 
+	public static PointsOfInterestResponse of() {
+		return new PointsOfInterestResponse();
+	}
 }

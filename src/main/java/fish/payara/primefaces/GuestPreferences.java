@@ -1,4 +1,4 @@
-package fish.payara.views.main;
+package fish.payara.primefaces;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;

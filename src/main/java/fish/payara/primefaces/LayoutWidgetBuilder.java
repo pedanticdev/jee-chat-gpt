@@ -1,4 +1,4 @@
-package fish.payara.views.main.component;
+package fish.payara.primefaces;
 
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;

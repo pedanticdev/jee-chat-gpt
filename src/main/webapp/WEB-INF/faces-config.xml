@@ -9,14 +9,14 @@
     
     <component>
         <component-type>org.primefaces.component.AvalonMenu</component-type>
-        <component-class>fish.payara.views.main.component.AvalonMenu</component-class>
+        <component-class>fish.payara.primefaces.AvalonMenu</component-class>
     </component>
     
     <render-kit>
         <renderer>
             <component-family>org.primefaces.component</component-family>
             <renderer-type>org.primefaces.component.AvalonMenuRenderer</renderer-type>
-            <renderer-class>fish.payara.views.main.component.AvalonMenuRenderer</renderer-class>
+            <renderer-class>fish.payara.primefaces.AvalonMenuRenderer</renderer-class>
         </renderer>
     </render-kit>
     

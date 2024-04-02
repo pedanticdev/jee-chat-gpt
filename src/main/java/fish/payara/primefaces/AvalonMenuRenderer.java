@@ -13,7 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-package fish.payara.views.main.component;
+package fish.payara.primefaces;
 
 import jakarta.faces.FacesException;
 import jakarta.faces.component.UIComponent;

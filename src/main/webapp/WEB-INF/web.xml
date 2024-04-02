@@ -6,7 +6,7 @@
         version="6.0">
 
     <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
+        <welcome-file>poi.xhtml</welcome-file>
     </welcome-file-list>
 
     <context-param>
@@ -50,7 +50,7 @@
    
     <filter>
         <filter-name>Character Encoding Filter</filter-name>
-        <filter-class>fish.payara.views.main.CharacterEncodingFilter</filter-class>
+        <filter-class>fish.payara.primefaces.CharacterEncodingFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>Character Encoding Filter</filter-name>

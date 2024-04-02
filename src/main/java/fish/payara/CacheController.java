@@ -15,6 +15,7 @@ import javax.cache.configuration.MutableConfiguration;
 import javax.cache.expiry.CreatedExpiryPolicy;
 import javax.cache.expiry.Duration;
 
+import org.apache.poi.util.StringUtil;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import fish.payara.jpa.PointsOfInterestResponse;
@@ -84,7 +85,7 @@ public class CacheController {
 	public void cachePoi(final Integer key, PointsOfInterestResponse response) {
 		response.setComputedHashCode(key);
 
-		if (isCacheEnabled()) {
+		if (isCacheEnabled() && !response.getPointsOfInterest().isEmpty()) {
 			pointsOfInterestCache.put(key, response);
 		} else {
 			pointsOfInterestCacheMap.put(key, dbService.savePoi(response));
@@ -111,7 +112,7 @@ public class CacheController {
 
 	public void cacheRecipeSuggestion(final Integer key, final RecipeSuggestion recipeSuggestion) {
 		recipeSuggestion.setComputedHashCode(key);
-		if (isCacheEnabled()) {
+		if (isCacheEnabled() && !recipeSuggestion.getRecipes().isEmpty()) {
 			recipeCache.put(key, recipeSuggestion);
 		} else {
 			recipeSuggestionMap.put(key, dbService.saveRecipe(recipeSuggestion));

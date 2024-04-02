@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
 
+import fish.payara.views.main.SearchCriteria;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.json.Json;
@@ -93,6 +94,9 @@ public class GptService {
 	@Inject
 	private CacheController cacheController;
 
+	public PointsOfInterestResponse suggestPointsOfInterest(SearchCriteria searchCriteria) {
+		return suggestPointsOfInterest(searchCriteria.getCity(), searchCriteria.getBudget());
+	}
 	public PointsOfInterestResponse suggestPointsOfInterest(final String city, final BigDecimal budget) {
 
 		int cacheKey = generateKey(city, budget);
