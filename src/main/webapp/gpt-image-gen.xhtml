@@ -9,6 +9,9 @@
 
     <ui:define name="content">
         <h:form id="imageForm">
+            <p:messages>
+                <p:autoUpdate/>
+            </p:messages>
             <p:splitter>
                 <p:splitterPanel styleClass="flex align-items-center justify-content-center">
                     <div class="grid">
@@ -17,7 +20,10 @@
                                 <div class="field">
                                     <p:outputLabel for="imagePrompt">Image Prompt</p:outputLabel>
 
-                                    <p:inputTextarea id="imagePrompt" value="#{imageBean.imagePrompt}" rows="7"/>
+                                    <p:inputTextarea id="imagePrompt" value="#{imageBean.imagePrompt}"  requiredMessage="Please enter an image prompt"
+                                                     rows="6" cols="33"
+                                                     required="true"/>
+                                    <p:message for="imagePrompt" id="errorMessage"/>
                                 </div>
                             </div>
                         </div>
@@ -32,6 +38,8 @@
                         </f:facet>
                     </p:ajaxStatus>
                     <p:commandButton value="Generate Image" actionListener="#{imageBean.generateImage()}"
+                                     validateClient="true"
+
                                      update="image">
                         <f:ajax render="image"/>
 

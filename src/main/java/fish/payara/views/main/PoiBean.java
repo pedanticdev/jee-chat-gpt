@@ -23,9 +23,6 @@ public class PoiBean implements Serializable {
 
     SearchCriteria searchCriteria;
 
-    @PostConstruct
-    void init() {
-    }
 
     public void search() {
         response = gptService.suggestPointsOfInterest(searchCriteria);

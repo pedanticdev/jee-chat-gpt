@@ -6,7 +6,7 @@
                 xmlns:f="jakarta.faces.core"
 >
 
-    <ui:define name="title">Point of Interest Suggestions</ui:define>
+    <ui:define name="title">Recipe Suggestions</ui:define>
 
     <ui:define name="content">
         <div>
@@ -16,7 +16,7 @@
 
                 <p:toolbar>
                     <p:toolbarGroup>
-                        <p:commandButton value="New Suggestion" icon="pi pi-plus" actionListener="#{poiBean.openNew}"
+                        <p:commandButton value="New Recipe" icon="pi pi-plus"
                                          update=":dialogs:manage-product-content"
                                          oncomplete="PF('manageProductDialog').show()"
                                          styleClass="ui-button-success" style="margin-right: .5rem">
@@ -32,14 +32,15 @@
                     </p:toolbarGroup>
                 </p:toolbar>
 
-                <p:dataTable id="dt-products" widgetVar="dtProducts" var="poi" value="#{poiBean.response.pointsOfInterest}"
+                <p:dataTable id="dt-products" widgetVar="dtProducts" var="recipe" value="#{recipeBean.recipeSuggestion.recipes}"
                              reflow="true" styleClass="products-table"
-                             rowKey="#{poi.name}" paginator="true" rows="10" rowSelectMode="add"
+                             rowKey="#{recipe.recipeName}" paginator="true" rows="10" rowSelectMode="add"
                              globalFilterOnly="true"
+                             emptyMessage="No suggestions. Hit the New button above to get started!"
                              paginatorPosition="bottom">
                     <f:facet name="header">
                         <div class="products-table-header">
-                            <span style="font-weight: bold">Points Of Interest Suggestions</span>
+                            <span style="font-weight: bold">Recipe Suggestions</span>
                             <div align="right">
                                     <span class="filter-container ui-input-icon-left">
                                     <i class="pi pi-search"/>
@@ -50,19 +51,28 @@
                         </div>
                     </f:facet>
 
-
-                    <p:column headerText="Name" sortBy="#{poi.name}" filterBy="#{poi.name}">
-                        <h:outputText value="#{poi.name}"/>
+                    <p:column headerText="Recipe Name" filterBy="#{recipe.recipeName}">
+                        #{recipe.recipeName}
+                    </p:column>
+                    <p:column headerText="Ingredients" filterBy="#{recipe.ingredients}">
+                        <ul>
+                            <ui:repeat value="#{recipe.ingredients}" var="ingredient">
+                                <li>#{ingredient}</li>
+                            </ui:repeat>
+                        </ul>
                     </p:column>
 
-                    <p:column headerText="Description" sortBy="#{poi.info}" filterBy="#{poi.info}">
-                        <h:outputText value="#{poi.info}"/>
+                    <p:column headerText="Comments" filterBy="#{recipe.comment}">
+                        #{recipe.comment}
                     </p:column>
 
-                    <p:column headerText="Suggested Budget ($)" sortBy="#{poi.cost}" filterBy="#{poi.cost}">
-                        <h:outputText value="#{poi.cost}"/>
+                    <p:column headerText="Cooking Steps" filterBy="#{recipe.cookingSteps}">
+                        <ol>
+                            <ui:repeat value="#{recipe.cookingSteps}" var="step">
+                                <li>#{step}</li>
+                            </ui:repeat>
+                        </ol>
                     </p:column>
-
                 </p:dataTable>
             </h:form>
 
@@ -70,37 +80,29 @@
                 <p:messages>
                     <p:autoUpdate/>
                 </p:messages>
-                <p:dialog header="New Itinerary Suggestion" showEffect="fade" modal="true" widgetVar="manageProductDialog"
+                <p:dialog header="New Recipe Suggestion" showEffect="fade" modal="true" widgetVar="manageProductDialog"
                           responsive="true">
                     <p:outputPanel id="manage-product-content" class="ui-fluid">
-                        <p:outputPanel rendered="#{not empty poiBean.searchCriteria}">
+
+                        <p:outputPanel >
 
                             <div class="field">
-                                <p:outputLabel for="name">City Name</p:outputLabel>
-                                <p:inputText id="name" value="#{poiBean.searchCriteria.city}"
-                                             requiredMessage="Please provide a city name"
-                                             title="Enter a city name you want to visit"
+                                <p:outputLabel for="name">Ingredients</p:outputLabel>
+                                <p:inputTextarea id="name" value="#{recipeBean.recipeRequest}"
+                                             requiredMessage="Please provide a list of ingredients"
+                                                 rows="6" cols="33"
                                              required="true"/>
-                                <p:message for="name" id="nameMsg"/>
-
+                                <small class="block">Enter a list of ingredients to get recipe suggestions for</small>
+                                <p:message for="name" id="errorMessage"/>
                             </div>
 
-                            <div class="field">
-                                <p:outputLabel for="budget">Budgeted Amount</p:outputLabel>
-                                <p:inputNumber id="budget" value="#{poiBean.searchCriteria.budget}"
-                                               minValue="0"
-                                               title="Enter your budget for the city"
-                                               requiredMessage="Please provide a budget"
-                                             required="true"/>
-                                <p:message for="budget" id="budgeMsg"/>
-                            </div>
 
 
                         </p:outputPanel>
                     </p:outputPanel>
 
                     <f:facet name="footer">
-                        <p:commandButton value="Save" icon="pi pi-check" actionListener="#{poiBean.search()}"
+                        <p:commandButton value="Save" icon="pi pi-check" actionListener="#{recipeBean.generateRecipeSuggest()}"
                                          update="manage-product-content :form:dt-products"
                                          process="manage-product-content :form:dt-products @form @this"
                                          validateClient="true"
@@ -113,6 +115,7 @@
                                          class="ui-button-secondary" type="button"/>
                     </f:facet>
                 </p:dialog>
+
 
 
             </h:form>

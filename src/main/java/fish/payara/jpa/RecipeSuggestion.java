@@ -23,4 +23,8 @@ public class RecipeSuggestion extends AbstractEntity {
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Recipe> recipes = new ArrayList<>();
+
+	public static RecipeSuggestion of() {
+		return new RecipeSuggestion();
+	}
 }
