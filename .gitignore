@@ -23,3 +23,4 @@ webpack.generated.js
 .env
 
 *.adoc
+jenkins/.env

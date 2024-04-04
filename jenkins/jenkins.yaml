@@ -1,0 +1,30 @@
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+          - usernamePassword:
+              id: "github-credentials"
+              password: "{${GITHUB_TOKEN}}"
+              scope: GLOBAL
+              username: "${GITHUB_USERNAME}"
+jenkins:
+  numExecutors: 1
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: ${JENKINS_ADMIN_ID}
+          password: ${JENKINS_ADMIN_PASSWORD}
+
+unclassified:
+  location:
+    adminAddress: "jenkins@pretsa.xyz"
+    url: "https://localhost:8080/"
+  gitHubConfiguration:
+    apiRateLimitChecker: NoThrottle
+    endpoints:
+      - apiUri: "https://api.github.com"
+        name: "github"
