@@ -1,15 +1,19 @@
 package fish.payara;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
+import com.theokanning.openai.completion.chat.ChatCompletionChoice;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatCompletionResult;
+import com.theokanning.openai.completion.chat.ChatMessage;
+import com.theokanning.openai.image.CreateImageRequest;
 import com.theokanning.openai.service.OpenAiService;
 
+import fish.payara.jpa.PointOfInterest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -54,21 +58,54 @@ class GptServiceTest {
 	}
 
 	@Test
-	@Disabled
 	void testRequestRecipe() {
 		String recipeRequest = "Test Recipe";
 		Integer cacheKey = recipeRequest.toUpperCase().hashCode();
 
 		when(cacheController.isRecipeCached(cacheKey)).thenReturn(false);
-		// ... Set up mock ChatCompletionResult ...
+
 
 		when(openAiService.createChatCompletion(any(ChatCompletionRequest.class)))
-				.thenReturn(new ChatCompletionResult());
+				.thenReturn(getChatCompletionResult());
 
 		RecipeSuggestion suggestion = gptService.requestRecipe(recipeRequest);
 
 		verify(cacheController, times(1)).isRecipeCached(cacheKey);
 		assertNotNull(suggestion);
+		assertFalse(suggestion.getRecipes().isEmpty());
+
+	}
+
+	private ChatCompletionResult getChatCompletionResult() {
+		// ... Set up mock ChatCompletionResult ...
+		ChatCompletionResult chatCompletionResult = new ChatCompletionResult();
+		ChatCompletionChoice chatCompletionChoice = new ChatCompletionChoice();
+		ChatMessage chatMessage = new ChatMessage();
+		chatMessage.setContent("""
+				{
+				  "recipePrompt": "recipePrompt_63a8f92c9264",
+				  "recipes": [
+				    {
+				      "recipeName": "recipeName_345f57860fc0",
+				      "comment": "comment_11207063afb4",
+				      "ingredients": [
+				        "ingredients_5c1406ff064a"
+				      ],
+				      "cookingSteps": [
+				        "cookingSteps_0c190d39564e"
+				      ],
+				      "id": 0,
+				      "computedHashCode": 0
+				    }
+				  ],
+				  "id": 0,
+				  "computedHashCode": 0
+				}
+				
+				""");
+		chatCompletionChoice.setMessage(chatMessage);
+		chatCompletionResult.setChoices(List.of(chatCompletionChoice));
+		return chatCompletionResult;
 	}
 
 }

@@ -89,6 +89,11 @@ public class GptService {
 	@Inject
 	@ConfigProperty(name = "gpt.model")
 	private String gptModel;
+
+
+	@Inject
+	@ConfigProperty(name = "gpt.image.mode")
+	private String imageModel;
 	@Inject
 	private OpenAiService openAiService;
 	@Inject
@@ -128,7 +133,8 @@ public class GptService {
 		CreateImageRequest imageRequest = CreateImageRequest.builder()
 				.n(request.getNumberOfImages())
 				.prompt(request.getPrompt())
-				.size(request.getSize())
+				.model(imageModel)
+				.size("1024x1024")
 				.build();
 		try {
 			ImageResult image = openAiService.createImage(imageRequest);

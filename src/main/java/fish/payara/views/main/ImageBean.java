@@ -8,6 +8,7 @@ import jakarta.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.apache.poi.util.StringUtil;
 import org.omnifaces.cdi.ViewScoped;
 
 import fish.payara.GptRequestContext;
@@ -27,11 +28,13 @@ public class ImageBean implements Serializable {
     String generatedImage;
 
     public void generateImage() {
-        GptRequestContext gptRequestContext = GptRequestContext.of();
-        gptRequestContext.setPrompt(imagePrompt);
+        if (StringUtil.isNotBlank(imagePrompt)) {
+            GptRequestContext gptRequestContext = GptRequestContext.of();
+            gptRequestContext.setPrompt(imagePrompt);
 
-       generatedImage = gptService.generateImage(gptRequestContext);
-        System.out.println("Image URL --> " + generatedImage);
+            generatedImage = gptService.generateImage(gptRequestContext);
+            imagePrompt = null;
+        }
     }
 
 
