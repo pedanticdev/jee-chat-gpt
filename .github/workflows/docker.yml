@@ -8,14 +8,8 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-    inputs:
-      imageTag:
-        description: 'Tag for the Docker Image'
-        required: false
-        default: 'latest'
-
     env:
-      IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/jee-gpt:${{ inputs.imageTag || 'none' }}
+      IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/jee-gpt:latest
 
     steps:
       - uses: actions/checkout@v3
