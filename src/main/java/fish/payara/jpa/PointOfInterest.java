@@ -18,6 +18,10 @@ public class PointOfInterest extends AbstractEntity {
 	private BigDecimal cost;
 	private String formattedCost;
 
+	public static PointOfInterest of() {
+		return new PointOfInterest();
+	}
+
 	@Override
 	public String toString() {
 		return "PointOfInterest [name=" + name + ", info=" + info + ", cost=" + cost + "]";

@@ -15,7 +15,6 @@ import javax.cache.configuration.MutableConfiguration;
 import javax.cache.expiry.CreatedExpiryPolicy;
 import javax.cache.expiry.Duration;
 
-import org.apache.poi.util.StringUtil;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import fish.payara.jpa.PointsOfInterestResponse;
@@ -26,15 +25,16 @@ public class CacheController {
 
 	@Inject
 	@ConfigProperty(name = "cache.enabled", defaultValue = "false")
-	private Boolean cacheEnabled;
+	Boolean cacheEnabled;
 
 	@Inject
-	private DBService dbService;
+	DBService dbService;
+	CacheManager cacheManager;
 
-	private Cache<Integer, PointsOfInterestResponse> pointsOfInterestCache;
-	private Cache<Integer, RecipeSuggestion> recipeCache;
-	private Map<Integer, PointsOfInterestResponse> pointsOfInterestCacheMap;
-	private Map<Integer, RecipeSuggestion> recipeSuggestionMap;
+	Cache<Integer, PointsOfInterestResponse> pointsOfInterestCache;
+	Cache<Integer, RecipeSuggestion> recipeCache;
+	Map<Integer, PointsOfInterestResponse> pointsOfInterestCacheMap;
+	Map<Integer, RecipeSuggestion> recipeSuggestionMap;
 
 	@PostConstruct
 	void init() {
@@ -42,7 +42,7 @@ public class CacheController {
 		// Payara Cloud has data-grid disabled. If on that environment default to concurrent map
 		if (isCacheEnabled()) {
 
-			CacheManager cacheManager = Caching.getCachingProvider().getCacheManager();
+			cacheManager = Caching.getCachingProvider().getCacheManager();
 
 			MutableConfiguration<Integer, PointsOfInterestResponse> mutableConfig = new MutableConfiguration<>();
 			mutableConfig.setExpiryPolicyFactory(CreatedExpiryPolicy.factoryOf(Duration.FIVE_MINUTES));
