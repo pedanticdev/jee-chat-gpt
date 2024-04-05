@@ -10,11 +10,16 @@ import javax.cache.integration.CacheLoaderException;
 
 import fish.payara.jpa.PointsOfInterestResponse;
 import fish.payara.jpa.RecipeSuggestion;
+import jakarta.persistence.PersistenceContext;
 
 @Stateless
 public class DBService {
-	@Inject
 	private EntityManager entityManager;
+
+	@Inject
+	public DBService(EntityManager em) {
+		this.entityManager = em;
+	}
 
 	public PointsOfInterestResponse savePoi(PointsOfInterestResponse pointsOfInterestResponse) {
 		entityManager.persist(pointsOfInterestResponse);
