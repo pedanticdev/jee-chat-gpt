@@ -2,6 +2,7 @@ package fish.payara;
 
 import java.util.List;
 
+import jakarta.annotation.sql.DataSourceDefinition;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -10,16 +11,22 @@ import javax.cache.integration.CacheLoaderException;
 
 import fish.payara.jpa.PointsOfInterestResponse;
 import fish.payara.jpa.RecipeSuggestion;
-import jakarta.persistence.PersistenceContext;
 
+@DataSourceDefinition(name = "java:app/cloud-postgres",
+		className = "org.postgresql.ds.PGSimpleDataSource",
+		url = "${MPCONFIG=DB_URL}",
+		databaseName = "${MPCONFIG=DB_NAME}",
+		serverName = "${MPCONFIG=DB_SERVER}",
+		user = "${MPCONFIG=DB_USER}",
+		password = "${MPCONFIG=DB_PASSWORD}",
+		properties = {
+		"sslmode=require" })
 @Stateless
 public class DBService {
-	private EntityManager entityManager;
 
 	@Inject
-	public DBService(EntityManager em) {
-		this.entityManager = em;
-	}
+	EntityManager entityManager;
+
 
 	public PointsOfInterestResponse savePoi(PointsOfInterestResponse pointsOfInterestResponse) {
 		entityManager.persist(pointsOfInterestResponse);

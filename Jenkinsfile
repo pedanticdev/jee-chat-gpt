@@ -3,7 +3,7 @@ final def MVN_OPTS = '-B -ntp'
 pipeline {
     agent any
     environment {
-        DOCKER_IMAGE = 'luqmanfish/jee-gpt-jenkins:0.1.1'
+        DOCKER_IMAGE = 'sinaisix/jee-gpt-jenkins:0.1.1'
     }
     stages {
         stage('Prepare') {

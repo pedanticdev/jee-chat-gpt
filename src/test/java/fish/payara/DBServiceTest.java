@@ -28,7 +28,8 @@ class DBServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        service = new DBService(entityManager); // Initialization
+        service = new DBService();
+        service.entityManager = entityManager;
     }
 
     @Test
@@ -36,7 +37,8 @@ class DBServiceTest {
         EntityManager entityManager = mock(EntityManager.class);
         RecipeSuggestion mockRecipe = mock(RecipeSuggestion.class);
 
-        DBService dbService = new DBService(entityManager);
+        DBService dbService = new DBService();
+        dbService.entityManager = entityManager;
 
         RecipeSuggestion result = dbService.saveRecipe(mockRecipe);
 
