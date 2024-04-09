@@ -12,7 +12,7 @@ import javax.cache.integration.CacheLoaderException;
 import fish.payara.jpa.PointsOfInterestResponse;
 import fish.payara.jpa.RecipeSuggestion;
 
-@DataSourceDefinition(name = "java:app/cloud-postgres",
+@DataSourceDefinition(name = "java:global/cloud-postgres",
 		className = "org.postgresql.ds.PGSimpleDataSource",
 		url = "${MPCONFIG=DB_URL}",
 		databaseName = "${MPCONFIG=DB_NAME}",
