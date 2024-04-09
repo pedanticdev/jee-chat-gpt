@@ -32,7 +32,14 @@ jobs:
           wget https://nexus.payara.fish/repository/payara-artifacts/fish/payara/cloud/pcl/1.1.0/pcl-1.1.0.jar -O pcl.jar
           chmod +x pcl.jar
 
-      - name: Deploy to Payara Cloud
+      - name: Deploy to Pre-Prod
+        if: success()
+        env:
+          PCL_AUTH_TOKEN: ${{ secrets.PCL_AUTH_TOKEN }}
+        run: |
+          java -jar pcl.jar -n live-demo-dev upload -a jee-gpt-pre-prod target/*.war
+
+      - name: Deploy to Prod
         if: success()
         env:
           PCL_AUTH_TOKEN: ${{ secrets.PCL_AUTH_TOKEN }}

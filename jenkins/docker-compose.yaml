@@ -14,5 +14,5 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./jenkins.yaml:/jenkins_configs/jenkins.yaml
-#      - jenkins_home:/var/jenkins_home
+      - ./jenkins_home:/var/jenkins_home
     restart: unless-stopped

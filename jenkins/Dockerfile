@@ -1,4 +1,4 @@
-FROM jenkins/jenkins:lts-jdk17
+FROM jenkins/jenkins:2.452-jdk21
 
 ENV CASC_JENKINS_CONFIG /jenkins_configs/jenkins.yaml
 ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
