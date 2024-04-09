@@ -8,6 +8,7 @@ pipeline {
     stages {
         stage('Prepare') {
             steps {
+                sh "apk add --update docker openrc"
                 sh "./mvnw ${MVN_OPTS} --version"
             }
         }
