@@ -9,6 +9,7 @@ services:
       DB_USER: ${DB_USER}
       DB_NAME: ${DB_NAME}
       DB_URL: ${DB_URL}
+      TELEGRAM_BOT_KEY: ${TELEGRAM_BOT_KEY}
     volumes:
       - ./deployments:/opt/payara/appserver/glassfish/domains/domain1/autodeploy
     ports:
