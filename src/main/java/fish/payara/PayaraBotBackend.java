@@ -28,7 +28,6 @@ public class PayaraBotBackend  {
     @PostConstruct
     void init() {
         bot = new TelegramBot(telegramBotKey);
-        System.out.println("UPpppppp-------------->>>>>>>>>>>>>>>>>>>>>>>>>>>.");
         bot.setUpdatesListener(updates -> {
             for (Update update : updates) {
 
@@ -49,7 +48,6 @@ public class PayaraBotBackend  {
                         sendMessage(request);
 
                         String message = "How are you feeling today? \uD83D\uDE42 \uD83D\uDE07 \uD83D\uDE1C"; // Embeds 🙂 😇 😜 emojis
-                        System.out.println(message);
 
                     }
 
@@ -110,7 +108,6 @@ public class PayaraBotBackend  {
                 }
 
                 if (update.message() == null && update.callbackQuery() != null && "contact".equalsIgnoreCase(update.callbackQuery().data())) {
-                    System.out.println(update.callbackQuery().toString());
                     InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup(
 
                             new InlineKeyboardButton("Contact Us").url("https://www.payara.fish/about/contact-us/"));
