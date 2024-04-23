@@ -2,7 +2,7 @@ name: Build and Push To Payara Cloud
 
 on:
   push:
-    branches: [ "main", "migrate-to-jsf" ]
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
