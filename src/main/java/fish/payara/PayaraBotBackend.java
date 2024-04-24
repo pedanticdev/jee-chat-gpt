@@ -7,7 +7,6 @@ import jakarta.inject.Inject;
 
 import com.pengrad.telegrambot.Callback;
 import com.pengrad.telegrambot.TelegramBot;
-import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
@@ -29,16 +28,16 @@ public class PayaraBotBackend {
 
 	@PostConstruct
 	void init() {
-		bot = new TelegramBot(telegramBotKey);
-		bot.setUpdatesListener(updates -> {
-
-			for (Update update : updates) {
-
-				updateAction(update);
-
-			}
-			return UpdatesListener.CONFIRMED_UPDATES_ALL;
-		});
+		// bot = new TelegramBot(telegramBotKey);
+		// bot.setUpdatesListener(updates -> {
+		//
+		// for (Update update : updates) {
+		//
+		// updateAction(update);
+		//
+		// }
+		// return UpdatesListener.CONFIRMED_UPDATES_ALL;
+		// });
 
 	}
 

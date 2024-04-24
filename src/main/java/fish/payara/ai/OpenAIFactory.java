@@ -1,8 +1,7 @@
-package fish.payara;
+package fish.payara.ai;
 
 import java.time.Duration;
 
-import jakarta.annotation.sql.DataSourceDefinition;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
 import jakarta.inject.Inject;

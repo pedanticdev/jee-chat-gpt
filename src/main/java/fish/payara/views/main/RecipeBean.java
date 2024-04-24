@@ -2,6 +2,8 @@ package fish.payara.views.main;
 
 import java.io.Serializable;
 
+import fish.payara.ai.GptService;
+import fish.payara.ai.LangChainChatService;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
@@ -13,7 +15,6 @@ import lombok.Setter;
 import org.apache.poi.util.StringUtil;
 import org.omnifaces.cdi.ViewScoped;
 
-import fish.payara.GptService;
 import fish.payara.jpa.RecipeSuggestion;
 
 @Named
@@ -24,6 +25,8 @@ public class RecipeBean implements Serializable {
 
     @Inject
     GptService gptService;
+    @Inject
+    LangChainChatService langChainChatService;
 
     private String recipeRequest;
 
@@ -31,7 +34,7 @@ public class RecipeBean implements Serializable {
 
     public void generateRecipeSuggest() {
         if (StringUtil.isNotBlank(recipeRequest)) {
-            recipeSuggestion = gptService.requestRecipe(recipeRequest);
+            recipeSuggestion = langChainChatService.generateRecipeSuggestion(recipeRequest);
             recipeRequest = null;
         } else {
             FacesContext.getCurrentInstance().
