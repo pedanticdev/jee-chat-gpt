@@ -1,4 +1,4 @@
-package fish.payara;
+package fish.payara.ai;
 
 import java.io.StringReader;
 import java.math.BigDecimal;
@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
 
-import fish.payara.views.main.SearchCriteria;
+import fish.payara.GptRequestContext;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.json.Json;
@@ -29,9 +29,11 @@ import lombok.extern.java.Log;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
+import fish.payara.CacheController;
 import fish.payara.jpa.PointOfInterest;
 import fish.payara.jpa.PointsOfInterestResponse;
 import fish.payara.jpa.RecipeSuggestion;
+import fish.payara.views.main.SearchCriteria;
 
 @ApplicationScoped
 @Log

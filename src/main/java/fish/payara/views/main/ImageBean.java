@@ -2,6 +2,7 @@ package fish.payara.views.main;
 
 import java.io.Serializable;
 
+import fish.payara.ai.GptService;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
@@ -12,7 +13,6 @@ import org.apache.poi.util.StringUtil;
 import org.omnifaces.cdi.ViewScoped;
 
 import fish.payara.GptRequestContext;
-import fish.payara.GptService;
 
 @Named
 @ViewScoped
