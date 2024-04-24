@@ -12,6 +12,8 @@ services:
       TELEGRAM_BOT_KEY: ${TELEGRAM_BOT_KEY}
     volumes:
       - ./deployments:/opt/payara/appserver/glassfish/domains/domain1/autodeploy
+      - ./cloud-docs.txt:/opt/cloud-docs.txt
+      - ./payara-cloud.pdf:/opt/payara-cloud.pdf
     ports:
       - "8080:8080"
       - "4848:4848"

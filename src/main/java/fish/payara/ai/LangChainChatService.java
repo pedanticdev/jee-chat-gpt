@@ -32,10 +32,6 @@ public class LangChainChatService {
 	String gptModel;
 
 	@Inject
-	@ConfigProperty(name = "gpt.image.mode")
-	String imageModel;
-
-	@Inject
 	@ConfigProperty(name = "OPEN_API_KEY")
 	String apiKey;
 
@@ -44,21 +40,16 @@ public class LangChainChatService {
 	Double temperature;
 
 	// StreamingChatLanguageModel model;
+
+	@Inject
 	OpenAiChatModel model;
+
 	PoiChat poiChat;
 	RecipeChat recipeChat;
 
 	@PostConstruct
 	void init() {
-		model = OpenAiChatModel.builder()
-				.apiKey(apiKey)
-				// .responseFormat("json_object")
-				.modelName(gptModel)
-				.temperature(temperature)
-				.timeout(ofSeconds(60))
-				.logRequests(true)
-				.logResponses(true)
-				.build();
+
 		poiChat = AiServices.create(PoiChat.class, model);
 		recipeChat = AiServices.create(RecipeChat.class, model);
 
