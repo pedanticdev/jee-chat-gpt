@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+             
+    <ui:define name="title">AI Chat</ui:define>
+
+    <ui:define name="content">
+        <div class="grid">
+            <div class="col">
+                <div class="card">
+                    <h:form>
+                        <p:outputPanel id="chatArea">
+                            <p:messages for="chatInput"/>
+                            <p:dataList value="#{payaraAiChatBean.chatMessages}" var="message"
+                                        emptyMessage="No chat messages. Why not say hi?"
+
+                            >
+                                #{message.userTime}<br/>
+                                You: #{message.userMessage}<br/>
+                                #{message.modelTime}<br/>
+                                Model: #{message.modelMessage}<br/><br/>
+
+                            </p:dataList>
+                        </p:outputPanel>
+
+                        <p:inputText id="chatInput" value="#{payaraAiChatBean.userMessage}"/>
+                        <p:commandButton value="Send" actionListener="#{payaraAiChatBean.handleGeneralChat()}" update="chatArea chatInput"/>
+
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+
+</ui:composition>
