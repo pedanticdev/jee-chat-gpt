@@ -2,6 +2,8 @@ package fish.payara;
 
 import java.io.IOException;
 
+import com.pengrad.telegrambot.UpdatesListener;
+import fish.payara.ai.PayaraAiService;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 
@@ -24,20 +26,23 @@ public class PayaraBotBackend {
 	@ConfigProperty(name = "TELEGRAM_BOT_KEY")
 	String telegramBotKey;
 
+	@Inject
+	PayaraAiService aiService;
+
 	TelegramBot bot;
 
 	@PostConstruct
 	void init() {
-		// bot = new TelegramBot(telegramBotKey);
-		// bot.setUpdatesListener(updates -> {
-		//
-		// for (Update update : updates) {
-		//
-		// updateAction(update);
-		//
-		// }
-		// return UpdatesListener.CONFIRMED_UPDATES_ALL;
-		// });
+		 bot = new TelegramBot(telegramBotKey);
+		 bot.setUpdatesListener(updates -> {
+
+		 for (Update update : updates) {
+
+//		 updateAction(update);
+
+		 }
+		 return UpdatesListener.CONFIRMED_UPDATES_ALL;
+		 });
 
 	}
 
@@ -64,12 +69,13 @@ public class PayaraBotBackend {
 		productsUpdateCallback(update);
 		serverUpdateCallback(update);
 		contactUpdateCallback(update);
+		aiChat(update);
 
 	}
 
 	private void initialGreetingResponse(Update update) {
 		if (update.message() != null && update.message().text() != null) {
-			if ("Hi".equalsIgnoreCase(update.message().text())) {
+			if (isHelloHiGreeting(update.message().text())) {
 
 				InlineKeyboardMarkup inlineKeyboard = new InlineKeyboardMarkup(
 						new InlineKeyboardButton("Products").callbackData("products"),
@@ -169,4 +175,21 @@ public class PayaraBotBackend {
 		}
 	}
 
+	private void aiChat(Update update) {
+		if (update.message() != null && !isHelloHiGreeting(update.message().text())) {
+			String generalChat = aiService.generalChat(update.message().text());
+			SendMessage request = new SendMessage(update.message().chat().id(),
+					generalChat)
+					.parseMode(ParseMode.HTML)
+					.disableWebPagePreview(true)
+					.disableNotification(true);
+//@payarafishbot
+			sendMessage(request);
+		}
+		
+	}
+
+	private boolean isHelloHiGreeting(String text) {
+		return "Hi".equalsIgnoreCase(text) || "Hello".equalsIgnoreCase(text);
+	}
 }

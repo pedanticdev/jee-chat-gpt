@@ -12,13 +12,23 @@
             <div class="col">
                 <div class="card">
                     <h:form>
-                        <p:focus for="terminal"/>
+                        <p:outputPanel id="chatArea">
+                            <p:messages for="chatInput"/>
+                            <p:dataList value="#{payaraAiChatBean.chatMessages}" var="message"
+                                        emptyMessage="No chat messages. Why not say hi?"
 
-                        <p:terminal id="terminal" widgetVar="term" commandHandler="#{payaraAiChatBean.handleChat}"
+                            >
+                                #{message.userTime}<br/>
+                                You: #{message.userMessage}<br/>
+                                #{message.modelTime}<br/>
+                                Model: #{message.modelMessage}<br/><br/>
 
-                                    welcomeMessage="Welcome to Payara Chat"/>
+                            </p:dataList>
+                        </p:outputPanel>
 
-                        <p:commandButton type="button" value="Clear" icon="pi pi-trash" onclick="PF('term').clear()" styleClass="mt-3" />
+                        <p:inputText id="chatInput" value="#{payaraAiChatBean.userMessage}"/>
+                        <p:commandButton value="Send" actionListener="#{payaraAiChatBean.handleChat()}" update="chatArea chatInput"/>
+
                     </h:form>
                 </div>
             </div>

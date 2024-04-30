@@ -1,18 +1,5 @@
 package fish.payara.views.main;
 
-import ai.djl.util.JsonUtils;
-import fish.payara.ai.PayaraAiService;
-import jakarta.annotation.PostConstruct;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
-import jakarta.json.bind.Jsonb;
-import jakarta.json.bind.JsonbBuilder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.java.Log;
-import org.apache.commons.lang3.StringUtils;
-import org.omnifaces.cdi.ViewScoped;
-
 import java.io.Serializable;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -23,6 +10,20 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.json.bind.JsonbBuilder;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.java.Log;
+
+import org.apache.commons.lang3.StringUtils;
+import org.omnifaces.cdi.ViewScoped;
+
+import fish.payara.ai.PayaraAiService;
+
 @Named
 @ViewScoped
 @Getter
@@ -30,60 +31,72 @@ import java.util.regex.Pattern;
 @Log
 public class PayaraAiChatBean implements Serializable {
 
-    @Inject
-    PayaraAiService payaraAiService;
-    Pattern pattern;
-    String userMessage;
-    private List<MessageResponse> chatMessages = new ArrayList<>();
+	@Inject
+	PayaraAiService payaraAiService;
+	Pattern pattern;
+	String userMessage;
+	private List<MessageResponse> chatMessages = new ArrayList<>();
 
-    @PostConstruct
-    void init() {
-         pattern = Pattern.compile("(?i)\\b(hello|hi)\\b");
-    }
+	@PostConstruct
+	void init() {
+		pattern = Pattern.compile("(?i)\\b(hello|hi)\\b");
+	}
 
-    public String handleChat(String message, String[] params) {
-        if (StringUtils.isNoneBlank(message) && pattern.matcher(message).find()) {
-            return "Hello there! Welcome to Payara. How can I help you today?";
-        }
-        return payaraAiService.chat(message);
-    }
+	public void handleChat() {
 
-    public void handleGeneralChat() {
-        if (StringUtils.isNotBlank(userMessage)) {
-            MessageResponse messageResponse = MessageResponse.of();
-            messageResponse.setUserMessage(new String(userMessage) + "\n");
-            messageResponse.setModelMessage(payaraAiService.generalChat(userMessage) + "\n\n");
-            messageResponse.setModelResponseTime(ZonedDateTime.now(ZoneOffset.UTC));
-            chatMessages.add(messageResponse);
-            userMessage = null;
+		if (StringUtils.isNotBlank(userMessage)) {
+			MessageResponse messageResponse = MessageResponse.of();
+			messageResponse.setUserMessage(new String(userMessage) + "\n");
+			if (pattern.matcher(userMessage).find()) {
+				messageResponse.setModelMessage("Hello there! Welcome to Payara. How can I help you today?");
+			} else {
 
-            log.log(Level.INFO, JsonbBuilder.create().toJson(messageResponse));
-        }
-    }
+				messageResponse.setModelMessage(payaraAiService.genericModelChat(userMessage) + "\n\n");
+			}
+			messageResponse.setModelResponseTime(ZonedDateTime.now(ZoneOffset.UTC));
+			chatMessages.add(messageResponse);
+			userMessage = null;
 
-    @Getter
-    @Setter
-    public static class MessageResponse {
-        private ZonedDateTime chatTime = ZonedDateTime.now(ZoneOffset.UTC);
+			log.log(Level.INFO, JsonbBuilder.create().toJson(messageResponse));
+		}
+	}
 
-        private ZonedDateTime modelResponseTime;
+	public void handleGeneralChat() {
+		if (StringUtils.isNotBlank(userMessage)) {
+			MessageResponse messageResponse = MessageResponse.of();
+			messageResponse.setUserMessage(new String(userMessage) + "\n");
+			messageResponse.setModelMessage(payaraAiService.generalChat(userMessage) + "\n\n");
+			messageResponse.setModelResponseTime(ZonedDateTime.now(ZoneOffset.UTC));
+			chatMessages.add(messageResponse);
+			userMessage = null;
 
-        public String getUserTime() {
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL);
-            return dateTimeFormatter.format(chatTime);
-        }
+			log.log(Level.INFO, JsonbBuilder.create().toJson(messageResponse));
+		}
+	}
 
-        public String getModelTime() {
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL);
-            return dateTimeFormatter.format(modelResponseTime);
-        }
+	@Getter
+	@Setter
+	public static class MessageResponse {
+		private ZonedDateTime chatTime = ZonedDateTime.now(ZoneOffset.UTC);
 
-        private String userMessage;
-        private String modelMessage;
+		private ZonedDateTime modelResponseTime;
 
-        public static MessageResponse of() {
-            return new MessageResponse();
-        }
-    }
+		public String getUserTime() {
+			DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL);
+			return dateTimeFormatter.format(chatTime);
+		}
+
+		public String getModelTime() {
+			DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM);
+			return dateTimeFormatter.format(modelResponseTime);
+		}
+
+		private String userMessage;
+		private String modelMessage;
+
+		public static MessageResponse of() {
+			return new MessageResponse();
+		}
+	}
 
 }
