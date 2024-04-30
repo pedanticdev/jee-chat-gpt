@@ -1,0 +1,4209 @@
+Payara Cloud
+2024-04-24
+
+Payara Cloud is an all-in-one platform as a service (PaaS) solution for
+automatically deploying Jakarta EE (formerly Java EE) and MicroProfile
+applications. It makes deployment in a cloud environment easier by simplifying
+cloud infrastructure provisioning and eliminating the need for the manual
+management of application servers, docker and Kubernetes.
+Instead of dealing with low-level components like Docker and Kubernetes yourself, the UI allows
+you to graphically define the configuration parameters and the application which needs to be
+deployed.
+If you’re new to Payara Cloud, we recommend starting with the Getting Started section to get you
+moving in the right direction.
+
+Structure
+By design, Payara Cloud does a lot of hidden work in the background that you don’t need to worry
+about. Behind the scenes, a Payara Micro instance is set up to run your application. All the
+integrations with the cloud environment are done for you automatically, such as setting up SSL
+certificates, routing, and integration with logging and monitoring tools.
+Since your application is running on a Payara Micro instance, Payara Cloud can run Java EE /
+Jakarta EE Web Profile based applications.
+The Payara Cloud environment is centered around two main concepts: the namespace and the
+application. You manage your namespaces and applications within Payara Cloud’s graphical user
+interface.
+To access and manage your applications, you click on the name of the Namespace containing your
+applications.
+
+Features
+Basic subscription features:
+• 4 vCPU / 8 Gb
+• Choose small, medium, or large runtime size
+Standard subscription features:
+• 16 vCPU / 32 Gb
+• Multiple Custom Domains
+• Choose small, medium, large, or XL runtime size
+Premium subscription features:
+Everything in the Standard subscription, plus:
+
+1
+
+• Payara Micro Enterprise binaries for local development
+• Access to Payara support team
+
+2
+
+Getting Started
+To initiate your journey with Payara Cloud, securing access to a Payara Cloud Subscription is the
+initial step. This can be effortlessly achieved by proceeding with the Signup process to create a trial
+account.
+Subsequently, having a Jakarta EE application ready is essential, as you’ll need to deploy it onto the
+platform.
+
+Signing up
+Payara Cloud offers 15 days free trial.
+Create an account here.
+Choose the Free Trial option and the Plan you would like your subscription to transition to, if you
+choose to continue after the 15 day trial is over. If you choose not to continue using Payara Cloud,
+you will have the opportunity to quickly and easily Cancel Subscription.
+
+Click [ Continue to Invoicing ].
+Please ensure that all the provided details are accurate and correct on this page.
+
+Complete the Invoicing Details by providing your Company address and Tax ID.
+
+3
+
+Click [ Continue to Payment Details ]
+Provide your payment information; rest assured that your card won’t be billed during the trial
+period, but only once it concludes.
+
+4
+
+Click [ Confirm Payment Details ]
+Review your information, consent to the Terms and Conditions, and select the [ Subscribe ] button.
+
+Your Payara Cloud Free Trial has been initiated.
+
+Log into Your Account
+Log into Your Account
+In the scenario where you create an account but do not complete the subscription process, you can
+still log in as an existing subscriber. However, upon logging in, you will encounter a "No
+Subscriptions Available" screen until you provide your payment details and finalize the
+subscription setup.
+
+5
+
+After completing the sign up process entirely, you can log in at https://payara.cloud.
+
+When you log into your account you are taken directly to the Namespaces screen. A starter
+namespace is provided for you the first time you log into Payara Cloud. You can use the starter
+namespace to test the functionality of Payara Cloud, or you can delete it and create your own
+namespace.
+Attempting to click on the URL at this time will display an error message. You must first upload an
+application and give the DNS time to propagate before you can access the application at the URL.
+If you land on your Billing Management screen on your account instead then you can select [ Use
+Cloud ] and it will redirect to the Application Management Page.
+
+Changing Configuration of an Application
+Make Changes to Your Application’s Configuration and Redeploy
+• Start on the Application detail screen for the application you wish to change.
+• Click the [ Application Actions ] button.
+• Choose [ Edit Configuration ]
+• Make your changes on the configuration screen, click [ Save ] to create a revision of your
+application.
+After saving your configuration changes, you’ll see the updated application details screen with a
+new revision number, and the revision history. Your latest revision will show configured – but not
+deployed. (The previously deployed revision of your application is still live until you deploy the
+changes).
+
+6
+
+Your revised application is saved in the “Pending Changes” box. Click on the [ Actions ] button
+within the Pending Changes box to open the menu of actions you can make on the revised
+application.
+
+To make your revision live, click [ Deploy Changes ]. You should get a message indicating a
+successful deployment of the revised application. (Note the revision number has been added to the
+application name).
+
+On the application details screen, you’ll see the changes are no longer pending and the revision is
+Live.
+
+7
+
+Cancelling a Subscription
+Once the 15-day free trial period concludes, if you decide to discontinue using Payara Cloud, it’s
+necessary to initiate a cancellation.
+Click on your email address located in the upper right corner of the Payara Cloud main page.
+From the dropdown menu, choose [ Billing Management ].
+
+On this page, navigate to [ Subscription Actions ], where you will find the option for [ Cancel
+Subscription ]. Click on this option.
+
+8
+
+Following that, you will encounter the choice to [ Cancel Plan ].
+
+Click [ Cancel Plan ].
+On the subsequent page, confirm the cancellation by clicking [ Cancel Plan ].
+
+9
+
+By completing these steps, your plan will be successfully cancelled. However, your account will
+persist, giving you the option to review your information.
+
+10
+
+Demo Videos
+
+11
+
+How-to Guides
+Configure Application
+Configure Your Application for Deployment
+Click on the [ Application Actions ] button to access all actions related to the application.
+The unconfigured status means that the platform detected that a configuration is required before
+you can deploy your application. The Deploy action is also not available when the status is
+unconfigured. When the application uses a database (found a persistence.xml file, not when using
+@DataSourceDefinition) the status is automatically unconfigured until the configuration is made.
+To configure your application for deployment, click Change Configuration.
+Configuration screen
+Payara Cloud has support for three configuration areas, MicroProfile Config properties, context
+root, and a database connections for a JPA data sources. The configuration screen will only display
+the MicroProfile Configuration values for an application using microprofile.config.properties and
+will only show you the Database Configuration values if your application contains a persistence.xml
+file.
+If your application connects to a datasource you’ll first provide the JDBC URL, datasource class, and
+the username and password used to authenticate your connection to the database server.
+You’ll select your runtime size in the drop down box based on the amount of resources you need to
+allocate for this instance. The resources count against the included CPU of your subscription.
+The Runtime Type provides two options for different application scenarios. For applications
+utilizing the Jakarta EE 8 API, the recommended choice is [ Payara 5, JDK 11 ]. On the other hand,
+for applications built on the Jakarta EE 10 platform, it is advisable to select [ Payara 6, JDK 11 ].
+
+MicroProfile Configuration Values
+
+MicroProfile configuration is a preferred way to externalize the configuration parameters for your
+application. You can Inject them similar to a CDI or retrieve them programmatically.
+When you upload your application, Payara Cloud looks for the file microprofile-config.properties to
+see if there are configuration parameters defined in the application. Your default parameters are
+read and displayed here, and you can override them or add new configuration keys. The Add
+
+12
+
+Configuration Key is useful when reading MP configuration values programmatically or when the
+values don’t have a default – and thus not present in microprofile-config.properties.
+
+Context Root
+By default, the name of the WAR file is taken as the context root on which the application is made
+available. Using the Application Configuration screen, this value can be changed.
+
+Internet-Accessible Paths
+While everything served under a specified context root path is accessible to other applications
+within the namespace, it is possible to restrict which sub-paths of the context root are accessible
+over the internet. By default all paths are available /*
+To set which sub-paths are accessible, enter space-separated patterns in the form of /prefix*. Subpaths matching this prefix will be available through the domain name of the namespace, while
+other paths will only be accessible to other applications within the same namespace.
+For example, let’s assume Context Root of /orders and Internet-Accessible Paths /details/ /cancel/.
+Then requests like
+https://namespace-domain.payara.app/orders/details/000234
+or
+https://namespace-domain.payara.app/orders/cancel/00234
+are directed to application.
+Requests to https://namespace-domain.payara.app/orders/place will be handled by the application
+handling the root namespace.
+
+13
+
+Other applications within this namespace can reach the handler for /place of this application by
+accessing http://applicationName/orders/place.
+Note that communications within a namespace are http only, as the traffic is limited to the
+namespace. HTTPS is available for inbound traffic into the namespace.
+
+Database Configuration
+When you upload your application, Payara Cloud looks for the persistence.xml file. If detected, the
+necessary minimal configuration parameters for a database source for the reference JNDI name
+can be specified.
+
+Databases without JPA
+If you are using plain JDBC connections instead of the JPA functionality of Jakarta EE, you can
+make use of the @DataSourceDefinition:
+
+@DataSourceDefinition(name="java:global/jdbc/cloud-postgres",
+className="org.postgresql.ds.PGSimpleDataSource",
+serverName = "${MPCONFIG=ds_servername}",
+portNumber = 5432,
+databaseName = "${MPCONFIG=ds_databasename}",
+user="${MPCONFIG=ds_username}",
+password="${MPCONFIG=ds_password}"
+)
+Or define the <data-source> element in web.xml:
+
+<data-source>
+<name>java:global/jdbc/cloud-mysql</name>
+<class-name>com.mysql.jdbc.jdbc2.optional.MysqlDataSource</class-name>
+<server-name>${MPCONFIG=ds_servername}</server-name>
+<port-number>3306</port-number>
+<database-name>${MPCONFIG=ds_databasename}</database-name>
+<user>${MPCONFIG=ds_username}</user>
+
+14
+
+<password>${MPCONFIG=ds_password}</password>
+</data-source>
+combined with MPCONFIG Microprofile Config variables. These MicroProfile Config variables can be
+configured with the Payara Cloud GUI
+If you are using plain JDBC connections instead of the JPA functionality of Jakarta EE, you need to
+define the MicroProfile configuration keys manually in Payara Cloud so the system can detect them
+as described above. Click ‘Add Configuration Key’ and enter the property value. In both cases, make
+sure the appropriate database driver is included in the WAR file you deploy.
+
+Allowing Access to your Database from Payara Cloud
+If you’d like to provision a database for the best possible performance, it is recommended to
+provision it on Microsoft Azure in the same region as the namespace. If your database access is
+restricted by IP address, enable access to following IP adresses based on the region the namespace
+is located in:
+Region
+
+IP Address(es)
+
+Azure, West Europe
+
+20.101.201.13
+
+Azure, East US
+
+40.76.131.181
+
+If you’d like to provision a database for the best possible performance, it is recommended to
+provision it on Microsoft Azure in the same region as the namespace.
+When you are happy with your configuration settings, click Save to return to the application details
+screen.
+
+15
+
+How to Manage Users
+The primary billing unit within Payara Cloud is a subscription. Upon signing up, a new subscription
+is generated for you, with a separate invoice issued for each subscription. You have the flexibility to
+invite multiple users to your subscription, and conversely, a user can be a member of more than
+one subscription.
+The detailed steps of managing users are described in Reference Guide Manage Users. This
+document aims to outline the typical configurations.
+
+Roles in Payara Cloud
+It’s acknowledged that within any infrastructure product, there are two principal administrative
+roles: one who utilizes the infrastructure and another who covers the costs for the infrastructure.
+Both roles require adequate access to pertinent sections of the user interface, hence Payara Cloud
+delineates these roles as follows:
+An Administrator possesses full authority over the infrastructure utilization, specifically entailing
+any operation concerning namespaces and applications.
+A Billing Manager holds comprehensive authority regarding financial matters such as costs and
+payments. They can modify invoicing data, update payment methods, cancel a subscription, or
+initiate an additional one, leveraging the existing payment methods. However, by default, they lack
+access to the infrastructure as it’s generally not within their purview.
+If necessary, a user can assume a combined role as Billing Manager with Administrative
+privilege, which is the default role assigned to a user upon sign-up.
+A user with restricted access is referred to as Member. They are barred from accessing billing data
+and performing namespace operations. More fine-grained access control is slated for future
+versions.
+Both Administrators and Billing Managers have the capacity to invite additional users to the
+16
+
+subscription and allocate roles to them. However, only a Billing Manager can confer or rescind
+Billing Manager roles.
+
+Role Scenarios
+As different companies will have different requirements, the follow scenarios give general
+suggestions on how the permissions can be configured for different organisations.
+Scenario 1: Small team
+For a small team with a high level of trust, you may opt to assign everyone the role of Billing
+Manager with Administrative privilege.
+If it’s undesirable for every team member to have the authority to initiate new subscriptions, then
+the bulk of the team should be Administrators, with a select few — ideally at least two — assuming
+the role of Billing Manager with Administrative privilege.
+Scenario 2: Separate procurement
+In larger organisations, a procurement or finance department may require access to invoices and
+management of payment methods, while remaining uninvolved in the actual product usage
+concerning namespace and application management.
+In such scenarios, the advisable approach is to invite responsible procurement personnel to the
+subscription as Billing Managers. It’s also recommended to set a procurement email as the
+invoicing email via [ Manage Billing ] > [ Update Invoice Information ].
+Subsequently, the initial user may transition their role to Administrator, entrusting all financial
+management to the invited Billing Managers.
+Note that post transitioning the initial user role to Administrator, reverting back to Billing Manager
+will no longer be possible as this right is exclusively reserved for Billing Managers. However, the
+dialog will prevent the removal or demotion of the last Billing Manager.
+Scenario 3: Protecting namespaces
+Operations at the namespace level significantly impact your operation: for instance, removing
+custom domain mapping could render all applications within the namespace inaccessible, while
+deleting a namespace is a destructive and irreversible action.
+Should you prefer to restrict namespace-level operations to a smaller group of users, assign the role
+of Member to the remainder of the team.
+Members retain the ability to execute all actions at the application level, with more fine-grained
+control set for future releases.
+
+How to Diagnose a Running Application
+Payara Cloud includes application logging. To make use of this feature, your application should use
+java.util.Logging or you can use j.u.l as the backend for SLF4J (or any other logging facade) if your
+
+17
+
+application is utilizing that.
+
+Accessing Logs
+To view or search the logs, go to the application you wish to view and click on the [ Application
+Actions ] button to open the drop down menu.
+
+Click on the [ Search logs ] option.
+
+From the Search Logs screen, you can enter search queries and restrict your search to specific dates
+and times using the options in the search box.
+Search queries will search the entire log entry. Search terms are alphanumeric sequences
+containing four or more characters. When a log entry matches any of the terms it is included in the
+result. You can use Boolean operators in your search queries to display results with a search term
+or exclude results containing your search term.
+Using the full-text query to locate specific information, you can define which words need to be
+
+18
+
+present in the message or other fields, or which words should not be present.
+Only whole words are recognized, for example when specifying load, log entries containing loading
+are not matched.
+When specifying multiple words, without any prefix, a log entry is shown when one of those words
+is found in the message. For example, loading network returns the log entries containing either
+loading or network.
+If you require that a certain word needs to be present in the message, prefix it with +. And when
+you want to exclude a message based on the occurrence of a word, use the – prefix.
+The prefixes can be combined with words without a prefix. For example, the following is a valid
+query loading network -policy. It returns those entries where the message contains either the word
+loading or network but excludes those having the word policy.
+You can also filter the log entries based on the timestamp of the log entry.
+You can either specify a timestamp from or timestamp from and timestamp to - but specifying only a
+timestamp to value to retrieve entries older than the specified timestamp is not allowed. In that
+case, put a timestamp for last week or month in the timestamp from field.
+When defining a timestamp, you can specify a date, a date in combination with hour and minutes,
+or a more detailed timestamp as indicated by the pattern visible in the field.
+20/01/2021: Only the date is specified and when used in the timestamp from field, the beginning of
+the day is assumed. In the field timestamp to, the end of the day is taken as value.
+20/01/2021 08:00: Besides the date, also hour and minutes are defined. In the timestamp from field,
+the beginning of the hour is assumed and in the end field, the end of the hour.
+
+Heap Dumps
+A Heap Dump can be used to analyze issues with your application if you suspect there is an object
+usage problem causing it. You can create a Heap dump of the JVM process running your application
+through the Application Actions, Acquire Heap Dump item.
+When the Heap dump is ready, it starts downloading a file containing the Heap dump. This file can
+be analyzed with the same tools when you capture a Heap dump locally.
+The file appears at the bottom of the diagnostic exports table. It can be downloaded again from this
+location during the next 7 days.
+
+Thread Dumps
+You can analyze the Thread usages of your applications by obtaining a Thread Dump through the
+Application Actions, Acquire Thread Dump item. This dump is identical to a Thread Dump you
+19
+
+obtain from a local JVM and can be used to analyze potential performance issues with your
+application.
+When the Thread dump is ready, it starts downloading a file containing the dump. This file can be
+analyzed with the same tools when you capture a Thread dump locally.
+The file appears at the bottom of the diagnostic exports table. It can be downloaded again from this
+location during the next 7 days.
+
+How to Use Custom Domains
+Payara Cloud offers customers on the Standard or Premium subscription tiers the ability to
+associate custom domains to namespaces. This feature enhances the accessibility of your
+applications deployed to such namespaces for end users, by providing a personalized and easily
+recognizable URL.
+When applications are uploaded to a specific namespace in Payara Cloud, a default URL is created.
+This URL is formed by concatenating your namespace and application names, resulting in a link
+like: https://guide-docu-6696a94c.payara.app/demo (Note: This is a fabricated URL for illustration
+purposes).
+However, these auto-generated URLs may not always align with your brand or be user-friendly,
+which is why the custom domain feature is valuable. It allows you to transform the default URL into
+a
+
+more
+
+brand-centric
+
+and
+
+user-friendly
+
+format
+
+such
+
+as
+
+https://myapp.yourAmazingBrand.com/app1, https://myapp.yourAmazingBrand.com/app2, and so
+on, simplifying the way end users access your deployed applications.
+The custom domain feature currently supports only sub-domains. Therefore, you’ll
+
+
+
+need to map the Payara Cloud namespace URL to a sub-domain via your DNS
+management console. For instance, you can map the namespace URL https://guidedocu-6696a94c.payara.app
+
+to
+
+myapp.myAmazingBrand.com,
+
+not
+
+to
+
+myAmazingBrand.com.
+
+Add A Custom Domain
+Select the namespace containing your application from the Namespace Navigator. In the
+[ Namespace Actions ] drop down menu, click [ Custom Domain ]
+
+20
+
+Figure 1. Namespace menu to add new domain
+
+On the next screen, click [ Add Custom Domain ].
+
+Figure 2. Button to click for adding a new domain
+
+Enter the domain name you’d prefer to use for accessing your application in the Custom Domain
+Name field.
+
+21
+
+Figure 3. Custom domain addition screen on Payara Cloud
+
+Click [ Set Custom Domain ]
+You’ll now see the Custom Domain screen along with the information needed for setting up the DNS
+record.
+
+Figure 4. DNS information screen for custom domain setup
+
+For instance, if using Cloudflare as your domain host, create a new CNAME record in your domain
+dashboard as shown.
+
+22
+
+Figure 5. Cloudflare domain record creation interface
+
+• ❶ Set record type to CNAME
+• ❷ Enter myapp for the sub-domain you used in Payara Cloud.
+• ❸ Paste the DNS record value copied from Payara Cloud’s custom domain screen
+• ❹ Save
+Return to the custom domain setup screen in Payara Cloud.
+
+Figure 6. Screen displaying DNS info for custom domain setup
+
+Click [ Check DNS ]
+Your namespace should now be linked to the configured domain.
+
+23
+
+Figure 7. Fully configured custom domain post DNS propagation
+
+
+
+DNS propagation duration may vary based on your domain name provider, taking
+anywhere from a few minutes to 48 hours. Check DNS propagation using online
+tools such as https://dnschecker.org/
+
+With the custom domain configured, all applications deployed to the namespace can be accessed as
+sub-paths of the set domain. For instance, an application deployed to the context path myapp1
+would be accessible via the URL https://myapp.jakarta101.com/myapp1.
+
+Edit/Remove Custom Domain
+You can always edit or remove configured domains for namespaces on the Custom Domain page.
+
+Figure 8. Custom domain page showing additional operations
+
+Application Communication
+Payara Cloud designates a distinct domain under payara.app for each namespace, like
+
+24
+
+https://staging-118842.payara.app. In this namespace, apps are deployed at specific paths. For
+instance, an app named foo will be deployed at https://staging-118842.payara.app/foo.
+Apps
+
+within
+
+the
+
+same
+
+namespace
+
+can
+
+interact
+
+using
+
+the
+
+URL
+
+format
+
+http://deployedAppName/contextRoot/someEndpoint.
+
+Custom Domain Linking
+You can link custom domains to a namespace. For example, myApp.foocompany.com can point to
+https://staging-118842.payara.app.
+
+Once
+
+linked,
+
+foo
+
+app
+
+becomes
+
+accessible
+
+at
+
+https://myApp.foocompany.com/foo.
+
+Context Root Definition
+By default, the app’s context root is either the application name or a path specified in glassfishweb.xml. Apps can also designate a sub-path for external exposure, like app-context-root/public,
+keeping other paths like app-context-root/api internal.
+
+Setting up Communication Between Applications
+Assume bar and bazz are deployed to the same namespace on Payara Cloud, with bar exposing a
+REST endpoint api/finance that bazz consumes. The following sections illustrate their
+communication setup.
+Deploying bar and bazz
+Deploy both apps to a namespace, say https://staging-118842.payara.app, making them accessible at
+https://staging-118842.payara.app/bar and https://staging-118842.payara.app/bazz.
+If a custom domain myApp.foocompany.com is configured, the apps are available at
+https://myApp.foocompany.com/bar and https://myApp.foocompany.com/bazz respectively.
+Accessing Endpoint in bazz
+bazz can access bars /api/finance endpoint at the internal address http://bar/bar/api/finance. This
+address utilizes the app name and context root for in-namespace routing.
+Below is a code snippet demonstrating a call from bar to `bazz’s api/finance endpoint:
+
+public class FinanceApiClient {
+public void doSomeFinance() {
+HttpClient client = HttpClient.newHttpClient();
+HttpRequest request = HttpRequest.newBuilder()
+.uri(URI.create("http://`bar`/`bar`/api/finance"))
+.GET()
+.build();
+HttpResponse<String> response = client.send(request,
+HttpResponse.BodyHandlers.ofString());
+if (response.statusCode() == 200) {
+25
+
+//Do custom work with the response
+}
+}
+}
+
+Use MicroProfile Config For Utmost Flexibility
+Employ MicroProfile Config properties to specify the endpoints, allowing different server URLs
+during development and production. With this setup, app deployment configuration on Payara
+Cloud can override these properties.
+Here’s how the above snippet can be adapted to use MicroProfile Config properties:
+
+public class FinanceApiClient {
+@Inject
+@ConfigProperty(name="`bar`.finance.endpoint")
+String resourceUrl;
+public void doSomeFinance() {
+HttpClient client = HttpClient.newHttpClient();
+HttpRequest request = HttpRequest.newBuilder()
+.uri(URI.create(resourceUrl))
+.GET()
+.build();
+HttpResponse<String> response = client.send(request,
+HttpResponse.BodyHandlers.ofString());
+if (response.statusCode() == 200) {
+//Do custom work with the response
+}
+}
+}
+With this setup, different URLs can be passed dynamically without redeploying the app. Modify this
+property anytime on the Payara Cloud dashboard to suit your needs.
+
+How to Scale Applications
+Payara Cloud provides a robust framework for scaling applications through three distinct
+Scalability Types.
+These types cater to different scenarios to ensure optimal performance and reliability. These are:
+Rolling Upgrade
+Rolling Upgrade is the default scalability type and facilitates seamless transitions during updates
+via blue-green deployments. When a new version of an application is deployed, the existing
+
+26
+
+version remains operational until the new one is fully prepared to take over.
+Singleton
+In scenarios where running multiple instances could lead to race conditions—particularly in
+queue processing or task scheduling—the Singleton scalability type ensures that only a single
+instance of the application is active at any given time.
+Horizontally Scaled
+For stateless applications that can be evenly distributed across multiple instances, Horizontal
+Scaling is the preferred scalability type. This type enables the application to scale based on the
+demand effortlessly. Additionally, you can specify the size of a single instance by designating the
+number of CPU cores. More cores allocate more memory (approximately 2GB per vCPU).
+Premium and Standard plans support up to 4 vCPU per instance, while the Basic plan allows up
+to 2 vCPU.
+
+
+
+Horizontally scaled applications require a minimum allocation of 2 CPUs per
+instance.
+
+Configuring Scalability Type
+Navigate to the Runtime Type section within the application’s configuration to adjust the scalability
+settings.
+
+Immediately below, you’ll find the Runtime Size setting, which establishes the resource baseline for
+
+27
+
+each instance.
+Each scalability type may present additional configurable options.
+Rolling upgrade
+Mechanics of Rolling upgrade is as follows:
+1. New container is started and its application is deployed.
+2. After its health endpoint reports success, the old version of application is marked for
+termination, and removed from load balancing endpoints.
+3. The Rollover Time parameter here is crucial. A Moderate setting keeps the application running
+for an extra 60 seconds to complete any ongoing requests and allows the load balancer to adjust
+the settings. A Minimal setting terminates the application instantly, potentially dropping some
+requests.
+Singleton
+Singleton has no additional parameters and works as follows:
+1. Old instance of application is terminated.
+2. New container is started and the application is deployed.
+This results in short unavailability of the application.
+Horizontal scaling
+Horizontal scaling is driven by parameter Number of Replicas indicating the desired number of
+concurrent running instances of the application.
+Horizontal scaling is usually deployed for performance reasons. It’s crucial to ensure a single node
+performs adequately before considering horizontal scaling. Therefore, the minimal Runtime Size
+for horizontally scaled applications is set at 2 vCPU cores. Deployment steps for a new revision of a
+horizontally scaled application are as follows:
+1. Extra replicas are halted if the running replicas exceed the specified number.
+2. A new instance is spun up.
+3. An old instance is removed from load balancing and given 60 seconds to reconcile.
+4. Steps 2 and 3 are repeated until all instances are replaced.
+
+Additional functionalities of Horizontal Scaling
+Data Grid
+Horizontally scaled applications can leverage the full spectrum of Data Grid functionalities of
+Payara. All instances of application will form a Data Grid cluster. All application instances will form
+a Data Grid cluster, but this feature needs explicit enabling by setting the Data Grid parameter to
+Enabled. HTTP Session replication can be also activated by adding the <distributable/> tag in the
+
+28
+
+application’s web descriptor. Learn more in our blog article about session replication.
+Sticky Sessions
+Sticky Sessions improve performance by routing client requests to the same backend instance, a
+mechanism implemented through a special cookie at the load balancer level. This feature is autoenabled for horizontally scaled applications and cannot be disabled.
+Adjusting Number of Instances
+Any redeployment will eventually replace all instances. However, if you merely wish to modify the
+number of running instances, utilize the [ Adjust Scale ] operation.
+
+Clicking this button will present a dialog box where you can specify the desired number of
+instances:
+
+This action either halts some instances—if the target number is lower than the current—or initiates
+
+29
+
+new ones to meet the specified requirement.
+
+How To Manage Access Levels
+Payara Cloud incorporates a role-based access control system, enabling the assignment of specific
+permissions to different users. This guide outlines the roles available in Payara Cloud and their
+application in common scenarios.
+
+Understanding Roles
+Payara Cloud categorizes users into distinct roles, each with a set of permissions tailored to their
+responsibilities:
+Role
+
+Purpose
+
+Billing Manager
+
+Handles financial aspects, like viewing invoices
+and managing payment methods, and also users,
+but without application management
+capabilities.
+
+Administrator
+
+Possesses full access to applications,
+configurations, and user role management,
+including namespace-specific roles.
+
+Billing Manager with Administrative Privilege
+
+Combines the permissions of both Billing
+Manager and Administrator.
+
+Manager
+
+Manages applications within namespaces,
+including deployment and deletion.
+
+Operator
+
+Focuses on application reconfiguration and
+diagnostics, without deletion rights or access to
+sensitive configurations.
+
+Viewer
+
+Only views deployed applications without
+modification rights.
+
+Guest
+
+Does not have permission to use Payara Cloud
+by default. This can be overridden by granting
+specific namespace access
+
+Payara Cloud distinguishes two primary roles at its highest level: Billing Manager and
+Administrator. A Billing Manager, typically from the finance department, manages payment details
+and views invoices. An Administrator, a technical role, oversees application and namespace
+management, including the unique ability to manage namespace-specific roles. Both of these roles
+however, are capable of managing users' roles
+Administrators also controls the namespaces. Only they can create new namespaces, manage roles
+within them, set up custom domains or delete namespaces.
+
+30
+
+Role Scopes
+There are three scopes of roles in Payara Cloud:
+Subscription Role
+This is the default role assigned to the user unless overridden in other scopes.
+Namespace Default User Role
+Overrides the Subscription Role within a specific namespace.
+User’s Role
+The most specific role assigned to particular user in single namespace.
+It’s noteworthy that the Namespace Default User Role can restrict permissions more than the
+Subscription Role, emphasizing the system’s flexibility in access management.
+Role scopes are applicable only to roles other than Administrator; the subscription role of an
+Administrator cannot be changed.
+
+Typical Usage Scenarios
+Let’s walk through some typical scenarios of managing permissions, from the most loose to the
+most strict.
+General Access
+In smaller teams, granting everyone the Billing Manager with Administrative Privilege role
+simplifies operations.
+Financial Oversight
+Assigning Billing Manager roles to those handling finances separates payment management from
+application oversight.
+Controlled Deployment
+If you have a person responsible for payments, but managing applications and deployments is not
+within their role, make them a Billing Manager. They will have no access to application
+management or namespace permissions at all.
+Operational Oversight
+Once your project involves customer-facing workloads and a larger team, tightening the
+deployment process to specific namespaces becomes essential. This entails limiting Administrator
+roles, as namespace-specific role overrides do not apply to Administrators.
+Typically, team members are designated as Managers, with a select few serving as Administrators
+capable of creating namespaces and managing roles.
+For the production namespace, setting the default user role to Viewer restricts deployment
+capabilities to Administrators only, allowing other team members to view metrics and logs. To
+31
+
+delegate deployment responsibilities within the production environment, a non-administrator can
+be assigned the Manager role in that specific namespace.
+Operational Runs
+For individuals tasked with monitoring and initial incident response, assigning them the Operator
+role at the namespace level is suitable. This role permits them to analyze and adjust the application
+settings without the ability to delete the application or access confidential configuration details.
+Furthermore, while Operators can obtain heap dumps, regarded as sensitive data, only Managers
+have the authority to download these dumps.
+View-only Access
+In case a developer needs access to production system, but should not be able to change anything,
+you would assign them Viewer role in the production namespace. In addition to logs and basic
+metrics, they would be able to see the configuration of the application sans the sensitive properties,
+but not change it. They can also acquire dumps, but only Managers can download them.
+No Access
+To completely restrict access to a namespace, you would assign Guest as Namespace Default User
+role. Then only users with user roles in that namespace (and Administrators) would be able to
+access it.
+Siloed Operations
+The most strict scenario would be explicitly controlling what non-administrator users can do. They
+would have Subscription Role set to Guest.
+On development namespace, you would assign Default Namespace Role of Manager. You could trim
+down access to specific users by assigning them Operator role in that namespace if necessary.
+On QA namespace, the Default Namespace Role could be Operator or Viewer. Only Administrators
+would be able to deploy there, or some users would get Manager role.
+Similar access control would be performed on production.
+Less strict variant would be assigning Viewer subscription role to everyone.
+
+Troubleshooting Tips
+Deploying a new application to Payara Cloud may occationally be accompanied by errors or issues
+that prevent the application from deploying and running smoothly. Below is a comprehensive guide
+to help you troubleshoot some of these common problems.
+
+No Deployed Application Artifact
+Symptoms
+You’ve initiated the deployment process, but there is no sign of your application artifact in the
+
+32
+
+Payara Cloud Dashboard.
+Troubleshooting Steps
+1. Check Upload Status: Make sure the artifact has been successfully uploaded. Look for any
+error messages during the upload process.
+2. Inspect Logs: Check the deployment logs for any error messages that could indicate what went
+wrong.
+3. Verify Artifact Type: Ensure that you are uploading a supported artifact type (.war) created
+from a supported Jakarta EE API version (10, 8).
+
+DNS Propagation for Application URL Not Fully Done
+Symptoms
+Your application has been deployed, but navigating to the provided URL results in a DNS error.
+Troubleshooting Steps
+1. Wait: DNS propagation can take up to 48 hours (depending on your location). You may need to
+wait before the changes propagate across all DNS servers.
+2. Check DNS Configuration: Verify that your DNS settings are correctly configured in your
+domain provider’s dashboard. Please refer to [how-to-guides::How to Use Custom Domains:::] to
+confirm you have entered the right settings for the domain.
+3. Use DNS Propagation Check Tools: Utilize online tools (eg. https://dnschecker.org) to check the
+status of DNS propagation globally.
+4. Check Router: If DNS has successfully propageted (confirmed through suggested tool above for
+instance), then your router DNS resolver cache may need flushing. You can use tools such as
+ipconfig or flushdns on Unix and Windos system respectively.
+
+Custom Domain May Still Not Have Fully Propagated
+Symptoms
+You’ve configured a custom domain, but navigating to it doesn’t resolve to your Payara Cloud
+application.
+Troubleshooting Steps
+1. Wait: Similar to DNS propagation, custom domains may also take time to fully propagate.
+2. Verify Domain Configuration: Double-check to ensure that your custom domain has been
+correctly set up in your Payara Cloud settings.
+3. Check CNAME Records: Make sure you’ve updated the CNAME record to point to your Payara
+Cloud application.
+
+33
+
+SSL Certificate Not Fully Provisioned
+Symptoms
+Browsers show that your Payara app site with custom domain is not secure.
+Troubleshooting Steps
+1. Wait: SSL certificate provisioning is done automatically by Payara Cloud for every deployed
+application. This also done for custom domains that you attach to your application. There might
+be some minor delays between when you setup your custom domain and when the SSL
+provider used by Payara Cloud (LetsEncrypt) resolves/processes the SSL request. The
+availability of SSL for you app could also be impacted by DNS resolution and propagation
+delays.
+2. Check SSL Status: You can use online tools such as https://crt.sh to check if LetsEncrypt is done
+generating SSL certificate for your custom domain.
+
+Insufficient Resources
+Symptoms
+Your application is not running/performing as you expect.
+Troubleshooting Steps
+1. Check Application Configuration: Verify if your application has enough resources to run
+optimally. Some applications are resource intensive, for such, you should check the applicaiton
+runtime size to confirm you have chosen the right runtime size. Please note that the available
+runtime sizes is dependent upon your current subscription tier.
+2. Scale Resources: If needed, adjust the allocated resources for your application.
+3. Review Logs: Look for any messages about resource shortages in the logs.
+
+Timeout Errors
+Symptoms
+The application takes too long to start, resulting in a timeout error.
+Troubleshooting Steps
+1. Check Application: Check if your application has any startup task that could be slowing down
+its startup process. Check if any external services being called at application startup are all up
+and available.
+
+Incompatible Runtime Environment
+
+34
+
+Symptoms
+Your application fails to run and logs indicate incompatible Java/Jakarta EE versions or missing
+dependencies.
+Troubleshooting Steps
+1. Check Runtime Version: Make sure that your application is compatible with the Java
+(supported versions are 11, 17) andj Jakarta EE (supported versions are 8 and 10) versions
+running in Payara Cloud, and that this requirement matches the configured Runtime Type of
+the application.
+2. Review Dependencies: Ensure all required dependencies are included in your deployment
+package and they are also compatible with selected Runtime Type. For example, an included
+library may be compiled for Java 17 whereas your application was compiled on Java 11.
+
+Database Connection Issues
+Symptoms
+Your application cannot connect to the database, resulting in application errors.
+Troubleshooting Steps
+1. Verify Connection Strings: Make sure your database connection strings are correctly
+configured on the Payara Cloud Dashboard.
+2. Check Network Rules: Ensure that Payara Cloud has access to your database, especially if it’s
+hosted outside of Azure.
+3. Review Logs: Inspect logs for database-related errors or warnings.
+
+General Troubleshooting Tips
+1. Review Logs: Payara Cloud provides extensive logging. Always make it a point to check the logs
+for any abnormalities or error messages.
+2. Obtain heap dumps or thread dumps: In order to diagnose what your application is doing
+having either of these tools might help.
+By following these troubleshooting steps, you should be able to resolve most common issues related
+to application deployment on Payara Cloud.
+
+Frequently Asked Questions
+What is Payara Cloud?
+Payara Cloud is a cloud-native deployment platform that provides a fully managed environment for
+deploying and running your Jakarta EE/MicroProfile applications. It is built on top of Payara
+Enterprise and offers a range of features and services for deploying, scaling, and managing your
+applications in the cloud.
+
+35
+
+What are the key features of Payara Cloud?
+Payara Cloud offers several key features, including automatic scaling, high availability, monitoring
+and metrics, security, centralized logging, seamless integration with other cloud services, and a
+user-friendly web-based management console.
+
+What programming languages/frameworks does Payara Cloud support?
+Payara Cloud is designed to run Jakarta EE Web Profile applications written mostly in Java.
+
+Can I deploy my existing Java EE applications on Payara Cloud?
+Yes, you can deploy your existing Java EE Web Profile applications on Payara Cloud without any
+modifications. Payara Cloud provides full compatibility with Java EE (8) and Jakarta EE (10)
+standards, ensuring that your applications run seamlessly.
+
+Can I run multiple applications?
+Yes, within Payara Cloud you can deploy multiple applications within the same namespace and, you
+can create multiple Namespaces to host several applications.
+
+Does Payara Cloud also host Database instances?
+At the moment, you should maintain a database installation yourself, in the cloud or on-premise.
+You can configure your database instances within your application using the standard Jakarta EE
+database connections constructs. These will be automatically picked and displayed on your Payara
+Cloud monitoring console for easy editing.
+
+How does automatic scaling work in Payara Cloud?
+Payara Cloud can automatically scale your applications based on predefined rules or metrics such
+as CPU utilization, memory usage, or incoming request rates. It dynamically adjusts the number of
+instances running your application to match the demand, ensuring optimal performance and
+resource utilization.
+
+Can I integrate Payara Cloud with other cloud services?
+Yes, Payara Cloud provides seamless integration with other cloud services and platforms. You can
+easily connect your applications to databases, storage services, message queues, and more, offered
+by various cloud providers.
+
+Is Payara Cloud secure?
+Yes, Payara Cloud prioritizes security and provides a secure environment for your applications. It
+includes features like network isolation, encryption, secure access controls, and automated security
+updates to protect your applications and data. Your applications deploy in separate containers to
+isolate them from the actions of other applications. They only have partial internet exposure, which
+allows only applications in the same namespace to access them via private endpoints. Payara Cloud
+also generates SSL certificates for your applications.
+
+36
+
+Can I have multiple users on my Payara Cloud account?
+At the moment, multiple users would need to access the environment using the same username and
+password. Fine grained access control is on the roadmap and will be released in the near future.
+
+How does Payara Cloud handle high availability?
+Payara Cloud ensures high availability by automatically distributing your application instances
+across multiple availability zones. In the event of a failure, it can quickly recover your application
+on another healthy instance, minimizing downtime.
+
+Can I monitor and manage my applications in Payara Cloud?
+Yes, Payara Cloud provides comprehensive monitoring and management capabilities. It offers builtin metrics and monitoring dashboards, allowing you to track the performance and health of your
+applications. Additionally, you can use the web-based management console to configure and
+manage various aspects of your applications.
+
+Is there downtime when I upgrade my application?
+No. Your current running version will be available until the new one is done deploying, which will
+take the place of the last running one. There is the possibility of a negligible downtime during the
+layover from the old to the new version. All uploaded and undeployed application versions will still
+be available for easy rollback at any point in time.
+
+How do I pick the appropriate runtime size for my application?
+The runtime size specifies the amount of resources to allocate for this instance and count against
+the included vCPU of your subscription. The following CPU has been reserved:
+• Small – 0.25 vCPU
+• Medium – 0.5 vCPU
+• Large – 1 vCPU
+• XL (available in Standard and Premium subscriptions only) – 2 vCPU
+
+What is a namespace?
+A namespace in Payara Cloud is container for the isolation/grouping of resources. A Subscription
+can have multiple namespaces. A namespace can have multiple applications. Each deployed
+application in a given name space will be accessible as a context path on the namespace.
+
+I just created a namespace and deployed an app, but it’s showing as 404
+Yes this is expected behaviour. When you create a namespace and deploy an app for the first time,
+the full URL to the app is a fully functional domain that will need to propagate. This generally takes
+anywhere between 5 - 20 mins.
+
+37
+
+I have uploaded a new app version, what next?
+Once your new app binary is successfully uploaded, its status will show as configured on the
+dashboard. You can then click the hamburger menu to either configure it or deploy it.
+
+Why is the previous version of my application showing as (Deployed)
+The previous versions of your app will be undeployed once a new version is deployed. The status
+(Deployed) refers to them not being the currently active, deployed version.
+
+How do I get started with Payara Cloud?
+You can get a 15-day free trial of Payara Cloud by creating an account at https://payara.cloud. For
+security reasons, you will be required to have a payment method on file. This will however, not be
+charged until your trial is over.
+
+38
+
+Reference
+Billing Management
+The Billing Management section in Payara Cloud provides a centralized interface to manage the
+billing aspects of your subscription, control user access, and adjust user preferences.
+1
+
+2
+3
+
+4
+
+Figure 9. Billing Management Screen
+Main Navigation Elements
+
+• ❶ User Menu
+• ❷ Subscriptions
+• ❸ Subscription Management
+• ❹ Manage Applications
+
+User Menu
+The user menu, located in the top right corner with your avatar, provides a dropdown menu for the
+current user.
+User Preferences
+Allows modification of user preferences.
+
+39
+
+Subscriptions
+A subscription represents a billing unit within Payara Cloud. As a user, you may have a single
+subscription or access to multiple subscriptions, each with varying roles.
+If you are not yet a Payara Cloud user, you need to sign up first.
+Once you expand the menu on the left side of the screen and select [ Subscriptions ], the following
+options are presented:
+View All Subscriptions
+Select a current subscription.
+Create New Subscription
+Sign up for an additional subscription.
+
+Subscription Management
+For the current subscription, the following actions can be performed. Note that the availability of
+actions may be dictated by your role within the subscription.
+Overview
+• Edit subscription name
+• View current usage
+• Set usage alerts
+Manage Billing
+• Update payment and billing information
+• View invoices
+• Cancel plan
+Manage Users
+• Invite users to subscription
+• Manage user roles
+• Remove users
+
+Managing Subscriptions in Payara Cloud
+Payara Cloud uses subscriptions as the primary billing unit. All application usage across various
+namespaces gets consolidated into a single invoice, simplifying the billing process.
+A single Billing Manager can oversee multiple subscriptions. These subscriptions can be associated
+with different companies and utilize various payment methods.
+Starting New Subscription
+
+40
+
+Free Trial
+
+For new users, the best way to begin is with our free trial. A detailed guide to get you started is
+available here: docs:ROOT:getting-started/cloud-trial/Signup Payara Cloud.pdf.
+If you’re an existing Payara Cloud user, you can easily create additional subscriptions. You have the
+option to either reusing existing invoicing data or provide new invoicing data for these new
+subscriptions.
+Cancelling Subscription
+A subscription can be cancelled at any time by following procedure listed in docs:ROOT:gettingstarted/cloud-trial/Cancel Payara Cloud.pdf.
+Invoicing
+Payara Cloud issues invoices in 30-day cycles, which include:
+1. Fixed Monthly Fee: This is charged in advance for the upcoming billing period.
+2. Variable Fee: This fee covers any usage that exceeds your plan’s prepaid volume in the previous
+billing period.
+Consumption Measurement
+Billing is based on vCPU-minutes. Each plan includes a set amount of prepaid vCPU-minutes per
+month, calculated as 30 days' worth of minutes per vCPU (43,200 minutes). For instance:
+1. The Basic plan includes 172,800 minutes.
+2. The Standard and Premium plans include 691,200 minutes.
+This 30-day cycle basis for billing periods is why they do not always align with calendar months.
+Payment Options
+Payara Cloud accepts both credit and debit card payments. We use Stripe as our trusted payment
+processor to ensure secure transactions.
+Registering and Logging In
+Payara Cloud streamlines user authentication with three convenient options:
+1. Email and Password
+2. GitHub Account
+3. Google Account
+Email and Password
+
+Upon visiting the Payara Cloud Billing Management console, you’re greeted with a registration
+screen:
+
+41
+
+1
+
+2
+
+Figure 10. Payara Cloud Signup Screen
+
+This method differentiates between new signups and existing account logins. If you’re already a
+member, simply click on "Already have an account? [ Log in ]" ❶ button.
+Should you attempt to register an existing account, an error message will appear:
+
+Something went wrong, please try again later
+Resetting Password
+
+If you forgot your password it is possible to reset it by clicking [ Forgot password? ] on the Log In
+screen:
+
+42
+
+Figure 11. Log In Screen with option to reset password
+
+Enter your username or email address on the subsequent screen:
+
+Figure 12. Password Reset Screen
+
+After clicking [ Continue ], an email will be sent to the corresponding user:
+
+43
+
+Figure 13. Password Reset Confirmation
+
+The email looks like this:
+
+Figure 14. Password Reset Email
+
+This email guides you to the password reset page:
+
+44
+
+Figure 15. Password Reset Page
+
+
+
+The legitimate password reset feature operates exclusively on the domain
+login.payara.cloud. Confirm you are on that page before entering your new
+password.
+
+GitHub Account
+
+Selecting the GitHub login method will redirect you to GitHub login page:
+
+Figure 16. GitHub Login Prompt
+
+For first-time logins, GitHub will request authorization for Payara Cloud to access your account:
+
+45
+
+Figure 17. GitHub Authorization Prompt
+Google Account
+
+Opting for the Google login method similarly redirects you to the Google login page:
+
+Figure 18. Google Login Prompt
+
+46
+
+Starting a Subscription
+Selecting a Plan
+
+Choose from a variety of Payara Cloud plans tailored to your needs. Each plan offers a specific
+amount of prepaid CPU time per month, a maximum instance size, and additional features like
+custom domain support.
+
+Figure 19. Plan selection
+
+The first step of the Signup process is to select a plan. After making your selection and clicking
+[ Continue to Invoicing ], a summary of your chosen plan appears above the invoicing details
+form. To change your plan, click [ Change Subscription ].
+
+Trial Plan
+
+For the Payara Cloud Trial, select the plan you intend to upgrade to post-trial. You can cancel before
+the trial’s end without charge.
+The trial plan limits usage to a maximum of 4 vCPU cores.
+Invoicing Details
+
+Next, fill in your invoicing details:
+
+47
+
+Figure 20. Invoicing details
+
+Contact Name and Email
+Enter the contact details for receiving notifications and invoices. It defaults to your account’s
+email; modify if needed for different invoicing.
+Company Name, Address, City, Zip Code, Country
+Provide your company’s invoicing information for the invoice.
+
+48
+
+Tax ID Type, Tax ID
+If VAT-registered, enter your VAT ID. Our payment processor will validate it according to the
+given ID Type. Tax type updates based on the selected country.
+Click [ Continue to payment ] after filling in the details.
+EU VAT Requirements
+
+EU-based companies must submit a valid VAT ID, verified against the EU VIES database.
+Payment method
+
+Finally, authorize a payment method for automated invoice settlement. Clicking [ Confirm
+payment details ] might redirect you to your bank for payment authorization.
+Your card is charged at the trial’s end and then at each billing period’s start.
+
+Figure 21. Payment method dialog
+Confirmation
+
+Agree to Payara Cloud’s Terms and Conditions. You can also choose to opt in for product updates via
+email to complete the process.
+
+Figure 22. Confirmation
+Provisioning
+
+You’ll then be directed to the Payara Cloud Application Management console. Account provisioning
+may take a few minutes. Welcome to Payara Cloud!
+Initiating an Additional Subscription
+All users of Payara Cloud have the ability to initiate additional subscriptions, provided they have
+access to the necessary payment information. Billing Managers can start a new subscription using
+existing payment data, while other users must input new payment information.
+
+49
+
+This feature enhances cost management transparency since each subscription has its own invoice
+and billing period. This allows for separate invoicing for different projects or departments.
+How to Access the Subscription Dialog
+
+To create a new subscription, click on the [ Create New Subscription ] ❷ button found on the lefthand side menu, under the expanded Subscriptions section ❶:
+
+1
+2
+
+Figure 23. Subscriptions menu
+Selecting Payment Details
+
+The next step involves choosing how to proceed with the payment details:
+• To start a new subscription with new payment details, click [ Create New Subscription with
+New Payment Details ]. This will redirect you to the Signup page, where you’ll be prompted to
+enter new company details and authorize a new payment method.
+• If you wish to use existing payment details, select [ Use These Details ] next to the desired
+Payment Details. Only the payment details of subscriptions where you are a Billing Manager
+will be listed.
+
+50
+
+Figure 24. Payment Detail Selection screen
+Signing Up with Existing Payment Details
+
+Selecting a plan is the first step, similar to the regular signup process. Note that usually, you are not
+eligible for a trial subscription for an additional plan, as Payara Cloud allows only one trial per
+user.
+
+51
+
+Figure 25. Plan Selection for new subscription
+
+Clicking [ Continue to Invoicing ] will display the payment details for confirmation:
+
+52
+
+Figure 26. Invoicing and Payment confirmation
+
+If these are not the correct details, clicking [ Use New Invoicing Payment Details ] will prompt a
+confirmation dialog:
+
+53
+
+Figure 27. Use New Payment Details confirmation
+
+Selecting [ I wish to use new details ] will initiate the signup process, as if you selected [ Create
+New
+
+Subscription
+
+with
+
+New
+
+Payment
+
+Details ]
+
+in
+
+the
+
+[reference:billing::signup::additional:::_payment_detail_selection] section.
+However, if the listed payment details are correct, proceed to the final step by clicking [ Continue
+to Confirmation ].
+
+54
+
+Figure 28. Signup confirmation
+
+As in the standard signup process, you will need to confirm the recurring payment and the terms of
+service. You also have the option to subscribe to Payara Cloud product updates via a newsletter.
+Clicking [ Subscribe ] will begin the provisioning process for your new subscription, which should
+complete in under a minute.
+
+Manage Users
+Payara Cloud enables you to have multiple users accessing your subscription. To facilitate this, you
+invite users to your subscription via email. Upon receiving the invitation, they can register for a
+new Payara Cloud account or use their existing one to access the subscription.
+Roles
+In Payara Cloud, users can have different roles, each with its own set of permissions:
+Billing Manager
+Users with this role have access to all billing and payment information related to the
+subscription. They can also invite new users to the subscription and modify their roles, though
+they may not have permissions to deploy applications to Payara Cloud.
+Administrator
+Administrators possess full permissions to deploy and configure applications on Payara Cloud.
+They can also invite new users to the subscription and modify their roles.
+55
+
+Billing Manager with Administrative Privileges
+This role combines the privileges of both the Billing Manager and Administrator roles, providing
+all available permissions. When you sign up for Payara Cloud, this is the default role assigned to
+your subscription.
+Member
+Members have limited access to the subscription’s applications; specifically, they cannot create,
+delete, or modify namespaces.
+Role Requirements
+
+A subscription must always have at least one user in the Billing Manager role and one in the
+Administrator role. This requirement can also be satisfied by a single user with the Billing Manager
+with Administrative Privileges role.
+Manage Subscription Users Screen
+User management activities are performed in the [ Manage Users ] section.
+
+1
+
+2
+
+3
+
+4
+
+Figure 29. Manage Users Screen
+
+• ❶ Invite New User
+• ❷ Roles of the respective user
+• ❸ Status of the user
+
+56
+
+• ❹ Additional actions available in the dropdown menu
+Inviting New User
+
+Click [ Add User ] to begin.
+
+Enter their email address and select the role they should have in the subscription once they accept
+it. The option to grant Administrative privileges to a Billing Manager is only available when the
+Billing Manager role is selected. Only a Billing Manager can grant or remove Billing Manager roles
+in the subscription.
+Click [ Add User ] to send an invitation email to the provided email address. The user’s email will
+appear in the list with a status of Pending.
+
+57
+
+Following the link [ Signup to Payara Cloud ] will lead to the signup prompt.
+
+1
+
+2
+
+The email used for registration does not need to match the email to which the invitation was sent.
+Users can also choose to use their existing Google or GitHub account instead ❷. Signup will fail if the
+user already has an account. In such a case, they need to select "Already have an account? [ Log
+in ]" ❶.
+Afterward, their invitation is accepted.
+
+58
+
+[ Go To Subscription ] will take them to the Subscription Overview.
+The user will be listed as Active on the user list screen after accepting. Acceptance of the invitation
+may fail if the user is already a member of the subscription, even if they are disabled.
+Other Means of Inviting
+
+If the invited user misses the invitation email, the menu action [ Resend Invite ] allows for
+resending the email and also changing the email address of the user being invited.
+Clicking [ Copy Invitation Link ] will bring you to a page that lists the invitation link the user
+should follow. With that, you can transfer the link by other means, i.e., instant message. The
+invitation link is for single use only; no further verification is performed when visiting it, so ensure
+no unauthorized actors obtain it. Specifically, Payara Cloud Support will never ask you for the
+invitation link.
+
+59
+
+Editing a User
+
+Click [ Edit User ] to view the properties of the respective user of this subscription.
+
+On this screen, you can change the user’s role. Confirm the updates by clicking [ Update User ].
+
+60
+
+When updating, the requirements for role staffing need to be maintained; otherwise, the update
+will fail. Only a Billing Manager can grant or remove Billing Manager roles in the subscription.
+New roles will take effect the next time the user logs in.
+Enabling or Disabling a User
+
+By un-clicking the checkbox [ Active ], the user will become Inactive. An inactive user has no
+permissions in the subscription. For them, the effect is the same as if they were removed, however,
+it’s possible to restore their permissions by re-enabling [ Active ] without needing to invite the user
+again.
+Removing a User
+
+To completely remove a user, select the [ Remove User ] option from the action menu for the
+respective user.
+
+
+
+This action cannot be undone. The user will need to be invited again to regain
+access to the subscription. To temporarily remove a user, consider disabling the
+user instead.
+
+Confirmation is required to complete the removal:
+
+Upon confirmation, the user will be removed from the subscription, and their access will be
+revoked. They will need to be re-invited to regain access to the subscription.
+
+61
+
+Application Management
+Application Management within Payara Cloud is your control center for managing applications.
+Here, you can configure, deploy, and group applications into namespaces.
+
+Concepts
+In Payara Cloud, your subscription acts as a billing unit and allows you to create multiple
+namespaces. A namespace is essentially a logical grouping of applications.
+Although all applications within a subscription are deployed on a single Payara Cloud cluster, they
+remain isolated from each other. These applications share a single domain but are distinguishable
+on the internet through unique sub-paths.
+A namespace comprises two elements:
+• Project - Defines the purpose of the applications
+• Stage - Indicates the deployment phase of the project, such as "dev", "testing", or "production"
+
+Accessing Application Management
+To access the Application Management area, click the [ Log In ] button on the Payara Cloud
+homepage or visit https://manage.payara.cloud directly.
+For a step-by-step login guide, see Registering and Logging In.
+
+Namespace List
+
+62
+
+1
+
+2
+
+5
+
+3
+4
+
+6
+
+Figure 30. Application Management main screen
+Main Navigation Elements
+
+• ❶ Access your account information and recent activity notifications
+• ❷ Switch between different subscriptions
+• ❸ Navigate to specific namespaces
+• ❹ Access individual applications within a namespace
+• ❺ View summaries and main actions related to the current screen
+• ❻ Share your experience with Payara Cloud
+
+Top Information Area
+User Menu
+The user menu in the top-right corner lets you access your profile, manage user preferences and
+billing, and log out.
+Notifications
+The notification button alerts you to deployment updates or announcements related to your
+clusters. Notifications only display information about the subscription you’re currently viewing.
+
+63
+
+Sidebar
+Subscription Selection
+Clicking the subscription name will navigate you to Namespace List screen — the one you see in the
+screenshot above.
+In case you have multiple subscriptions, you can switch between them using the dropdown menu
+here:
+• Extending the menu show item "Other subscription", which leads to subscription list screen.
+• Extending the menu further allows to directly switch to another subscription
+Namespace List
+Next section of the sidebar is the list of namespaces in the subscription. Clicking on the title will
+take you to namespace detail screen.
+Application List
+Should you expand the namespace, you will see the list of applications in the namespace and can
+navigate directly to application detail screen.
+
+Feedback
+The feedback button allows you to submit feedback about your experience with Payara Cloud.
+
+64
+
+Your feedback is valuable to us. Click the feedback button to share your Payara Cloud experience.
+Please include your email for follow-up and consider sharing data about your current environment
+for context.
+
+Namespaces
+The Namespace List screen provides overview about all namespaces in your subscription.
+
+65
+
+Figure 31. Namespace List screen
+Namespace List
+
+• ❶ Main Namespaces Table
+• ❷ Button to create a new Namespace
+• ❸ Name of Namespace
+• ❹ Project linked to the Namespace
+• ❺ Stage (e.g. dev, preprod, prod)
+• ❻ Domain name of the Namespace
+• ❼ Cloud region of the Namespace
+Click on the name of the namespace to navigate to Namespace Detail Screen. Clicking on the
+Domain url takes you to the application hosted at root context of that namespace, or a 404 page if
+no application is hosted at the root context of the namespace.
+Creating Namespace
+Click on [ Create New Namespace ] to bring up the new namespace dialog:
+
+66
+
+Figure 32. Create Namespace dialog
+Namespace List
+
+• ❶ Name of the project that the namespace will host (e.g. prototype)
+• ❷ The development stage or environment this namespace will host (e.g. dev or QA)
+• ❸ The cloud region to host the namespace in
+• ❹ Click to [ Create Namespace ] the namespace
+
+
+
+Project and Stage combination need to be unique within a subscription. It is not
+possible to change Cloud Region after a namespace is created.
+
+Managing Namespaces
+The Namespace details page is your central hub for managing a specific Namespace within Payara
+Cloud.
+
+67
+
+Figure 33. Namespace detail page
+Navigation and Features
+
+• ❶ Applications Count: Displays the total number of applications within this Namespace
+• ❷ Hosting Region: Indicates the geographic location where the Namespace is hosted
+• ❸ Root URL: The base URL for the Namespace; all applications deployed within the namespace
+will be accessible as sub-paths
+• ❹ Namespace Actions: A menu for essential actions like creating new applications, searching
+logs, or deleting the Namespace
+• ❺ Namespace Statistics: Visual graphs depicting aggregated Namespace statistics
+• ❻ Applications List: An overview of applications, including names, statuses (Configured,
+Running, Stopped), and URLs
+• ❼ Application Access URL: The internet-accessible endpoint for each application, appended to
+the base Namespace URL
+• ❽ New Application Button: Initiates the creation and uploading process for a new applications
+to the Namespace
+• ❾ Namespace Selector: A dropdown to navigate between different Namespaces easily
+From this page, you can perform a range of tasks from deploying new applications to monitoring
+the health and status of existing ones. The layout ensures that you have quick access to all
+necessary information and functionalities to manage your Namespaces effectively.
+Custom Domains
+You can assign a custom domain to a Namespace in Payara Cloud. Navigate to the respective
+Namespace and click on the [ Namespace Actions ] button.
+
+68
+
+Figure 34. Custom Domain Menu
+
+• ❶ Add custom domain menu
+• ❷ The Namespace URL to assign the custom domain to
+Click the Custom Domain menu item to navigate to the Custom Domain page.
+Access Control
+
+Accessing Applications in Payara Cloud
+Payara Cloud organizes applications within distinct Namespaces. Follow these steps to interact with
+your applications:
+Locate the Namespace: First, identify the Namespace where your application is deployed. This can
+be done by navigating to the Namespace list section.
+
+69
+
+Figure 35. Namespace list
+
+View Applications: Each Namespace represents a list of its associated applications.
+
+Figure 36. Namespace with application list
+Namespace homepage
+
+• ❶ Namespace name in which application is deployed
+• ❷ Base URL of the Namespace
+• ❸ Table of applications in the Namespace
+• ❹ Application name
+• ❺ Application status. An application can have PENDING, CONFIGURED or DEPLOYED status at
+any point in time
+• ❻ Internet accessible URL of the deployed application
+• ❼ Button to create and upload new application to this Namespace
+
+70
+
+The Applications table provides a comprehensive overview of all applications within the current
+Namespace. To open a specific application, click on its name. This action will direct you to the
+application detail page. Additionally, you can access a deployed application directly by clicking on
+its "Live URL."
+Uploading Applications
+Applications can be uploaded within Namespace Multiple applications can be uploaded to the same
+Namespace.
+
+Figure 37. Options to upload new application in a Namespace
+
+• ❶ Namespace: The Namespace within which the application will be uploaded
+• ❷ Namespace Actions Menu: Menu option to upload new application
+• ❸ Upload Button: Dedicated new application upload button
+Clicking either of the new application upload options above brings up the following upload diaglog.
+
+71
+
+Figure 38. New application upload popup dialog
+
+• ❶ Binary Upload Button: Click to bring up the file upload dialog to pick an application binary
+(.WAR file).
+• ❷ Name Of Artifact: Shows the name of the selected application binary
+• ❸ Deploy Option: Option to directly deploy the uploaded binary
+• ❹ Application Name: Option to give the application a name distinct from the uploaded binary
+file
+An uploaded application as shown in the above dialog will transition to the Pending State. Custom
+configurations can be carried out on the uploaded application to make it ready for deployment. An
+application can also be immediately deployed by selecting 'Deploy immediately' option and click
+Upload. A directly deployed application transitions to the Running State
+Deploying Pending Applications
+
+A pending application can be deployed by clicking the 'Deploy Changes' menu option from the
+Application Actions drop-down menu
+
+72
+
+Figure 39. Deploying an uploaded application
+
+• ❶ Deploy Changes: Deploy the uploaded application, transitioning it to the Running State
+• ❷ and ❸ Both menus have the Deploy Changes option as well
+A deployed application transitions to the Running State, which makes it accessible on the internet
+with its own unique domain.
+Limitations of Cloud Runtime
+Payara Cloud is a Jakarta EE focused deployment runtime that automatically provisions a Payara
+Micro instance for your applications. As a cloud deployment runtime, Payara Cloud has the
+following limitations.
+Standalone Service
+
+Payara Cloud focuses exclusively on running your Jakarta EE applications. You’ll need to source and
+integrate other essential services, such as databases, message queues, or caching mechanisms, from
+external providers. Payara Cloud allows full outbound connectivity for implementing such services.
+Jakarta EE Specific
+
+Payara Cloud is specifically tailored for Jakarta EE applications. If your project relies on other Java
+frameworks like Spring, Quarkus, or Micronaut, you’ll need to consider alternative deployment
+solutions.
+Limited Customization
+
+While Payara Cloud simplifies deployment, it offers less granular control compared to selfmanaging Payara Server instances on virtual machines or containers. You may have fewer options
+to fine-tune the runtime environment or install specific extensions.
+
+73
+
+Evolving Features
+
+Payara Cloud is under active development. This means features and supported technologies are
+subject to change. Make sure to stay updated on Payara Cloud’s roadmap and release notes.
+Important Considerations
+Before choosing Payara Cloud, carefully weigh these limitations:
+
+1. Project Nature: Is your project built strictly on Jakarta EE standards?
+2. Customization Needs: How much control do you require over the runtime environment?
+3. Integrations: What external services does your application rely on, and how easily can they be
+integrated with Payara Cloud?
+4. Budget: Does Payara Cloud’s pricing align with your project’s financial constraints?
+Navigating the Application Detail Page
+The application detail page shows all relevant information about a specific application.
+
+Figure 40. Application detail page
+Detail Application Page
+
+• ❶ Application Name: Displays the name of the application you are currently viewing
+• ❷ Application State: Indicates whether the application is RUNNING.
+• ❸ Runtime Size: Shows the configured runtime size for this application
+• ❹ Accessible URL: The internet URL for the application. Note: This URL resolves to the
+application only if it is in the RUNNING state; otherwise, a 502 error page appears
+• ❺ Application Management Menu: Includes options to start, edit application configuration,
+upload a deployment artifact (.war file), search application logs, and delete the application
+• ❻ Graphical Application Metrics: Visual representation of application performance
+
+74
+
+• ❼ More Metrics: Button to view extended graphical application metrics
+• ❽ Second Application Management Menu: Same functions as in ❺
+• ❾ Start/Stop Button: Toggle to start or stop a configured application
+• ❿ Application Revisions Table: Displays revision number, upload, configuration, application
+status, and a menu for revision actions (view/edit)
+Understanding Application States
+
+Applications hosted on Payara Cloud can be in various states throughout their lifecycle.
+PENDING State
+
+An application first enters the PENDING state when it is uploaded but not yet deployed.
+
+Figure 41. Newly uploaded application in pending state
+Details of PENDING State:
+
+• ❶ Application Name: Displays the current application’s name
+• ❷ PENDING State: Shows that the application is ready for deployment
+• ❸ Deployed Application URL: This field remains blank as the application is yet to be deployed
+• ❹ Management Menu: Provides options to edit, deploy, upload a new .war file, access logs, and
+delete the application
+• ❺ Duplicate Management Menu: Identical ❹
+• ❻ Revision Table Menu: Offers options to view, edit, or deploy the application. The 'Deployed At'
+date is absent since the application hasn’t been deployed
+RUNNING State
+
+An application is in the RUNNING state when it has been successfully deployed and is accessible
+online.
+
+75
+
+Figure 42. Running application
+Details of RUNNING State
+
+• ❶ Application Name: The current application’s name
+• ❷ RUNNING State: Indicates the application is active and deployed
+• ❸ Application URL: The URL through which the deployed application is accessible
+STOPPED State
+
+A STOPPED application is one that was previously running but has been manually halted.
+
+Figure 43. Application in stopped state
+Details of STOPPED State
+
+• ❶ Application Name: The current application’s name
+• ❷ STOPPED State: Shows that the application is currently not active
+
+76
+
+• ❸ Application URL: URL of the stopped application, which leads to a 502 error when accessed
+• ❹ Deployed time stamp: Indicates the last deployment time of the application
+• ❺ Start Application Button: Used to restart the application, transitioning it back to the RUNNING
+state
+Application Revisions: Managing and Tracking Changes
+
+Over its lifetime, an application in Payara Cloud undergoes several revisions, each representing a
+unique binary upload.
+
+Figure 44. Application revisions table
+Application Revisions Details
+
+• ❶ Application Name: Name of the application under review
+• ❷ Revisions Table: Lists all revisions of the application
+• ❸ Revision Number: Identifies the sequence number of each revision
+• ❹ Uploaded Date: Revision uploaded/created date
+• ❺ Configured Date: The date when the uploaded binary was configured
+• ❻ Deployed Date: The deployment date of the current revision
+• ❼ Revision Status: The current status of the revision
+• ❽ Actions: Menu for viewing, editing, or deploying revisions
+The revisions table is a critical tool for managing your application. It allows to roll back to previous
+versions as needed. It provides history of the binary artifact’s status at the time of each upload This
+feature ensures flexibility in version control and deployment strategies.
+Starting, Stopping, and Scaling Applications: A Guide
+
+You can start an application in a STOPPED State by using any of the available options.
+
+77
+
+Figure 45. Starting a stopped application
+Options to start a stopped application
+
+• ❶ Application Actions Menu: Start an application from the application action menu
+• ❷ Start Application Button: To start the application
+Starting a stopped application through any of the above options transitions the application back to
+the RUNNING State
+Configuration of Applications
+Payara Cloud allows you to configure different aspects of your application. The application
+configuration page can be accessed through the main Application Actions menu.
+
+Figure 46. Accessing the application config page
+
+• ❶ Menu Edit Configuration: This is the main menu item to access the application configuration
+
+78
+
+page
+• ❷ Revisions Menu: The application revision menu also has an Edit Configuration menu item that
+takes you to the application configuration page
+• ❸ Revision Menu: The revision menu of each application version also has an Edit Configuration
+menu item that takes you to the application configuration page
+You can configure
+• The context root
+• Edit any MicroProfile Config values in your application
+• Set how Payara Cloud scales your application
+• And application runtime
+Each of these configurations allow you to fine tune your application right on the application
+dashboard.
+Application Runtime and Scaling
+
+You can select the scaling method and runtime size of your Payara Cloud application on the
+application configuration dashboard
+
+Figure 47. Application scaling and runtime size options
+
+• ❶ Scalability Type: There are three scalability types you can choose from for your application.
+• ❷ Runtime Size: The runtime or "CPU size" that powers your application.
+• ❸ Runtime Type: The underlying combination of Java and Jakarta EE versions that your
+application is developed against.
+• ❹ Rollover Time: The rollover time for new uploaded application versions to replace the
+currently deployed version.
+Scalability Types
+
+There are three stability types in Payara Cloud. These are Rolling Upgrade, Singleton and Horizontal
+Scaling.
+
+79
+
+Figure 48. Application Scalability Types
+Rolling Upgrade
+
+This is the default scaling type. A new application version is deployed and the prior one is
+terminated when the newly deployed version reports its readiness. Payara Cloud determines the
+readiness of an application by calling the MicroProfile Health endpoint if one is bundled with the
+application. If not then the default health endpoint of the underlying Payara Micro instance is
+called. Rolling upgrade scalability type can be configured through the Rollover Time.
+Table 1. Rollover Time configuration options
+
+Setting
+
+Description
+
+Minimal Prior application version is shutdown immediately new one reports its readiness
+Moderat Prior application version is shutdown after a 90-second timeout after the new version
+e
+
+reports its readiness
+
+Singleton
+
+The singleton scalability type allows only one running instance of the application. The current
+running instance is terminated before a new version is deployed.
+
+
+
+Depending on the speed of your deployment, there may be a brief moment when
+your application is not accessible as the new version gets deployed.
+
+Horizontal Scaling
+
+80
+
+Figure 49. Horizontal Scaling
+
+• ❶ Number of replicas: Between 2 and 8 replicas can be configured
+• ❷ Domain Data Grid: Enable or disable Payara Domain Data Grid
+Horizontal scaling allows for configuring up to 8 application replicas. Payara Cloud will create and
+destroy the replicas as needed based on application load. You can also enable Data Grid Mode to
+take advantage of Payara Data Grid for the application.
+Context Root
+
+The context root configuration of an application determines the path at which the application is
+accessible relative to its Namespace when deployed.
+The Context Root configuration can be found on the main configuration page.
+
+81
+
+Figure 50. Context Root configuration
+
+• ❶ The Context Root: This is the endpoint on which your running application can be accessed. It is
+relative to the Namespace domain name.
+• ❷ Internet Accessible Paths: This can be used to restrict which sub-paths of your application’s
+context root can be accessed over the internet.
+Context Root
+
+Define the application’s accessibility path within the namespace’s domain by entering a path
+segment starting with "/". This path becomes the context path for the deployed application.
+Internal Access: By default, the application can be accessed by other applications within the same
+namespace using the URL http://applicationName/contextRoot/.
+Example
+
+Root Domain Access: If your application is the primary one in the namespace, and you want it to
+handle requests at the domain root, use the value /. In that case, the application will be accessible
+directly on the namespace domain https://namespace-domain.payara.app Subpath Access: For the
+application
+
+to
+
+respond
+
+to
+
+requests
+
+at
+
+a
+
+specific
+
+subpath,
+
+like
+
+https://namespace-
+
+domain.payara.app/api/, set the value to /api. This makes your application accessible at that subpath
+within the domain.
+Internet Accessible Paths
+
+To ensure controlled access to various parts of your application, you can specify which sub-paths of
+your application’s context root are open to the internet and which remain private within your
+namespace.
+Here’s how to manage access:
+Publicly Accessible Sub-Paths: Use space-separated patterns, formatted as /prefix*, to designate subpaths that should be accessible from the internet. Only the sub-paths that match these specified
+patterns will be accessible via your namespace’s domain name. Internally Accessible Paths: Subpaths not matching the specified patterns will remain accessible only to applications within the
+same namespace, ensuring internal communication or functionalities remain private.
+
+82
+
+Example
+
+Assuming your application has a context root of /orders, and you’ve designated /details/* and
+/cancel/*
+
+as
+
+internet-accessible
+
+paths.
+
+domain.payara.app/orders/details/000234
+
+In
+
+this
+
+case,
+
+URLs
+
+such
+
+or
+
+as
+
+https://namespacehttps://namespace-
+
+domain.payara.app/orders/cancel/00234 will be routed to your application, making these services
+available to users over the internet.
+Conversely, a request to https://namespace-domain.payara.app/orders/place will be directed to the
+application that manages the root namespace because /place is not listed as an internet-accessible
+path.
+For internal access, other applications within the namespace can reach the /place handler of this
+application through http://applicationName/orders/place, allowing for secure, namespace-contained
+communication between applications.
+MicroProfile Config
+
+Payara Cloud provides an intuitive dashboard for managing MicroProfile Config properties used in
+your application.
+You can add, update and remove MicroProfile Config properties set in your application on the
+MicroProfile Config panel on the application configuration dashboard.
+
+83
+
+Figure 51. MicroProfile Config settings
+
+• ❶ Restrict Fields: This option allows you to mark fields as restricted for confidentiality. Values of
+restricted fields will be represented as * characters
+• ❷ Add Config Property: Clicking this button opens up the form to add a new MicroProfile Config
+property for your application
+Adding Configuration Properties
+
+You can create new MicroProfile Config properties by clicking the [ Add Configuration Key ].
+
+84
+
+Figure 52. Add MicroProfile Config Key
+
+Add Config Key
+• ❶ Name of MicroProfile Config property
+• ❷ Click to add property
+Clicking [ Add Property ] creates a new text box to enter a value.
+
+Figure 53. Add MicroProfile Config Key
+
+Click [ Save ] to save property value.
+Restricting Fields
+
+You can restrict MicroProfile Config properties by clicking the Restricted Fields link on the
+MicroProfile Config panel. Clicking that button brings up the restrict fields option as shown below.
+
+85
+
+Figure 54. Restrict fields option
+
+You can select any number of fields to set as restricted. Clicking save, the restricted fields will be
+rendered as follows.
+
+86
+
+Figure 55. Restricted config fields
+Data Sources
+
+Apps deployed to Payara Cloud, being Jakarta EE (Java EE) compatible, can connect to any database
+using the Jakarta EE datasource mechanism. Payara Cloud looks for a persistence.xml file that uses
+the Jakarta EE default datasource java:comp/DefaultDataSource. If detected, it makes the necessary
+minimal configuration parameters for the default datasource available on the UI.
+
+87
+
+Figure 56. Default Datasource Configuration
+Configuring Datasources
+
+You can configure datasources using either the @DataSourceDefinition or through the <data-source>
+element in the web.xml file.
+
+88
+
+Using Annotation
+
+You can configure database connection through the @DataSourceDefinition.
+
+@DataSourceDefinition(name="java:global/jdbc/cloud-postgres",
+className="org.postgresql.ds.PGSimpleDataSource",
+serverName = "${MPCONFIG=ds_servername}",
+portNumber = 5432,
+databaseName = "${MPCONFIG=ds_databasename}",
+user="${MPCONFIG=ds_username}",
+password="${MPCONFIG=ds_password}"
+)
+Using the MicroProfile Config property MPCONFIG, you can externalise the various properties
+needed for the connection. This allows you to set different values for different environments and
+namespaces in Payara.
+You can also use the @DataSourceDefinitions() to define different datasources to connect to
+different databases.
+
+@DataSourceDefinitions(
+value = {
+@DataSourceDefinition(name="java:app/jdbc/cloud-postgres",
+className="org.postgresql.ds.PGSimpleDataSource",
+serverName = "${MPCONFIG=ds_servername}",
+portNumber = 5432,
+databaseName = "${MPCONFIG=ds_databasename}",
+user="${MPCONFIG=ds_username}",
+password="${MPCONFIG=ds_password}"
+),
+@DataSourceDefinition(name = "java:comp/env/DS2",
+minPoolSize = 0,
+initialPoolSize = 0,
+className = "org.apache.derby.jdbc.ClientDataSource",
+portNumber = 1527,
+serverName = "localhost",
+user = "examples",
+password = "examples",
+databaseName = "examplesDB",
+properties={"create=true", "weblogic.TestTableName=SQL SELECT 1 FROM
+SYS.SYSTABLES"}
+)
+}
+)
+
+89
+
+Using Web Descriptor
+
+You can also configure datasources in the web.xml descriptor.
+
+<data-source>
+<name>java:global/jdbc/cloud-mysql</name>
+<class-name>com.mysql.jdbc.jdbc2.optional.MysqlDataSource</class-name>
+<server-name>${MPCONFIG=ds_servername}</server-name>
+<port-number>3306</port-number>
+<database-name>${MPCONFIG=ds_databasename}</database-name>
+<user>${MPCONFIG=ds_username}</user>
+<password>${MPCONFIG=ds_password}</password>
+</data-source>
+Similar to the annotation, you can externalize connection properties through the MicroProfile
+Config property MPCONFIG property.
+
+
+
+You must define the MicroProfile configuration keys passed to MPCONFIG
+manually in Payara Cloud. You can then set values for those keys to be passed to
+the datasource definition parameters.
+
+Glossary
+Active User
+A user who has activated access to a Payara Cloud subscription.
+Administrator
+A user granted full administrative access to the applications within a subscription.
+Billing Manager
+A user granted full access to the billing and payment data of a subscription.
+Deploy
+The act of launching your uploaded and configured application.
+DNS (Domain Name System)
+A hierarchical and decentralized naming system for computers, services, or other resources
+connected to the Internet or a private network.
+Member
+A user with limited access to a Payara Cloud subscription.
+Namespace
+A grouping or isolation of resources within a Payara Cloud subscription. A subscription can have
+multiple namespaces, and each namespace can host multiple applications.
+
+90
+
+Inactive User
+A user whose access to a Payara Cloud subscription has been temporarily deactivated.
+Invitation
+An email sent to a user to grant access to an existing Payara Cloud subscription.
+Pending User
+A user who has received an invitation but has not yet accepted it.
+Stage
+The phase your application is in, such as Development, Testing, Pre-production, or Production.
+Also referred to as the environment.
+Subscription
+The billing unit of Payara Cloud, encompassing a defined set of resources and access levels.
+
+91
+
+Payara Cloud CLI User Guide
+Introduction
+pcl is command line utility for managing Payara Cloud namespaces and applications. It is
+distributed as executable jar file. It requires Java Runtime, version 8 or newer.
+
+Documentation Structure
+User Guide demonstrates the concept and usage of pcl mainly through examples. Command
+Reference then lists all options and sub-commands supported by the client. The content of reference
+is equivalent to output provided by option --help.
+
+Notation used
+Examples in this guide use the following convention:
+
+command input in bold, using $var for user-specific input
+stderr output in italics
+stdout output
+
+Getting started
+Command Line Client prerequisities
+Command Line Client is distributed as a zip package containing the client, shell wrappers for
+Windows and Unix-like systems and documentation package just like this one.
+The client itself is an executable .jar file, that requires at least Java 8 to be available on the system.
+
+Downloading the Commnand Line Client
+Client is distributed over Payara’s Nexus Repository under following coordinates:
+
+<dependency>
+<groupId>fish.payara.cloud</groupId>
+<artifactId>pcl</artifactId>
+<version>1.1.0</version>
+</dependency>
+▼ Maven Repository Settings
+
+<repository>
+<releases><enabled>true</enabled></releases>
+<snapshots><enabled>false</enabled></snapshots>
+<id>payara-artifacts</id>
+92
+
+<name>Payara Artifacts</name>
+<url>https://nexus.payara.fish/repository/payara-artifacts/</url>
+</repository>
+
+Download links
+• Full Distribution (.zip)
+• Executable JAR only (.jar)
+
+Logging in
+pcl uses OAuth Device Authentication flow to establish its identity to Payara Cloud. It will generate
+a confirmation code, which you use to log in to Payara Cloud web interface via browser.
+
+pcl login
+[INFO] In order to log in follow following link: https://login.payara.cloud/activate
+[INFO] Your confirmation code is KKMD-STTF
+The client will also open the browser for you if your environment permits it. In case you follow link
+manually you’ll need to enter the confirmation code on first page:
+
+After that a confirmation page is displayed:
+
+93
+
+
+
+Only confirm this page if you knowingly initiated login flow via pcl login. Payara
+Cloud will never ask you to authenticate via this flow via any other channel or
+under any other circumstance, such as solving a support issue.
+
+If you are logging in for the first time the authentication service will ask you to authorize Payara
+Cloud CLI to perform application management tasks with your identity:
+
+94
+
+After confirming this, the authentication process is completed and you may close the browser
+window:
+
+95
+
+Managing tokens
+After login is complete the relevant token is stored in $HOME/.payara/manage.payara.cloud. The token
+does not have any expiration time, so you will not need to log in again for when using pcl. Tokens
+can be invalidated remotely via User Preferences screen in Payara Cloud Web UI.
+
+Non-interactive usage
+Login only works for interactive sessions. In order to be able to perform pcl commands in noninteractive environments such as CI pcl login offers option --print-token.
+
+pcl login --print-token
+[INFO] In order to log in follow following link: https://login.payara.cloud/activate
+[INFO] Your confirmation code is CVJF-XKGH
+[SUCCESS] Token for environment-based login:
+PCL_AUTH_TOKEN=eyJyZWZyZXNoX3Rva2VuIjoiWktMTFVQaUVIeEZ3c2JfOGNXSzFILUdnaUR1OVlXZUdDR3h
+3TUVFUlVrM3VLIn0=
+The output of the command is the environment to use in order to establish the identity in a script.
+In Github Actions the token can be used in following way:
+Set
+
+secret
+
+PCL_AUTH_TOKEN
+
+for
+
+the
+
+repository
+
+eyJyZWZyZXNoX3Rva2VuIjoiWktMTFVQaUVIeEZ3c2JfOGNXSzFILUdnaUR1OVlXZUdDR3h3TUVFUlVrM3VLIn0=.
+
+96
+
+to
+
+In the workflow file refer to the secret like this:
+
+- name: Deploy new version
+env:
+PCL_AUTH_TOKEN: ${{ secrets.PCL_AUTH_TOKEN }}
+run: pcl -n project-head -a main-app upload target/app.war --deploy
+
+Common options
+Obtaining help
+Option --help will provide with same content as Command Reference does, listing all available
+options and a short description of the command.
+
+pcl --help
+Payara Cloud Command Line.
+Usage: pcl [-hqV] [-a=<applicationName>] [-n=<namespaceName>]
+[-o=<outputFormat>] [-s=<subscriptionName>] [COMMAND]
+Payara Cloud Command Line Interface allows remote operations over Payara
+Cloud's namespaces and application via command line.
+In order to sign in, use the command `pcl login` interactively. This will allow
+the client to obtain credentials that are either stored in home directory or
+can be provided via environment variable `PCL_AUTH_TOKEN`. See `pcl login
+--help` for details.
+-a, --application=<applicationName>
+Name of application to manage.
+Not required for commands listed by `-n` option, as well as
+`list-applications` and `upload`.
+-h, --help
+Show this help message and exit.
+-n, --namespace=<namespaceName>
+Name of namespace to manage.
+Required for all commands except `login`, `list-namespaces`
+and `create-namespace`.
+-o, --output=<outputFormat>
+Output format. Allowed values: TEXT, JSON.
+-q, --quiet
+Quiet output.
+Only result of operations will be displayed to `stdout`, or
+error message to `stderrr`.
+-s, --subscription=<subscriptionName>
+Name of subscription to use. Only necessary when account has
+access to multiple subscriptions.
+-V, --version
+Print version information and exit.
+Commands:
+login
+Log in to Payara Cloud instance.
+list-subscriptions Get list of subscriptions available to user.
+list-namespaces
+List namespaces available in a subscription.
+list-applications
+List applications present in a namespace.
+upload
+Upload application binary
+
+97
+
+deploy
+start
+stop
+create-namespace
+delete-namespace
+delete-application
+configure
+scale
+
+Deploy an existing application.
+Start an application
+Stop an application
+Create new namespace
+Deletes a namespace.
+Delete an application.
+Change configuration of an application
+Scale an application
+
+To find out about specific commands put --help after the command:
+
+pcl upload --help
+Usage: pcl upload [-ehqV] [--deploy] [-a=<applicationName>]
+[-n=<namespaceName>] [-o=<outputFormat>]
+[-s=<subscriptionName>] [-t=<timeout>] <file>
+Upload application binary
+Use to either provide new binary for existing application by specifying option
+`-a` / `--application`, or to upload new application into a namespace.
+<file>
+Application archive file (.war) to be uploaded
+-a, --application=<applicationName>
+Name of application to manage.
+Not required for commands listed by `-n` option, as
+well as `list-applications` and `upload`.
+--deploy
+Deploy application immediately.
+Application will be immediately deployed after
+upload if its default configuration is complete,
+i. e. all required option have default values.
+-e, --fail-early
+Fail command immediately after first deployment
+problem instead of waiting for timeout on client
+or backend side
+There are certain scenarios when deployment can
+succeed despite deployment problems reported.
+It is therefore not guaranteed that application
+deployment that failed with early warning will
+not start up later.
+-h, --help
+Show this help message and exit.
+-n, --namespace=<namespaceName>
+Name of namespace to manage.
+Required for all commands except `login`,
+`list-namespaces` and `create-namespace`.
+-o, --output=<outputFormat>
+Output format. Allowed values: TEXT, JSON.
+-q, --quiet
+Quiet output.
+Only result of operations will be displayed to
+`stdout`, or error message to `stderrr`.
+-s, --subscription=<subscriptionName>
+Name of subscription to use. Only necessary when
+account has access to multiple subscriptions.
+-t, --timeout=<timeout>
+Duration in seconds specifying how long to wait for
+deployment to complete
+
+98
+
+-V, --version
+
+This is client side timeout which doesn't affect
+deployment process in Payara Cloud. It is
+therefore not guaranteed that application
+deployment that failed due to this time out will
+not eventually start up later.
+Print version information and exit.
+
+Determining version
+This prints helpful information to determine the version and environment the command runs in.
+
+pcl -V
+pcl version: development-snapshot
+Java version: 11.0.13, Vendor: Eclipse Adoptium, Platform encoding: UTF-8
+OS: Windows 10, Version: 10.0, Arch: amd64
+
+Output options
+Option -o json can be used to force output to be JSON only, including error messages. Even though
+many commands return json in current version, it is possible that default console output will
+change in future versions. Output of -o json is planned to remain stable. Compare json output to
+those console outputs shown in Listing Namespaces and Creating a Namespace below:
+
+pcl -o json list-namespaces
+[{"href":"https://manage.payara.cloud/application/4727ef01-7811-4e5d-be9e0847017bfc87/n/cli:clitest:efacd05c/","rel":"https://api.payara.cloud/entity/namespace
+","name":"cli-clitest","liveURI":"https://cli-clitestxxxxxxxx.payara.app/","title":"cliclitest"},{"href":"https://manage.payara.cloud/application/4727ef01-7811-4e5d-be9e0847017bfc87/n/start:dev:85cafb11/","rel":"https://api.payara.cloud/entity/namespace",
+"name":"start-dev","liveURI":"https://start-dev-xxxxxxxx.payara.app/","title":"startdev"}]
+
+pcl -o json create-namespace --project cli --stage clitest
+{"timestamp":"2023-01-13T16:57:43.854254200Z","kind":"error","message":"Backend
+rejected the request: Namespace with this project / stage combination already exists
+(diagnostic id https://api.payara.cloud/error-instance/lcurj8l3)"}
+Option -q will suppress all progress and warning messages, puting just the output onto stdout or
+error messages to stderr.
+
+Namespace Management
+Basic namespace operations are available via CLI. Other use cases, such as set up of custom
+domains or monitoring are only available via GUI.
+
+99
+
+Listing Namespaces
+Use list-namespaces to see namespaces available to you:
+
+pcl list-namespaces
+[SUCCESS] Namespaces:
+cli-clitest
+name: cli-clitest
+liveURI: https://cli-clitest-xxxxxxxx.payara.app/
+start-dev
+name: start-dev
+liveURI: https://start-dev-xxxxxxxx.payara.app/
+For all other commands that operate on namespace, you must supply the value of name (e. g. startdev) as option -n.
+
+Creating a Namespace
+Creating namespace with create-namespace takes exact same input as GUI — project and stage the
+namespace should represent:
+
+pcl create-namespace --project cli --stage clitest
+[SUCCESS] Namespace was created
+{
+"name": "cli-clitest",
+"cluster": {
+"name": "Azure, West Europe"
+},
+"liveURI": "https://cli-clitest-xxxxxxxx.payara.app/"
+}
+Additionally, one can specify the provider and region namespace will be provisioned via option
+--region:
+Region value
+
+Provider
+
+Region
+
+azure-westeurope
+
+Azure
+
+West Europe (default)
+
+azure-eastus
+
+Azure
+
+East US
+
+pcl create-namespace --project cli --stage clitest --region azure-eastus
+[SUCCESS] Namespace was created
+{
+"name": "cli-clitest",
+"cluster": {
+"name": "Azure, East US"
+
+100
+
+},
+"liveURI": "https://cli-clitest-xxxxxxxx.payara.app/"
+}
+Payara Cloud can extend to support more regions and providers. The value is therefore checked
+after submission. If an invalid value is provided valid values for region will be provided in a
+warning message:
+
+pcl create-namespace --project cli --stage clitest --region unsupported
+[FAILURE] Backend rejected the request: Applicable values for region are: azurewesteurope (Azure, West Europe), azure-eastus (Azure, East US) (diagnostic id
+https://api.payara.cloud/error-instance/lcurjko0)
+Project and stage need to be unique within your subscription. An error is reported when you
+attempt to create a namespace with same project/stage combination:
+
+pcl create-namespace --project cli --stage clitest
+[FAILURE] Backend rejected the request: Namespace with this project / stage
+combination already exists (diagnostic id https://api.payara.cloud/errorinstance/lcurj5vw)
+
+Deleting a Namespace
+Namespace can be deleted by using delete-namespace command:
+
+pcl delete-namespace --namespace $namespace -y
+[SUCCESS] Namespace has been deleted
+Deleting the namespace permanently removes all applications and their configurations. Option -y
+is required to confirm this step, otherwise a warning is displayed:
+
+pcl delete-namespace -n $namespace
+[WARN] To confirm you are sure about deleting this namespace, pass option -y on the
+command line
+{
+"name": "cli-clitest",
+"cluster": {
+"name": "Azure, West Europe"
+},
+"liveURI": "https://cli-clitest-xxxxxxxx.payara.app/"
+}
+
+101
+
+Application Management
+CLI supports all usecases related to uploading a war file, configuring it and starting the revision.
+
+Uploading .war File
+A new application can be created within a namespace by uploading its binary artifact using the
+upload command:
+
+pcl upload -n $namespace $warFile
+[UPDATE] State of inspection process is CREATED
+[SUCCESS] Application uploaded
+{
+"name": "game-demo",
+"pendingChanges": true,
+"status": "PENDING"
+}
+Uploading an artifact starts an inspection process, which performs scanning of the .war file whilst
+identifying microprofile config properties, persistence units and datasources the application might
+require.
+The application name is determined from Maven metadata in META-INF/maven by default. Should you
+want to override that, provide option -a/--application:
+
+pcl upload -n $namespace -a $appName $warFile
+[UPDATE] State of inspection process is CREATED
+[SUCCESS] Application uploaded
+{
+"name": "pass-deploy",
+"pendingChanges": true,
+"status": "PENDING"
+}
+Status PENDING signifies that application has not been deployed yet. Deployment can be either
+performed by the deploy command, or by providing option --deploy to the upload command.
+
+pcl upload -n $namespace $warFile --deploy
+[UPDATE] State of inspection process is DEPLOYING
+[UPDATE] State of deployment process is DEPLOYING
+[UPDATE] State of deployment process is DEPLOYED
+[SUCCESS] Deployment completed
+{
+"name": "game-demo",
+
+102
+
+"applicationEndpoint": "https://cli-clitest-xxxxxxxx.payara.app/",
+"pendingChanges": false,
+"status": "RUNNING",
+"liveRuntimeSize": "QUARTER_CORE"
+}
+Here we see that inspection process is immediately followed by deployment process that starts up
+the application in target provisioning cluster.
+Uploading a new .war for an existing application doesn’t immediately deploy it. The information
+that the newest state of the application is different from deployed state is represented by attribute
+pendingChanges, which is true in such case.
+
+pcl upload -n $namespace -a $appName $warFile
+[UPDATE] State of inspection process is CREATED
+[SUCCESS] Application uploaded
+{
+"name": "game-demo",
+"applicationEndpoint": "https://cli-clitest-xxxxxxxx.payara.app/",
+"pendingChanges": true,
+"status": "RUNNING",
+"liveRuntimeSize": "QUARTER_CORE"
+}
+
+Deploying Application
+To deploy an application as a separate step (for example after configuring it) use the deploy
+command:
+
+pcl deploy -n $namespace -a $appName
+[UPDATE] State of deployment process is DEPLOYING
+[UPDATE] State of deployment process is DEPLOYED
+[SUCCESS] Deployment completed
+{
+"name": "game-demo",
+"applicationEndpoint": "https://cli-clitest-xxxxxxxx.payara.app/",
+"pendingChanges": false,
+"status": "RUNNING",
+"liveRuntimeSize": "QUARTER_CORE"
+}
+Payara Cloud will keep retrying deployment for up to 10 minutes before it pronounces deployment
+failed. There are two switches to enable CLI terminate before the 10 minutes, in the scenario of
+deployment failure.
+
+103
+
+Note that in either of these cases backend deployment is not cancelled. This is intentionally
+designed that way, because application deployment could be fail due to some external service not
+being available at startup.
+First option is to set client-side timeout for deployment with --timeout. Exit code in such case is 3.
+
+pcl -n $namespace -a $appName deploy --timeout 35
+[UPDATE] State of deployment process is DEPLOYING
+[WARN] Exception while loading the app
+[WARN] Exception during lifecycle processing
+[WARN] org.glassfish.deployment.common.DeploymentException: CDI deployment
+failure:WELD-001408: Unsatisfied dependencies for type String with qualifiers @Default
+[WARN]
+at injection point [BackedAnnotatedField] @Inject
+cloud.payara.fail.injection.FailingServlet.notAvailable
+[WARN]
+at
+cloud.payara.fail.injection.FailingServlet.notAvailable(FailingServlet.java:0)
+[WARN] WELD-001475: The following beans match by type, but none have matching
+qualifiers:
+[WARN]
+- Producer Method [String] with qualifiers [@JaxRsParamQualifier @Any]
+declared as [[UnbackedAnnotatedMethod] @Produces @JaxRsParamQualifier public
+org.glassfish.jersey.ext.cdi1x.internal.CdiComponentProviderServerRuntimeSpecifics$Jax
+RsParamProducer.getParameterValue(InjectionPoint, BeanManager)],
+[WARN]
+- Producer Method [String] with qualifiers [@BatchProperty @Any] declared as
+[[UnbackedAnnotatedMethod] @Produces @Dependent @BatchProperty public
+com.ibm.jbatch.container.cdi.BatchProducerBean.produceProperty(InjectionPoint)]
+[WARN] -- WELD-001408: Unsatisfied dependencies for type String with qualifiers
+@Default
+[WARN]
+at injection point [BackedAnnotatedField] @Inject
+cloud.payara.fail.injection.FailingServlet.notAvailable
+[WARN]
+at
+cloud.payara.fail.injection.FailingServlet.notAvailable(FailingServlet.java:0)
+[WARN] WELD-001475: The following beans match by type, but none have matching
+qualifiers:
+[WARN]
+- Producer Method [String] with qualifiers [@JaxRsParamQualifier @Any]
+declared as [[UnbackedAnnotatedMethod] @Produces @JaxRsParamQualifier public
+org.glassfish.jersey.ext.cdi1x.internal.CdiComponentProviderServerRuntimeSpecifics$Jax
+RsParamProducer.getParameterValue(InjectionPoint, BeanManager)],
+[WARN]
+- Producer Method [String] with qualifiers [@BatchProperty @Any] declared as
+[[UnbackedAnnotatedMethod] @Produces @Dependent @BatchProperty public
+com.ibm.jbatch.container.cdi.BatchProducerBean.produceProperty(InjectionPoint)]
+[WARN] at
+org.jboss.weld.bootstrap.Validator.validateInjectionPointForDeploymentProblems(Validat
+or.java:378)
+[WARN] at
+org.jboss.weld.bootstrap.Validator.validateInjectionPoint(Validator.java:290)
+[WARN] at org.jboss.weld.bootstrap.Validator.validateGeneralBean(Validator.java:143)
+[WARN] at org.jboss.weld.bootstrap.Validator.validateRIBean(Validator.java:164)
+[WARN] at org.jboss.weld.bootstrap.Validator.validateBean(Validator.java:526)
+[WARN] at
+org.jboss.weld.bootstrap.ConcurrentValidator$1.doWork(ConcurrentValidator.java:64)
+
+104
+
+[WARN] at
+org.jboss.weld.bootstrap.ConcurrentValidator$1.doWork(ConcurrentValidator.java:62)
+[WARN] at
+org.jboss.weld.executor.IterativeWorkerTaskFactory$1.call(IterativeWorkerTaskFactory.j
+ava:62)
+[WARN] at
+org.jboss.weld.executor.IterativeWorkerTaskFactory$1.call(IterativeWorkerTaskFactory.j
+ava:55)
+[WARN] at
+org.glassfish.weld.services.ExecutorServicesImpl.lambda$inContextClassloader$0(Executo
+rServicesImpl.java:123)
+[WARN] at
+org.glassfish.weld.services.ExecutorServicesImpl.lambda$inContextClassloader$0(Executo
+rServicesImpl.java:123)
+[WARN] at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+[WARN] at
+org.glassfish.enterprise.concurrent.internal.ManagedFutureTask.run(ManagedFutureTask.j
+ava:143)
+[WARN] at
+java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:11
+28)
+[WARN] at
+java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:6
+28)
+[WARN] at java.base/java.lang.Thread.run(Thread.java:829)
+[WARN] at
+org.glassfish.enterprise.concurrent.ManagedThreadFactoryImpl$ManagedThread.run(Managed
+ThreadFactoryImpl.java:250)
+[WARN] Exception while loading the app : CDI deployment failure:WELD-001408:
+Unsatisfied dependencies for type String with qualifiers
+[WARN] @Default
+[WARN]
+at injection point [BackedAnnotatedField] @Inject
+cloud.payara.fail.injection.FailingServlet.notAvailable
+[WARN]
+at
+cloud.payara.fail.injection.FailingServlet.notAvailable(FailingServlet.java:0)
+[WARN] WELD-001475: The following beans match by type, but none have matching
+qualifiers:
+[WARN]
+- Producer Method [String] with qualifiers [@JaxRsParamQualifier @Any]
+declared as [[UnbackedAnnotatedMethod] @Produces @JaxRsParamQualifier public
+org.glassfish.jersey.ext.cdi1x.internal.CdiComponentProviderServerRuntimeSpecifics$Jax
+RsParamProducer.getParameterValue(InjectionPoint, BeanManager)],
+[WARN]
+- Producer Method [String] with qualifiers [@BatchProperty @Any] declared as
+[[UnbackedAnnotatedMethod] @Produces @Dependent @BatchProperty public
+com.ibm.jbatch.container.cdi.BatchProducerBean.produceProperty(InjectionPoint)]
+[WARN] -- WELD-001408: Unsatisfied dependencies for type String with qualifiers
+@Default
+[WARN]
+at injection point [BackedAnnotatedField] @Inject
+cloud.payara.fail.injection.FailingServlet.notAvailable
+[WARN]
+at
+cloud.payara.fail.injection.FailingServlet.notAvailable(FailingServlet.java:0)
+[WARN] WELD-001475: The following beans match by type, but none have matching
+
+105
+
+qualifiers:
+[WARN]
+- Producer Method [String] with qualifiers [@JaxRsParamQualifier @Any]
+declared as [[UnbackedAnnotatedMethod] @Produces @JaxRsParamQualifier public
+org.glassfish.jersey.ext.cdi1x.internal.CdiComponentProviderServerRuntimeSpecifics$Jax
+RsParamProducer.getParameterValue(InjectionPoint, BeanManager)],
+[WARN]
+- Producer Method [String] with qualifiers [@BatchProperty @Any] declared as
+[[UnbackedAnnotatedMethod] @Produces @Dependent @BatchProperty public
+com.ibm.jbatch.container.cdi.BatchProducerBean.produceProperty(InjectionPoint)]
+[FAILURE] Timed out waiting for deployment to finish
+Another option is to fail immediately after deployment problem is identified by using the option
+--fail-early. Exit code in such case is 2.
+
+pcl -n $namespace -a $appName deploy --fail-early
+[UPDATE] State of deployment process is DEPLOYING
+[WARN] Exception while loading the app
+[WARN] Exception during lifecycle processing
+[WARN] org.glassfish.deployment.common.DeploymentException: CDI deployment
+failure:WELD-001408: Unsatisfied dependencies for type String with qualifiers @Default
+[WARN]
+at injection point [BackedAnnotatedField] @Inject
+cloud.payara.fail.injection.FailingServlet.notAvailable
+[WARN]
+at
+cloud.payara.fail.injection.FailingServlet.notAvailable(FailingServlet.java:0)
+[WARN] WELD-001475: The following beans match by type, but none have matching
+qualifiers:
+[WARN]
+- Producer Method [String] with qualifiers [@BatchProperty @Any] declared as
+[[UnbackedAnnotatedMethod] @Produces @Dependent @BatchProperty public
+com.ibm.jbatch.container.cdi.BatchProducerBean.produceProperty(InjectionPoint)],
+[WARN]
+- Producer Method [String] with qualifiers [@JaxRsParamQualifier @Any]
+declared as [[UnbackedAnnotatedMethod] @Produces @JaxRsParamQualifier public
+org.glassfish.jersey.ext.cdi1x.internal.CdiComponentProviderServerRuntimeSpecifics$Jax
+RsParamProducer.getParameterValue(InjectionPoint, BeanManager)]
+[WARN] -- WELD-001408: Unsatisfied dependencies for type String with qualifiers
+@Default
+[WARN]
+at injection point [BackedAnnotatedField] @Inject
+cloud.payara.fail.injection.FailingServlet.notAvailable
+[WARN]
+at
+cloud.payara.fail.injection.FailingServlet.notAvailable(FailingServlet.java:0)
+[WARN] WELD-001475: The following beans match by type, but none have matching
+qualifiers:
+[WARN]
+- Producer Method [String] with qualifiers [@BatchProperty @Any] declared as
+[[UnbackedAnnotatedMethod] @Produces @Dependent @BatchProperty public
+com.ibm.jbatch.container.cdi.BatchProducerBean.produceProperty(InjectionPoint)],
+[WARN]
+- Producer Method [String] with qualifiers [@JaxRsParamQualifier @Any]
+declared as [[UnbackedAnnotatedMethod] @Produces @JaxRsParamQualifier public
+org.glassfish.jersey.ext.cdi1x.internal.CdiComponentProviderServerRuntimeSpecifics$Jax
+RsParamProducer.getParameterValue(InjectionPoint, BeanManager)]
+[WARN] at
+org.jboss.weld.bootstrap.Validator.validateInjectionPointForDeploymentProblems(Validat
+or.java:378)
+
+106
+
+[WARN] at
+org.jboss.weld.bootstrap.Validator.validateInjectionPoint(Validator.java:290)
+[WARN] at org.jboss.weld.bootstrap.Validator.validateGeneralBean(Validator.java:143)
+[WARN] at org.jboss.weld.bootstrap.Validator.validateRIBean(Validator.java:164)
+[WARN] at org.jboss.weld.bootstrap.Validator.validateBean(Validator.java:526)
+[WARN] at
+org.jboss.weld.bootstrap.ConcurrentValidator$1.doWork(ConcurrentValidator.java:64)
+[WARN] at
+org.jboss.weld.bootstrap.ConcurrentValidator$1.doWork(ConcurrentValidator.java:62)
+[WARN] at
+org.jboss.weld.executor.IterativeWorkerTaskFactory$1.call(IterativeWorkerTaskFactory.j
+ava:62)
+[WARN] at
+org.jboss.weld.executor.IterativeWorkerTaskFactory$1.call(IterativeWorkerTaskFactory.j
+ava:55)
+[WARN] at
+org.glassfish.weld.services.ExecutorServicesImpl.lambda$inContextClassloader$0(Executo
+rServicesImpl.java:123)
+[WARN] at
+org.glassfish.weld.services.ExecutorServicesImpl.lambda$inContextClassloader$0(Executo
+rServicesImpl.java:123)
+[WARN] at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+[WARN] at
+org.glassfish.enterprise.concurrent.internal.ManagedFutureTask.run(ManagedFutureTask.j
+ava:143)
+[WARN] at
+java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:11
+28)
+[WARN] at
+java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:6
+28)
+[WARN] at java.base/java.lang.Thread.run(Thread.java:829)
+[WARN] at
+org.glassfish.enterprise.concurrent.ManagedThreadFactoryImpl$ManagedThread.run(Managed
+ThreadFactoryImpl.java:250)
+[WARN] Exception while loading the app : CDI deployment failure:WELD-001408:
+Unsatisfied dependencies for type String with qualifiers
+[WARN] @Default
+[WARN]
+at injection point [BackedAnnotatedField] @Inject
+cloud.payara.fail.injection.FailingServlet.notAvailable
+[WARN]
+at
+cloud.payara.fail.injection.FailingServlet.notAvailable(FailingServlet.java:0)
+[WARN] WELD-001475: The following beans match by type, but none have matching
+qualifiers:
+[WARN]
+- Producer Method [String] with qualifiers [@BatchProperty @Any] declared as
+[[UnbackedAnnotatedMethod] @Produces @Dependent @BatchProperty public
+com.ibm.jbatch.container.cdi.BatchProducerBean.produceProperty(InjectionPoint)],
+[WARN]
+- Producer Method [String] with qualifiers [@JaxRsParamQualifier @Any]
+declared as [[UnbackedAnnotatedMethod] @Produces @JaxRsParamQualifier public
+org.glassfish.jersey.ext.cdi1x.internal.CdiComponentProviderServerRuntimeSpecifics$Jax
+RsParamProducer.getParameterValue(InjectionPoint, BeanManager)]
+
+107
+
+[WARN] -- WELD-001408: Unsatisfied dependencies for type String with qualifiers
+@Default
+[WARN]
+at injection point [BackedAnnotatedField] @Inject
+cloud.payara.fail.injection.FailingServlet.notAvailable
+[WARN]
+at
+cloud.payara.fail.injection.FailingServlet.notAvailable(FailingServlet.java:0)
+[WARN] WELD-001475: The following beans match by type, but none have matching
+qualifiers:
+[WARN]
+- Producer Method [String] with qualifiers [@BatchProperty @Any] declared as
+[[UnbackedAnnotatedMethod] @Produces @Dependent @BatchProperty public
+com.ibm.jbatch.container.cdi.BatchProducerBean.produceProperty(InjectionPoint)],
+[WARN]
+- Producer Method [String] with qualifiers [@JaxRsParamQualifier @Any]
+declared as [[UnbackedAnnotatedMethod] @Produces @JaxRsParamQualifier public
+org.glassfish.jersey.ext.cdi1x.internal.CdiComponentProviderServerRuntimeSpecifics$Jax
+RsParamProducer.getParameterValue(InjectionPoint, BeanManager)]
+[FAILURE] Failing early due to reported deployment problem
+These both options are also available to other commands that might trigger deployment — upload
+and configure.
+
+Listing Applications
+In order to list applications within a namespace use command list-applications, that shows
+application names and their basic properties:
+
+pcl list-applications -n $namespace
+[SUCCESS] Applications:
+game-demo
+name: game-demo
+applicationEndpoint: https://cli-clitest-xxxxxxxx.payara.app/
+status: RUNNING
+other-app
+name: other-app
+applicationEndpoint: https://cli-clitest-xxxxxxxx.payara.app/other/
+status: RUNNING
+
+Stopping an Application
+A running application can be stopped with stop, providing the application name.
+
+pcl stop -n $namespace -a $appName
+[UPDATE] State of deployment process is DEPLOYING
+[UPDATE] State of deployment process is STOPPED
+[SUCCESS] Deployment completed
+{
+"name": "game-demo",
+"applicationEndpoint": "https://cli-clitest-xxxxxxxx.payara.app/",
+
+108
+
+"pendingChanges": false,
+"status": "STOPPED",
+"liveRuntimeSize": "QUARTER_CORE"
+}
+A warning is displayed when application is in a state that doesn’t permit stopping it:
+
+pcl stop -n $namespace -a $appName
+[FAILURE] Application cannot be stopped
+
+Starting an Application
+A stopped application can be started again by using the start command.
+
+pcl start -n $namespace -a $appName
+[UPDATE] State of deployment process is DEPLOYING
+[UPDATE] State of deployment process is DEPLOYED
+[SUCCESS] Deployment completed
+{
+"name": "game-demo",
+"applicationEndpoint": "https://cli-clitest-xxxxxxxx.payara.app/",
+"pendingChanges": false,
+"status": "RUNNING",
+"liveRuntimeSize": "QUARTER_CORE"
+}
+If the application is not stopped, the command fails.
+
+pcl start -n $namespace -a $appName
+[FAILURE] Application cannot be started
+
+Configuring an Application
+The most dynamic command of cli is configure. Available sub-commands of configure depend on
+specific application and the configuration options it provides.
+The configuration of an application consists of several partial configurations, that describe
+particular facets of that application. Semantics of partial configuration is represented by
+configuration kind, such as data source or context root configuration). Usually application has at
+most one partial configuration for each configuration kind, with only exception being data source,
+which has one configuration of kind dataSource for every data source identified.
+Available configuration kinds can be seen by invoking detailed help of configure command while
+also specifying the target application:
+
+109
+
+pcl -n $namespace -a $appName configure --help
+Usage: configure [-ehV] [--deploy] [-t=<timeout>] [<CONFIGURATION KIND>
+key=value...]...
+--deploy
+Deploy revision with updated configuration
+immediately
+-e, --fail-early
+Fail command immediately after first deployment
+problem instead of waiting for timeout on client
+or backend side
+There are certain scenarios when deployment can
+succeed despite deployment problems reported.
+It is therefore not guaranteed that application
+deployment that failed with early warning will
+not start up later.
+-h, --help
+Show this help message and exit.
+-t, --timeout=<timeout>
+Duration in seconds specifying how long to wait for
+deployment to complete
+This is client side timeout which doesn't affect
+deployment process in Payara Cloud. It is
+therefore not guaranteed that application
+deployment that failed due to this time out will
+not eventually start up later.
+-V, --version
+Print version information and exit.
+Configuration kinds:
+microprofileConfig
+appRuntime
+contextRoot
+
+pcl -n $namespace -a $appName configure contextRoot --help
+Usage: configure contextRoot [-ehV] [--deploy] [-t=<timeout>]
+[--add=<key>=<value>]...
+[--reset=<removedParameters>]... [<key>=<value>...]
+[<key>=<value>...]
+Property to set in a configuration
+--add=<key>=<value>
+Properties to add to configuration
+--deploy
+Deploy revision with updated configuration
+immediately
+-e, --fail-early
+Fail command immediately after first deployment
+problem instead of waiting for timeout on client
+or backend side
+There are certain scenarios when deployment can
+succeed despite deployment problems reported.
+It is therefore not guaranteed that application
+deployment that failed with early warning will
+not start up later.
+-h, --help
+Show this help message and exit.
+--reset=<removedParameters>
+Properties to reset to default value or remove
+-t, --timeout=<timeout>
+Duration in seconds specifying how long to wait for
+deployment to complete
+This is client side timeout which doesn't affect
+
+110
+
+deployment process in Payara Cloud. It is
+therefore not guaranteed that application
+deployment that failed due to this time out will
+not eventually start up later.
+-V, --version
+Print version information and exit.
+Recognized configuration parameters:
+exposedPaths
+appName
+contextRoot
+Recognized configuration parameters are keys that are known to exist for that particular
+configuration kind, and are reconfigured using syntax <parameter>=<value> after specifyig the
+configuration kind.
+When reconfiguration succeeds full configuration of the application as well as metadata about the
+keys is returned as result
+
+pcl -n $namespace -a $appName configure contextRoot contextRoot=/game
+[SUCCESS] Revision reconfigured
+{
+"kind": {
+"microprofileConfig": {
+"pass-deploy.war": {
+"values": {
+"mp.jwt.verify.issuer": "fish.payara.demo",
+"quiz.lockout": "1500",
+"mp.jwt.verify.publickey.location": "publickey.pem",
+"maths.duration": "20",
+"quiz.duration": "20"
+},
+"complete": true,
+"keys": [
+{
+"name": "quiz.lockout",
+"required": false,
+"default": "1500"
+},
+{
+"name": "mp.jwt.verify.issuer",
+"required": false,
+"default": "fish.payara.demo"
+},
+{
+"name": "mp.jwt.verify.publickey.location",
+"required": false,
+"default": "publickey.pem"
+},
+{
+"name": "maths.duration",
+111
+
+"required": false,
+"default": "20"
+},
+{
+"name": "quiz.duration",
+"required": false,
+"default": "20"
+}
+]
+}
+},
+"appRuntime": {
+"pass-deploy.war": {
+"values": {
+"runtimeSize": "QUARTER_CORE",
+"scalabilityType": "ROLLING_UPGRADE"
+},
+"complete": true,
+"keys": [
+{
+"name": "runtimeSize",
+"required": false
+},
+{
+"name": "scalabilityType",
+"required": false
+}
+]
+}
+},
+"contextRoot": {
+"pass-deploy.war": {
+"values": {
+"exposedPaths": "/*",
+"appName": "game-demo",
+"contextRoot": "/game"
+},
+"complete": true,
+"keys": [
+{
+"name": "exposedPaths",
+"required": false
+},
+{
+"name": "contextRoot",
+"required": true,
+"default": "/"
+},
+{
+"name": "appName",
+"required": true,
+
+112
+
+"default": "game-demo"
+}
+]
+}
+}
+}
+}
+Changes are not immediately deployed. Command deploy needs to be invoked to make them live.
+Alternatively option --deploy can be passed to configure to trigger deployment immediately after
+reconfiguring. In such case output of the configure command matches output of deploy command.
+
+pcl -n $namespace -a $appName configure microprofileConfig quiz.lockout=10 --deploy
+[WARN] Revision reconfigured
+[UPDATE] State of deployment process is DEPLOYING
+[UPDATE] State of deployment process is DEPLOYED
+[SUCCESS] Deployment completed
+{
+"name": "config-with-deploy",
+"applicationEndpoint": "https://cli-clitest-xxxxxxxx.payara.app/",
+"pendingChanges": false,
+"status": "RUNNING",
+"liveRuntimeSize": "QUARTER_CORE"
+}
+If provided parameter does not meet the syntax requirements or the entire configuration is not
+consistent the commands ends with a failure.
+
+pcl -n $namespace -a $appName configure contextRoot contextRoot=game
+[FAILURE] Backend rejected the request: 1 configurations are invalid
+in contextRoot --id=pass-deploy.war:
+contextRoot: Value must start with a slash
+Client will prevent to define configuration keys, that are not known.
+
+pcl -n $namespace -a $appName configure contextRoot ctxRoot=game
+[FAILURE] ctxRoot is not a valid option. If you want to add new property use --add
+ctxRoot=game
+But it is valid use case to add a new property for microprofileConfig, in which case option --add
+needs to be used.
+
+pcl -n $namespace -a $appName configure microprofileConfig --add
+new.app.config.property=value quiz.lockout=15
+[SUCCESS] Revision reconfigured
+
+113
+
+{
+"kind": {
+"microprofileConfig": {
+"pass-deploy.war": {
+"values": {
+"new.app.config.property": "value",
+"mp.jwt.verify.issuer": "fish.payara.demo",
+"quiz.lockout": "15",
+"mp.jwt.verify.publickey.location": "publickey.pem",
+"maths.duration": "20",
+"quiz.duration": "20"
+},
+"complete": true,
+"keys": [
+{
+"name": "quiz.lockout",
+"required": false,
+"default": "1500"
+},
+{
+"name": "new.app.config.property",
+"required": false
+},
+{
+"name": "mp.jwt.verify.issuer",
+"required": false,
+"default": "fish.payara.demo"
+},
+{
+"name": "mp.jwt.verify.publickey.location",
+"required": false,
+"default": "publickey.pem"
+},
+{
+"name": "maths.duration",
+"required": false,
+"default": "20"
+},
+{
+"name": "quiz.duration",
+"required": false,
+"default": "20"
+}
+]
+}
+},
+"appRuntime": {
+"pass-deploy.war": {
+"values": {
+"runtimeSize": "QUARTER_CORE",
+
+114
+
+"scalabilityType": "ROLLING_UPGRADE"
+},
+"complete": true,
+"keys": [
+{
+"name": "runtimeSize",
+"required": false
+},
+{
+"name": "scalabilityType",
+"required": false
+}
+]
+}
+},
+"contextRoot": {
+"pass-deploy.war": {
+"values": {
+"appName": "game-demo",
+"contextRoot": "/"
+},
+"complete": true,
+"keys": [
+{
+"name": "exposedPaths",
+"required": false
+},
+{
+"name": "contextRoot",
+"required": true,
+"default": "/"
+},
+{
+"name": "appName",
+"required": true,
+"default": "game-demo"
+}
+]
+}
+}
+}
+}
+Multiple configurations and their attributes can be set at same time:
+
+pcl -n $namespace -a $appName configure contextRoot contextRoot=/cr exposedPaths=/ui/*
+microprofileConfig quiz.lockout=12
+[SUCCESS] Revision reconfigured
+{
+
+115
+
+"kind": {
+"microprofileConfig": {
+"pass-deploy.war": {
+"values": {
+"mp.jwt.verify.issuer": "fish.payara.demo",
+"quiz.lockout": "12",
+"mp.jwt.verify.publickey.location": "publickey.pem",
+"maths.duration": "20",
+"quiz.duration": "20"
+},
+"complete": true,
+"keys": [
+{
+"name": "quiz.lockout",
+"required": false,
+"default": "1500"
+},
+{
+"name": "mp.jwt.verify.issuer",
+"required": false,
+"default": "fish.payara.demo"
+},
+{
+"name": "mp.jwt.verify.publickey.location",
+"required": false,
+"default": "publickey.pem"
+},
+{
+"name": "maths.duration",
+"required": false,
+"default": "20"
+},
+{
+"name": "quiz.duration",
+"required": false,
+"default": "20"
+}
+]
+}
+},
+"appRuntime": {
+"pass-deploy.war": {
+"values": {
+"runtimeSize": "QUARTER_CORE",
+"scalabilityType": "ROLLING_UPGRADE"
+},
+"complete": true,
+"keys": [
+{
+"name": "runtimeSize",
+"required": false
+
+116
+
+},
+{
+"name": "scalabilityType",
+"required": false
+}
+]
+}
+},
+"contextRoot": {
+"pass-deploy.war": {
+"values": {
+"exposedPaths": "/ui/*",
+"appName": "game-demo",
+"contextRoot": "/cr"
+},
+"complete": true,
+"keys": [
+{
+"name": "exposedPaths",
+"required": false
+},
+{
+"name": "contextRoot",
+"required": true,
+"default": "/"
+},
+{
+"name": "appName",
+"required": true,
+"default": "game-demo"
+}
+]
+}
+}
+}
+}
+A configuration key can be reset to its default value, or removed if it doesn’t have default value and
+is not required. This can be achieved with option --reset <key>.
+
+pcl -n $namespace -a $appName configure contextRoot --reset exposedPaths
+[SUCCESS] Revision reconfigured
+{
+"kind": {
+"microprofileConfig": {
+"pass-deploy.war": {
+"values": {
+"mp.jwt.verify.issuer": "fish.payara.demo",
+"quiz.lockout": "12",
+
+117
+
+"mp.jwt.verify.publickey.location": "publickey.pem",
+"maths.duration": "20",
+"quiz.duration": "20"
+},
+"complete": true,
+"keys": [
+{
+"name": "quiz.lockout",
+"required": false,
+"default": "1500"
+},
+{
+"name": "mp.jwt.verify.issuer",
+"required": false,
+"default": "fish.payara.demo"
+},
+{
+"name": "mp.jwt.verify.publickey.location",
+"required": false,
+"default": "publickey.pem"
+},
+{
+"name": "maths.duration",
+"required": false,
+"default": "20"
+},
+{
+"name": "quiz.duration",
+"required": false,
+"default": "20"
+}
+]
+}
+},
+"appRuntime": {
+"pass-deploy.war": {
+"values": {
+"runtimeSize": "QUARTER_CORE",
+"scalabilityType": "ROLLING_UPGRADE"
+},
+"complete": true,
+"keys": [
+{
+"name": "runtimeSize",
+"required": false
+},
+{
+"name": "scalabilityType",
+"required": false
+}
+]
+
+118
+
+}
+},
+"contextRoot": {
+"pass-deploy.war": {
+"values": {
+"appName": "game-demo",
+"contextRoot": "/cr"
+},
+"complete": true,
+"keys": [
+{
+"name": "exposedPaths",
+"required": false
+},
+{
+"name": "contextRoot",
+"required": true,
+"default": "/"
+},
+{
+"name": "appName",
+"required": true,
+"default": "game-demo"
+}
+]
+}
+}
+}
+}
+To enable horizontal scaling, add a new property for appRuntime to your configuration. Set the value
+of the scalabilityType parameter to HORIZONTAL_SCALING and specify the desired number of replicas.
+
+pcl -n $namespace -a $appName configure appRuntime scalabilityType=HORIZONTAL_SCALING
+--add numberOfReplicas=4
+[SUCCESS] Revision reconfigured
+{
+"kind": {
+"appRuntime": {
+"petclinic.war": {
+"values": {
+"numberOfReplicas": "4",
+"runtimeSize": "QUARTER_CORE",
+"runtimeType": "PAYARA6_JDK11",
+"dataGridMode": "ENABLED",
+"scalabilityType": "HORIZONTAL_SCALING"
+},
+"complete": true,
+"keys": [
+
+119
+
+{
+"name": "dataGridMode",
+"required": false
+},
+{
+"name": "numberOfReplicas",
+"required": false
+},
+{
+"name": "runtimeSize",
+"required": false
+},
+{
+"name": "runtimeType",
+"required": false
+},
+{
+"name": "scalabilityType",
+"required": false
+}
+]
+}
+},
+"contextRoot": {
+"petclinic.war": {
+"values": {
+"exposedPaths": "/*",
+"appName": "petclinic-jakartaee",
+"contextRoot": "/game"
+},
+"complete": true,
+"keys": [
+{
+"name": "exposedPaths",
+"required": false
+},
+{
+"name": "contextRoot",
+"required": true,
+"default": "/petclinic-jakartaee"
+},
+{
+"name": "appName",
+"required": true,
+"default": "petclinic-jakartaee"
+}
+]
+}
+},
+"dataSource": {
+"java:comp/DefaultDataSource": {
+
+120
+
+"values": {
+"datasourceClass": "org.h2.jdbcx.JdbcDataSource",
+"steadyPoolSize": "1",
+"maxWaitTime": "30000",
+"jdbcUrl": "<default>",
+"maxPoolSize": "10",
+"resourceType": "javax.sql.DataSource",
+"poolName": "java_comp_DefaultDataSource"
+},
+"complete": true,
+"keys": [
+{
+"name": "steadyPoolSize",
+"required": true,
+"default": "1"
+},
+{
+"name": "maxPoolSize",
+"required": true,
+"default": "10"
+},
+{
+"name": "maxWaitTime",
+"required": true,
+"default": "30000"
+},
+{
+"name": "jdbcUrl",
+"required": true,
+"default": "<default>"
+},
+{
+"name": "datasourceClass",
+"required": true,
+"default": "org.h2.jdbcx.JdbcDataSource"
+},
+{
+"name": "resourceType",
+"required": true,
+"default": "javax.sql.DataSource"
+},
+{
+"name": "user",
+"required": false
+},
+{
+"name": "password",
+"required": false
+},
+{
+"name": "poolName",
+
+121
+
+"required": true,
+"default": "java_comp_DefaultDataSource"
+}
+]
+}
+}
+}
+}
+Logs can be seen in console with deployment progress.
+
+pcl deploy -n $namespace -a $appName
+[UPDATE] State of deployment process
+[UPDATE] State of deployment process
+[UPDATE] State of deployment process
+[UPDATE] State of deployment process
+[SUCCESS] Deployment completed
+
+is
+is
+is
+is
+
+DEPLOYING [0/2]
+DEPLOYING [1/3]
+DEPLOYING [2/4]
+DEPLOYED [4/4]
+
+{
+"name": "petclinic-jakartaee",
+"applicationEndpoint": "https://start.zeromagic.io/game/",
+"pendingChanges": false,
+"status": "RUNNING",
+"horizontalScaling": true,
+"numberOfReplicas": 4,
+"liveRuntimeSize": "QUARTER_CORE"
+}
+If the application is configured for horizontal scaling, you can scale it directly by specifying the
+desired number of instances.
+
+pcl -n $namespace -a $appName scale --instances=4
+[UPDATE] State of deployment process is DEPLOYING
+[UPDATE] State of deployment process is DEPLOYED
+[SUCCESS] Deployment completed
+{
+"name": "game-demo",
+"applicationEndpoint": "https://cli-clitest-xxxxxxxx.payara.app/",
+"pendingChanges": false,
+"status": "RUNNING",
+"numberOfReplicas": 4,
+"liveRuntimeSize": "QUARTER_CORE",
+"horizontalScaling": true
+}
+
+122
+
+Command Reference
+pcl(1)
+
+123
+
+Name
+pcl - Payara Cloud Command Line.
+Synopsis
+pcl
+
+[-hqV]
+
+[-a=<applicationName>]
+
+[-n=<namespaceName>]
+
+[-o=<outputFormat>]
+
+[-s
+
+=<subscriptionName>] [COMMAND]
+Description
+Payara Cloud Command Line Interface allows remote operations over Payara Cloud’s namespaces
+and application via command line. In order to sign in, use the command pcl login interactively.
+This will allow the client to obtain credentials that are either stored in home directory or can be
+provided via environment variable PCL_AUTH_TOKEN. See pcl login --help for details.
+Options
+-a, --application=<applicationName>
+Name of application to manage.
+Not required for commands listed by -n option, as well as list-applications and upload.
+-h, --help
+Show this help message and exit.
+-n, --namespace=<namespaceName>
+Name of namespace to manage.
+Required for all commands except login, list-namespaces and create-namespace.
+-o, --output=<outputFormat>
+Output format. Allowed values: TEXT, JSON.
+-q, --quiet
+Quiet output.
+Only result of operations will be displayed to stdout, or error message to stderrr.
+-s, --subscription=<subscriptionName>
+Name of subscription to use. Only necessary when account has access to multiple subscriptions.
+-V, --version
+Print version information and exit.
+Commands
+login
+Log in to Payara Cloud instance.
+
+124
+
+list-subscriptions
+Get list of subscriptions available to user.
+list-namespaces
+List namespaces available in a subscription.
+list-applications
+List applications present in a namespace.
+upload
+Upload application binary
+deploy
+Deploy an existing application.
+start
+Start an application
+stop
+Stop an application
+create-namespace
+Create new namespace
+delete-namespace
+Deletes a namespace.
+delete-application
+Delete an application.
+configure
+Change configuration of an application
+
+pcl-login(1)
+
+125
+
+Name
+pcl-login - Log in to Payara Cloud instance.
+Synopsis
+pcl
+
+login
+
+[-hqV]
+
+[--print-token]
+
+[-a=<applicationName>]
+
+[-n=<namespaceName>]
+
+[-o
+
+=<outputFormat>] [-s=<subscriptionName>]
+Description
+Log in to Payara Cloud instance. Browser-based flow will start in order to log in to Payara Cloud
+management endpoint, and token will be stored in home directory.
+Non-interactive use: In order to use in non-interactive way such as in CI, use parameter --print
+-token. After login procedure on interactive terminal the command will print out environment to
+be set in the CI in order that represents same login credential.
+Options
+-a, --application=<applicationName>
+Name of application to manage.
+Not required for commands listed by -n option, as well as list-applications and upload.
+-h, --help
+Show this help message and exit.
+-n, --namespace=<namespaceName>
+Name of namespace to manage.
+Required for all commands except login, list-namespaces and create-namespace.
+-o, --output=<outputFormat>
+Output format. Allowed values: TEXT, JSON.
+--print-token
+Print out environment setting to be used to use this token in non-interactive way.
+-q, --quiet
+Quiet output.
+Only result of operations will be displayed to stdout, or error message to stderrr.
+-s, --subscription=<subscriptionName>
+Name of subscription to use. Only necessary when account has access to multiple subscriptions.
+-V, --version
+Print version information and exit.
+
+126
+
+pcl-list-namespaces(1)
+
+127
+
+Name
+pcl-list-namespaces - List namespaces available in a subscription.
+Synopsis
+pcl list-namespaces [-hqV] [-a=<applicationName>] [-n=<namespaceName>] [-o=<outputFormat>] [
+-s=<subscriptionName>]
+Description
+List namespaces available in a subscription. Returned namespace names can be used as value for
+option -n / --namespace.
+Options
+-a, --application=<applicationName>
+Name of application to manage.
+Not required for commands listed by -n option, as well as list-applications and upload.
+-h, --help
+Show this help message and exit.
+-n, --namespace=<namespaceName>
+Name of namespace to manage.
+Required for all commands except login, list-namespaces and create-namespace.
+-o, --output=<outputFormat>
+Output format. Allowed values: TEXT, JSON.
+-q, --quiet
+Quiet output.
+Only result of operations will be displayed to stdout, or error message to stderrr.
+-s, --subscription=<subscriptionName>
+Name of subscription to use. Only necessary when account has access to multiple subscriptions.
+-V, --version
+Print version information and exit.
+
+pcl-create-namespace(1)
+
+128
+
+Name
+pcl-create-namespace - Create new namespace
+Synopsis
+pcl create-namespace [-hqV] [-a=<applicationName>] [-n=<namespaceName>] [-o=<outputFormat>]
+--project=<project> [--region=<region>] [-s=<subscriptionName>] --stage=<stage>
+Description
+Create new namespace
+Options
+-a, --application=<applicationName>
+Name of application to manage.
+Not required for commands listed by -n option, as well as list-applications and upload.
+-h, --help
+Show this help message and exit.
+-n, --namespace=<namespaceName>
+Name of namespace to manage.
+Required for all commands except login, list-namespaces and create-namespace.
+-o, --output=<outputFormat>
+Output format. Allowed values: TEXT, JSON.
+--project=<project>
+The project the namespace will host
+-q, --quiet
+Quiet output.
+Only result of operations will be displayed to stdout, or error message to stderrr.
+--region=<region>
+Cloud region the namespace should be deployed to. Default region may be selected when not
+specified.
+-s, --subscription=<subscriptionName>
+Name of subscription to use. Only necessary when account has access to multiple subscriptions.
+--stage=<stage>
+The stage or environment namespace will host
+
+129
+
+-V, --version
+Print version information and exit.
+
+pcl-delete-namespace(1)
+
+130
+
+Name
+pcl-delete-namespace - Deletes a namespace.
+Synopsis
+pcl
+
+delete-namespace
+
+[-hqVy]
+
+[-a=<applicationName>]
+
+[-n=<namespaceName>]
+
+[-o
+
+=<outputFormat>] [-s=<subscriptionName>]
+Description
+Deletes a namespace. WARNING: All applications as well as custom domain mapping will be
+unrecoverably removed.
+Options
+-a, --application=<applicationName>
+Name of application to manage.
+Not required for commands listed by -n option, as well as list-applications and upload.
+-h, --help
+Show this help message and exit.
+-n, --namespace=<namespaceName>
+Name of namespace to manage.
+Required for all commands except login, list-namespaces and create-namespace.
+-o, --output=<outputFormat>
+Output format. Allowed values: TEXT, JSON.
+-q, --quiet
+Quiet output.
+Only result of operations will be displayed to stdout, or error message to stderrr.
+-s, --subscription=<subscriptionName>
+Name of subscription to use. Only necessary when account has access to multiple subscriptions.
+-V, --version
+Print version information and exit.
+-y, --yes, --confirm
+Pass this argument to really delete. Without it warning with detail of namespace is displayed
+
+pcl-upload(1)
+
+131
+
+Name
+pcl-upload - Upload application binary
+Synopsis
+pcl upload [-ehqV] [--deploy] [-a=<applicationName>] [-n=<namespaceName>] [-o=<outputFormat>]
+[-s=<subscriptionName>] [-t=<timeout>] <file>
+Description
+Upload application binary Use to either provide new binary for existing application by specifying
+option -a / --application, or to upload new application into a namespace.
+Options
+-a, --application=<applicationName>
+Name of application to manage.
+Not required for commands listed by -n option, as well as list-applications and upload.
+--deploy
+Deploy application immediately.
+Application will be immediately deployed after upload if its default configuration is complete, i.
+e. all required option have default values.
+-e, --fail-early
+Fail command immediately after first deployment problem instead of waiting for timeout on
+client or backend side
+There are certain scenarios when deployment can succeed despite deployment problems
+reported.
+It is therefore not guaranteed that application deployment that failed with early warning will
+not start up later.
+-h, --help
+Show this help message and exit.
+-n, --namespace=<namespaceName>
+Name of namespace to manage.
+Required for all commands except login, list-namespaces and create-namespace.
+-o, --output=<outputFormat>
+Output format. Allowed values: TEXT, JSON.
+
+132
+
+-q, --quiet
+Quiet output.
+Only result of operations will be displayed to stdout, or error message to stderrr.
+-s, --subscription=<subscriptionName>
+Name of subscription to use. Only necessary when account has access to multiple subscriptions.
+-t, --timeout=<timeout>
+Duration in seconds specifying how long to wait for deployment to complete
+This is client side timeout which doesn’t affect deployment process in Payara Cloud. It is
+therefore not guaranteed that application deployment that failed due to this time out will not
+eventually start up later.
+-V, --version
+Print version information and exit.
+Arguments
+<file>
+Application archive file (.war) to be uploaded
+
+pcl-deploy(1)
+
+133
+
+Name
+pcl-deploy - Deploy an existing application.
+Synopsis
+pcl deploy [-ehqV] [-a=<applicationName>] [-n=<namespaceName>] [-o=<outputFormat>] [-s
+=<subscriptionName>] [-t=<timeout>]
+Description
+Deploy an existing application. This operation is usually performed after reconfiguring application
+with command configure.
+Options
+-a, --application=<applicationName>
+Name of application to manage.
+Not required for commands listed by -n option, as well as list-applications and upload.
+-e, --fail-early
+Fail command immediately after first deployment problem instead of waiting for timeout on
+client or backend side
+There are certain scenarios when deployment can succeed despite deployment problems
+reported.
+It is therefore not guaranteed that application deployment that failed with early warning will
+not start up later.
+-h, --help
+Show this help message and exit.
+-n, --namespace=<namespaceName>
+Name of namespace to manage.
+Required for all commands except login, list-namespaces and create-namespace.
+-o, --output=<outputFormat>
+Output format. Allowed values: TEXT, JSON.
+-q, --quiet
+Quiet output.
+Only result of operations will be displayed to stdout, or error message to stderrr.
+-s, --subscription=<subscriptionName>
+Name of subscription to use. Only necessary when account has access to multiple subscriptions.
+
+134
+
+-t, --timeout=<timeout>
+Duration in seconds specifying how long to wait for deployment to complete
+This is client side timeout which doesn’t affect deployment process in Payara Cloud. It is
+therefore not guaranteed that application deployment that failed due to this time out will not
+eventually start up later.
+-V, --version
+Print version information and exit.
+Exit status
+0
+Deployment finished successfully
+1
+Deployment failed
+2
+Deployment failed due to problem reported and --fail-early option passed
+3
+Deployment timed out on client-side.
+
+pcl-list-applications(1)
+
+135
+
+Name
+pcl-list-applications - List applications present in a namespace.
+Synopsis
+pcl list-applications [-hqV] [-a=<applicationName>] [-n=<namespaceName>] [-o=<outputFormat>] [
+-s=<subscriptionName>]
+Description
+List applications present in a namespace. Returned application names can be used as values of
+argument --application / -a for invocation of other commands along with same value of
+--namespace / -n.
+Options
+-a, --application=<applicationName>
+Name of application to manage.
+Not required for commands listed by -n option, as well as list-applications and upload.
+-h, --help
+Show this help message and exit.
+-n, --namespace=<namespaceName>
+Name of namespace to manage.
+Required for all commands except login, list-namespaces and create-namespace.
+-o, --output=<outputFormat>
+Output format. Allowed values: TEXT, JSON.
+-q, --quiet
+Quiet output.
+Only result of operations will be displayed to stdout, or error message to stderrr.
+-s, --subscription=<subscriptionName>
+Name of subscription to use. Only necessary when account has access to multiple subscriptions.
+-V, --version
+Print version information and exit.
+
+pcl-stop(1)
+
+136
+
+Name
+pcl-stop - Stop an application
+Synopsis
+pcl
+
+stop
+
+[-hqV]
+
+[-a=<applicationName>]
+
+[-n=<namespaceName>]
+
+[-o=<outputFormat>]
+
+[-s
+
+=<subscriptionName>]
+Description
+Stop an application Deployed application can be stopped by means of this command.
+Options
+-a, --application=<applicationName>
+Name of application to manage.
+Not required for commands listed by -n option, as well as list-applications and upload.
+-h, --help
+Show this help message and exit.
+-n, --namespace=<namespaceName>
+Name of namespace to manage.
+Required for all commands except login, list-namespaces and create-namespace.
+-o, --output=<outputFormat>
+Output format. Allowed values: TEXT, JSON.
+-q, --quiet
+Quiet output.
+Only result of operations will be displayed to stdout, or error message to stderrr.
+-s, --subscription=<subscriptionName>
+Name of subscription to use. Only necessary when account has access to multiple subscriptions.
+-V, --version
+Print version information and exit.
+
+pcl-start(1)
+
+137
+
+Name
+pcl-start - Start an application
+Synopsis
+pcl
+
+start
+
+[-hqV]
+
+[-a=<applicationName>]
+
+[-n=<namespaceName>]
+
+[-o=<outputFormat>]
+
+[-s
+
+=<subscriptionName>]
+Description
+Start an application When application is in stopped state it can be started again by means of this
+command
+Options
+-a, --application=<applicationName>
+Name of application to manage.
+Not required for commands listed by -n option, as well as list-applications and upload.
+-h, --help
+Show this help message and exit.
+-n, --namespace=<namespaceName>
+Name of namespace to manage.
+Required for all commands except login, list-namespaces and create-namespace.
+-o, --output=<outputFormat>
+Output format. Allowed values: TEXT, JSON.
+-q, --quiet
+Quiet output.
+Only result of operations will be displayed to stdout, or error message to stderrr.
+-s, --subscription=<subscriptionName>
+Name of subscription to use. Only necessary when account has access to multiple subscriptions.
+-V, --version
+Print version information and exit.
+
+pcl-configure(1)
+
+138
+
+Name
+pcl-configure - Change configuration of an application
+Synopsis
+pcl configure [-eq] [--deploy] [-a=<applicationName>] [-n=<namespaceName>] [-o=<outputFormat>]
+[-s=<subscriptionName>] [-t=<timeout>]
+Description
+Change configuration of an application Configuration is different for each application. In order to
+discover which configuration kinds for an application are available, invoke pcl configuration -n
+$namespace -a $app configure --help. In order to learn about keys and configuration ids available
+for specific kind invoke pcl configuration -n $namespace -a $app configure $kind --help. It is
+possible to chain setting values of multiple configuration kinds in single command.
+Options
+-a, --application=<applicationName>
+Name of application to manage.
+Not required for commands listed by -n option, as well as list-applications and upload.
+--deploy
+Deploy revision with updated configuration immediately
+-e, --fail-early
+Fail command immediately after first deployment problem instead of waiting for timeout on
+client or backend side
+There are certain scenarios when deployment can succeed despite deployment problems
+reported.
+It is therefore not guaranteed that application deployment that failed with early warning will
+not start up later.
+-n, --namespace=<namespaceName>
+Name of namespace to manage.
+Required for all commands except login, list-namespaces and create-namespace.
+-o, --output=<outputFormat>
+Output format. Allowed values: TEXT, JSON.
+-q, --quiet
+Quiet output.
+Only result of operations will be displayed to stdout, or error message to stderrr.
+
+139
+
+-s, --subscription=<subscriptionName>
+Name of subscription to use. Only necessary when account has access to multiple subscriptions.
+-t, --timeout=<timeout>
+Duration in seconds specifying how long to wait for deployment to complete
+This is client side timeout which doesn’t affect deployment process in Payara Cloud. It is
+therefore not guaranteed that application deployment that failed due to this time out will not
+eventually start up later.
+
+pcl-scale(1)
+
+140
+
+Name
+pcl-scale - Scale an application
+Synopsis
+pcl scale [-hqV] [-a=<applicationName>] --instances=<instances> [-n=<namespaceName>] [-o
+=<outputFormat>] [-s=<subscriptionName>]
+Description
+Scale an application Application can be scaled by passing the number of instances to scale
+Options
+-a, --application=<applicationName>
+Name of application to manage.
+Not required for commands listed by -n option, as well as list-applications and upload.
+-h, --help
+Show this help message and exit.
+--instances=<instances>
+State number of instances between 1 and 8
+-n, --namespace=<namespaceName>
+Name of namespace to manage.
+Required for all commands except login, list-namespaces and create-namespace.
+-o, --output=<outputFormat>
+Output format. Allowed values: TEXT, JSON.
+-q, --quiet
+Quiet output.
+Only result of operations will be displayed to stdout, or error message to stderrr.
+-s, --subscription=<subscriptionName>
+Name of subscription to use. Only necessary when account has access to multiple subscriptions.
+-V, --version
+Print version information and exit.
+
+141
+
+
