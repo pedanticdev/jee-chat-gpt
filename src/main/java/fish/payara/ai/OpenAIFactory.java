@@ -27,7 +27,8 @@ public class OpenAIFactory {
 	@ConfigProperty(name = "OPEN_API_KEY")
 	String apiKey;
 	@Inject
-	@ConfigProperty(name = "gpt.model")
+	@ConfigProperty(name = "gpt.mod" +
+						   "el")
 	String gptModel;
 
 

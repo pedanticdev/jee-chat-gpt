@@ -3,7 +3,6 @@ package fish.payara;
 import java.io.IOException;
 
 import com.pengrad.telegrambot.UpdatesListener;
-import fish.payara.ai.PayaraAiService;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 
@@ -18,6 +17,8 @@ import com.pengrad.telegrambot.response.SendResponse;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.omnifaces.cdi.Startup;
+
+import fish.payara.ai.PayaraAiService;
 
 @Startup
 public class PayaraBotBackend {
@@ -38,7 +39,7 @@ public class PayaraBotBackend {
 
 		 for (Update update : updates) {
 
-//		 updateAction(update);
+		 updateAction(update);
 
 		 }
 		 return UpdatesListener.CONFIRMED_UPDATES_ALL;
@@ -183,10 +184,10 @@ public class PayaraBotBackend {
 					.parseMode(ParseMode.HTML)
 					.disableWebPagePreview(true)
 					.disableNotification(true);
-//@payarafishbot
+			// @payarafishbot
 			sendMessage(request);
 		}
-		
+
 	}
 
 	private boolean isHelloHiGreeting(String text) {

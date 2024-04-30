@@ -58,7 +58,7 @@ public class PayaraAiService {
 	@PostConstruct
 	void init() {
 
-		Document document = FileSystemDocumentLoader.loadDocument("/opt/docs/payara-cloud.txt",
+		Document document = FileSystemDocumentLoader.loadDocument(PayaraAiService.class.getResource("/payara-cloud.txt").getPath(),
 				new TextDocumentParser());
 
 		List<Document> documents = List.of(document);
