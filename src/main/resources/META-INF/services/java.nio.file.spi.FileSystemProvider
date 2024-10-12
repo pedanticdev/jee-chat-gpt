@@ -1,0 +1,2 @@
+software.amazon.nio.spi.s3.S3FileSystemProvider
+software.amazon.nio.spi.s3.S3XFileSystemProvider

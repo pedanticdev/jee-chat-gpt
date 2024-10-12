@@ -32,7 +32,7 @@ import org.primefaces.component.menu.AbstractMenu;
 import org.primefaces.component.menu.BaseMenuRenderer;
 import org.primefaces.component.menuitem.UIMenuItem;
 import org.primefaces.component.submenu.UISubmenu;
-import org.primefaces.expression.SearchExpressionFacade;
+import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.model.menu.MenuElement;
 import org.primefaces.model.menu.MenuItem;
 import org.primefaces.model.menu.Separator;
@@ -41,16 +41,22 @@ import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.ComponentTraversalUtils;
 
 // @ApplicationScoped
-@FacesRenderer(rendererType = AvalonMenu.DEFAULT_RENDERER, componentFamily = AvalonMenu.COMPONENT_FAMILY)
+@FacesRenderer(
+        rendererType = AvalonMenu.DEFAULT_RENDERER,
+        componentFamily = AvalonMenu.COMPONENT_FAMILY)
 public class AvalonMenuRenderer extends BaseMenuRenderer {
 
     @Override
-    protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
+    protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu)
+            throws IOException {
         AvalonMenu menu = (AvalonMenu) abstractMenu;
         ResponseWriter writer = context.getResponseWriter();
         String style = menu.getStyle();
         String styleClass = menu.getStyleClass();
-        styleClass = (styleClass == null) ? "layout-menu clearfix" : "layout-menu clearfix" + " " + styleClass;
+        styleClass =
+                (styleClass == null)
+                        ? "layout-menu clearfix"
+                        : "layout-menu clearfix" + " " + styleClass;
 
         writer.startElement("ul", menu);
         writer.writeAttribute("id", menu.getClientId(context), "id");
@@ -64,23 +70,26 @@ public class AvalonMenuRenderer extends BaseMenuRenderer {
         writer.endElement("ul");
     }
 
-    protected void encodeElements(FacesContext context, AbstractMenu menu, List<MenuElement> elements, boolean root)
+    protected void encodeElements(
+            FacesContext context, AbstractMenu menu, List<MenuElement> elements, boolean root)
             throws IOException {
         for (MenuElement element : elements) {
             encodeElement(context, menu, element, root);
         }
     }
 
-    protected void encodeElement(FacesContext context, AbstractMenu menu, MenuElement element, boolean root)
+    protected void encodeElement(
+            FacesContext context, AbstractMenu menu, MenuElement element, boolean root)
             throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
         if (element.isRendered()) {
             if (element instanceof MenuItem) {
                 MenuItem menuItem = (MenuItem) element;
-                String menuItemClientId = (menuItem instanceof UIComponent)
-                        ? menuItem.getClientId()
-                        : menu.getClientId(context) + "_" + menuItem.getClientId();
+                String menuItemClientId =
+                        (menuItem instanceof UIComponent)
+                                ? menuItem.getClientId()
+                                : menu.getClientId(context) + "_" + menuItem.getClientId();
                 String containerStyle = menuItem.getContainerStyle();
                 String containerStyleClass = menuItem.getContainerStyleClass();
 
@@ -89,21 +98,26 @@ public class AvalonMenuRenderer extends BaseMenuRenderer {
                 writer.writeAttribute("role", "menuitem", null);
 
                 if (containerStyle != null) writer.writeAttribute("style", containerStyle, null);
-                if (containerStyleClass != null) writer.writeAttribute("class", containerStyleClass, null);
+                if (containerStyleClass != null)
+                    writer.writeAttribute("class", containerStyleClass, null);
 
                 encodeMenuItem(context, menu, menuItem);
 
                 writer.endElement("li");
             } else if (element instanceof Submenu) {
                 Submenu submenu = (Submenu) element;
-                String submenuClientId = (submenu instanceof UIComponent)
-                        ? ((UIComponent) submenu).getClientId()
-                        : menu.getClientId(context) + "_" + submenu.getId();
+                String submenuClientId =
+                        (submenu instanceof UIComponent)
+                                ? ((UIComponent) submenu).getClientId()
+                                : menu.getClientId(context) + "_" + submenu.getId();
                 String style = submenu.getStyle();
                 String styleClass = submenu.getStyleClass();
-                String className = root
-                        ? (styleClass != null) ? styleClass + " layout-root-menuitem" : "layout-root-menuitem"
-                        : styleClass;
+                String className =
+                        root
+                                ? (styleClass != null)
+                                        ? styleClass + " layout-root-menuitem"
+                                        : "layout-root-menuitem"
+                                : styleClass;
 
                 writer.startElement("li", null);
                 writer.writeAttribute("id", submenuClientId, null);
@@ -121,7 +135,8 @@ public class AvalonMenuRenderer extends BaseMenuRenderer {
         }
     }
 
-    protected void encodeSubmenu(FacesContext context, AbstractMenu menu, Submenu submenu, boolean root)
+    protected void encodeSubmenu(
+            FacesContext context, AbstractMenu menu, Submenu submenu, boolean root)
             throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String icon = submenu.getIcon();
@@ -178,8 +193,8 @@ public class AvalonMenuRenderer extends BaseMenuRenderer {
         }
     }
 
-    protected void encodeToggleIcon(FacesContext context, Submenu submenu, int childrenElementsCount)
-            throws IOException {
+    protected void encodeToggleIcon(
+            FacesContext context, Submenu submenu, int childrenElementsCount) throws IOException {
         if (childrenElementsCount > 0) {
             ResponseWriter writer = context.getResponseWriter();
 
@@ -218,7 +233,8 @@ public class AvalonMenuRenderer extends BaseMenuRenderer {
     }
 
     @Override
-    protected void encodeMenuItem(FacesContext context, AbstractMenu menu, MenuItem menuitem) throws IOException {
+    protected void encodeMenuItem(FacesContext context, AbstractMenu menu, MenuItem menuitem)
+            throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String title = menuitem.getTitle();
         boolean disabled = menuitem.isDisabled();
@@ -266,18 +282,22 @@ public class AvalonMenuRenderer extends BaseMenuRenderer {
                     idParams.add(menuitem.getId());
                     params.put(menuClientId + "_menuid", idParams);
 
-                    command = menuitem.isAjax()
-                            ? createAjaxRequest(context, menu, (AjaxSource) menuitem, form, params)
-                            : buildNonAjaxRequest(context, menu, form, menuClientId, params, true);
+                    command =
+                            menuitem.isAjax()
+                                    ? createAjaxRequest(
+                                            context, menu, (AjaxSource) menuitem, form, params)
+                                    : buildNonAjaxRequest(
+                                            context, menu, form, menuClientId, params, true);
                 } else {
-                    command = menuitem.isAjax()
-                            ? createAjaxRequest(context, (AjaxSource) menuitem, form)
-                            : buildNonAjaxRequest(
-                                    context,
-                                    ((UIComponent) menuitem),
-                                    form,
-                                    ((UIComponent) menuitem).getClientId(context),
-                                    true);
+                    command =
+                            menuitem.isAjax()
+                                    ? createAjaxRequest(context, (AjaxSource) menuitem, form)
+                                    : buildNonAjaxRequest(
+                                            context,
+                                            ((UIComponent) menuitem),
+                                            form,
+                                            ((UIComponent) menuitem).getClientId(context),
+                                            true);
                 }
 
                 onclick = (onclick == null) ? command : onclick + ";" + command;
@@ -333,11 +353,13 @@ public class AvalonMenuRenderer extends BaseMenuRenderer {
     }
 
     @Override
-    protected void encodeScript(FacesContext context, AbstractMenu abstractMenu) throws IOException {
+    protected void encodeScript(FacesContext context, AbstractMenu abstractMenu)
+            throws IOException {
         AvalonMenu menu = (AvalonMenu) abstractMenu;
         String clientId = menu.getClientId(context);
         LayoutWidgetBuilder wb = new LayoutWidgetBuilder(context);
-        wb.ready("Avalon", menu.resolveWidgetVar(), clientId).attr("statefulScroll", menu.isStatefulScroll());
+        wb.ready("Avalon", menu.resolveWidgetVar(), clientId)
+                .attr("statefulScroll", menu.isStatefulScroll());
         wb.finish();
     }
 
@@ -349,14 +371,17 @@ public class AvalonMenuRenderer extends BaseMenuRenderer {
 
         builder.init()
                 .source(clientId)
-                .form(SearchExpressionFacade.resolveClientId(context, component, source.getForm()))
+                .form(SearchExpressionUtils.resolveClientId(context, component, source.getForm()))
                 .process(component, source.getProcess())
                 .update(component, source.getUpdate())
                 .async(source.isAsync())
                 .global(source.isGlobal())
                 .delay(source.getDelay())
                 .timeout(source.getTimeout())
-                .partialSubmit(source.isPartialSubmit(), source.isPartialSubmitSet(), source.getPartialSubmitFilter())
+                .partialSubmit(
+                        source.isPartialSubmit(),
+                        source.isPartialSubmitSet(),
+                        source.getPartialSubmitFilter())
                 .resetValues(source.isResetValues(), source.isResetValuesSet())
                 .ignoreAutoUpdate(source.isIgnoreAutoUpdate())
                 .onstart(source.getOnstart())
@@ -393,7 +418,10 @@ public class AvalonMenuRenderer extends BaseMenuRenderer {
                 .global(source.isGlobal())
                 .delay(source.getDelay())
                 .timeout(source.getTimeout())
-                .partialSubmit(source.isPartialSubmit(), source.isPartialSubmitSet(), source.getPartialSubmitFilter())
+                .partialSubmit(
+                        source.isPartialSubmit(),
+                        source.isPartialSubmitSet(),
+                        source.getPartialSubmitFilter())
                 .resetValues(source.isResetValues(), source.isResetValuesSet())
                 .ignoreAutoUpdate(source.isIgnoreAutoUpdate())
                 .onstart(source.getOnstart())

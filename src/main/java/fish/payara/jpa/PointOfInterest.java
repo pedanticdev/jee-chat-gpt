@@ -1,9 +1,7 @@
 package fish.payara.jpa;
 
-import java.math.BigDecimal;
-
 import jakarta.persistence.Entity;
-
+import java.math.BigDecimal;
 import lombok.*;
 
 @Getter
@@ -13,16 +11,16 @@ import lombok.*;
 @Builder
 @Entity
 public class PointOfInterest extends AbstractEntity {
-	private String name;
-	private String info;
-	private BigDecimal cost;
+    private String name;
+    private String info;
+    private BigDecimal cost;
 
-	public static PointOfInterest of() {
-		return new PointOfInterest();
-	}
+    public static PointOfInterest of() {
+        return new PointOfInterest();
+    }
 
-	@Override
-	public String toString() {
-		return "PointOfInterest [name=" + name + ", info=" + info + ", cost=" + cost + "]";
-	}
+    @Override
+    public String toString() {
+        return "PointOfInterest [name=" + name + ", info=" + info + ", cost=" + cost + "]";
+    }
 }

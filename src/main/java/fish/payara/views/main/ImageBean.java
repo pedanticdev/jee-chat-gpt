@@ -1,18 +1,14 @@
 package fish.payara.views.main;
 
-import java.io.Serializable;
-
+import fish.payara.GptRequestContext;
 import fish.payara.ai.GptService;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-
+import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
-
 import org.apache.poi.util.StringUtil;
 import org.omnifaces.cdi.ViewScoped;
-
-import fish.payara.GptRequestContext;
 
 @Named
 @ViewScoped
@@ -20,8 +16,7 @@ import fish.payara.GptRequestContext;
 @Setter
 public class ImageBean implements Serializable {
 
-    @Inject
-    GptService gptService;
+    @Inject GptService gptService;
 
     String imagePrompt;
 
@@ -36,7 +31,4 @@ public class ImageBean implements Serializable {
             imagePrompt = null;
         }
     }
-
-
-
 }
