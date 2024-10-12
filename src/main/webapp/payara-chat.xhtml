@@ -1,33 +1,38 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:ui="jakarta.faces.facelets"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
-             
-    <ui:define name="title">Empty Page</ui:define>
+
+    <ui:define name="title">Payara Docs AI</ui:define>
 
     <ui:define name="content">
         <div class="grid">
             <div class="col">
                 <div class="card">
-                    <h:form>
+                    <h:form id="form">
                         <p:outputPanel id="chatArea">
+                            <h3>Payara Cloud Docs AI. </h3>
+                            <p>Ask conversational questions about Payara Products like Server and Cloud. <br/>
+                                For example, ask the model "what is a namespace?" Anything you want to do with Payara Cloud or Payara Cloud?
+                                <br/>
+                                Ask away in human-like conversations.</p>
                             <p:messages for="chatInput"/>
                             <p:dataList value="#{payaraAiChatBean.chatMessages}" var="message"
-                                        emptyMessage="No chat messages. Why not say hi?"
+                                        emptyMessage=""
 
                             >
                                 #{message.userTime}<br/>
                                 <b>You</b>:&#160; #{message.userMessage}<br/><br/>
                                 #{message.modelTime}<br/>
-                                <b>Model</b>:&#160; #{message.modelMessage}<br/><br/>
+                                <b>Model</b>:&#160; <p:outputLabel value="#{message.modelMessage}" escape="false"/> <br/><br/>
 
                             </p:dataList>
                         </p:outputPanel>
 
-                        <p:inputText id="chatInput" value="#{payaraAiChatBean.userMessage}"/>
-                        <p:commandButton value="Send" actionListener="#{payaraAiChatBean.handleChat()}" update="chatArea chatInput"/>
+                        <p:inputTextarea id="chatInput" value="#{payaraAiChatBean.userMessage}" cols="50" rows="4"/>
+                        <p:commandButton value="Ask" actionListener="#{payaraAiChatBean.handleChat()}"
+                                         update="chatArea chatInput"/>
 
                     </h:form>
                 </div>

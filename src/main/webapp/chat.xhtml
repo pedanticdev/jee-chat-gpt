@@ -4,7 +4,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
-             
+
     <ui:define name="title">AI Chat</ui:define>
 
     <ui:define name="content">
@@ -13,9 +13,12 @@
                 <div class="card">
                     <h:form>
                         <p:outputPanel id="chatArea">
+                            <h3>Payara AI. </h3>
+                            <p>Ask conversational questions about Payara Platform. <br/></p>
                             <p:messages for="chatInput"/>
                             <p:dataList value="#{payaraAiChatBean.chatMessages}" var="message"
-                                        emptyMessage="No chat messages. Why not say hi?"
+                                        emptyMessage=""
+
 
                             >
                                 #{message.userTime}<br/>
@@ -27,7 +30,8 @@
                         </p:outputPanel>
 
                         <p:inputText id="chatInput" value="#{payaraAiChatBean.userMessage}"/>
-                        <p:commandButton value="Send" actionListener="#{payaraAiChatBean.handleGeneralChat()}" update="chatArea chatInput"/>
+                        <p:commandButton value="Send" actionListener="#{payaraAiChatBean.handleGeneralChat()}"
+                                         update="chatArea chatInput"/>
 
                     </h:form>
                 </div>

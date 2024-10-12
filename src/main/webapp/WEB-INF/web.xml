@@ -13,7 +13,12 @@
         <param-name>jakarta.faces.PROJECT_STAGE</param-name>
         <param-value>Development</param-value>
     </context-param>
-
+    <context-param>
+        <param-name>org.omnifaces.CDN_RESOURCE_HANDLER_URLS</param-name>
+        <param-value>
+            js/showdown.js=https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js
+        </param-value>
+    </context-param>
 
     <context-param>
         <param-name>jakarta.faces.FACELETS_REFRESH_PERIOD</param-name>

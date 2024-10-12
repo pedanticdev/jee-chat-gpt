@@ -4,6 +4,8 @@ services:
 
     environment:
       OPEN_API_KEY: ${OPEN_API_KEY}
+      S3_BUCKET_ACCESS_KEY: ${S3_BUCKET_ACCESS_KEY}
+      S3_BUCKET_SECRET_KEY: ${S3_BUCKET_SECRET_KEY}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_SERVER: ${DB_SERVER}
       DB_USER: ${DB_USER}

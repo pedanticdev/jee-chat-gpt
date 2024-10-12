@@ -1,47 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>fish.payara</groupId>
     <artifactId>gpt-journey</artifactId>
-    <name>BudgetJourney</name>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
+    <name>BudgetJourney</name>
 
     <properties>
         <maven.compiler.target>21</maven.compiler.target>
         <maven.compiler.source>21</maven.compiler.source>
         <postgresql.version>42.5.4</postgresql.version>
-        <org.project-lombok.version>1.18.30</org.project-lombok.version>
+        <org.project-lombok.version>1.18.34</org.project-lombok.version>
         <xdocs.version>2.0.4</xdocs.version>
     </properties>
 
-
-    <repositories>
-
-        <repository>
-            <id>oss-sonatype-snapshots</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-
-        <repository>
-            <id>prime-repo</id>
-            <name>PrimeFaces Maven Repository</name>
-            <url>https://repository.primefaces.org/</url>
-        </repository>
-    </repositories>
-
-
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>dev.langchain4j</groupId>
+                <artifactId>langchain4j-bom</artifactId>
+                <version>0.36.0-SNAPSHOT</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <dependencies>
-
-
 
         <dependency>
             <groupId>jakarta.platform</groupId>
@@ -52,20 +37,20 @@
         <dependency>
             <groupId>org.eclipse.microprofile</groupId>
             <artifactId>microprofile</artifactId>
-            <version>6.0</version>
+            <version>6.1</version>
             <type>pom</type>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
-            <version>13.0.4</version>
+            <version>14.0.2</version>
             <classifier>jakarta</classifier>
         </dependency>
         <dependency>
             <groupId>org.omnifaces</groupId>
             <artifactId>omnifaces</artifactId>
-            <version>4.3</version>
+            <version>4.4.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
@@ -104,7 +89,6 @@
             <artifactId>lombok</artifactId>
             <version>${org.project-lombok.version}</version>
         </dependency>
-
 
         <dependency>
             <groupId>javax.cache</groupId>
@@ -147,52 +131,113 @@
         <dependency>
             <groupId>com.github.pengrad</groupId>
             <artifactId>java-telegram-bot-api</artifactId>
-            <version>7.2.1</version>
+            <version>7.4.0</version>
         </dependency>
 
         <dependency>
             <groupId>dev.langchain4j</groupId>
             <artifactId>langchain4j-open-ai</artifactId>
-            <version>0.30.0</version>
         </dependency>
+
+        <!--        <dependency>-->
+        <!--            <groupId>dev.langchain4j</groupId>-->
+        <!--            <artifactId>langchain4j-embeddings-all-minilm-l6-v2</artifactId>-->
+        <!--            <version>0.33.0</version>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>dev.langchain4j</groupId>
             <artifactId>langchain4j-easy-rag</artifactId>
-            <version>0.30.0</version>
         </dependency>
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-embeddings-all-minilm-l6-v2-q</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-pgvector</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>s3</artifactId>
+            <version>2.26.25</version>
+        </dependency>
+        <dependency>
+            <groupId>software.amazon.nio.s3</groupId>
+            <artifactId>aws-java-nio-spi-for-s3</artifactId>
+            <version>2.0.4</version>
+        </dependency>
+
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
             <version>3.0.0-beta2</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.commonmark</groupId>
+            <artifactId>commonmark</artifactId>
+            <version>0.22.0</version>
+        </dependency>
+
     </dependencies>
+
+    <repositories>
+
+        <repository>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <id>oss-sonatype-snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </repository>
+
+        <repository>
+            <id>prime-repo</id>
+            <name>PrimeFaces Maven Repository</name>
+            <url>https://repository.primefaces.org/</url>
+        </repository>
+    </repositories>
 
     <build>
         <finalName>jee-chatgpt</finalName>
         <resources>
             <resource>
-                <directory>src/main/resources</directory>
                 <filtering>true</filtering>
+                <directory>src/main/resources</directory>
                 <excludes>
                     <exclude>**/*.odt</exclude>
                 </excludes>
             </resource>
             <resource>
+                <targetPath>${project.build.directory}</targetPath>
+                <filtering>true</filtering>
                 <directory>${basedir}/src/main/webapp/WEB-INF</directory>
                 <includes>
                     <include>web.xml</include>
                 </includes>
-                <filtering>true</filtering>
-                <targetPath>${project.build.directory}</targetPath>
             </resource>
         </resources>
-
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>3.4.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>io.openliberty.tools</groupId>
+                    <artifactId>liberty-maven-plugin</artifactId>
+                    <version>3.10.3</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.3.2</version>
+                <groupId>io.openliberty.tools</groupId>
+                <artifactId>liberty-maven-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -207,17 +252,97 @@
                         </path>
                     </annotationProcessorPaths>
 
-
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>2.43.0</version>
+                <configuration>
+                    <ratchetFrom>origin/main</ratchetFrom>
+                    <formats>
+                        <format>
+                            <includes>
+                                <include>.gitattributes</include>
+                                <include>.gitignore</include>
+                            </includes>
+                            <trimTrailingWhitespace/>
+                            <endWithNewline/>
+                            <indent>
+                                <tabs>true</tabs>
+                                <spacesPerTab>4</spacesPerTab>
+                            </indent>
+                        </format>
+                    </formats>
+
+                    <!-- define a language-specific format -->
+                    <java>
+                        <!-- no need to specify files, inferred automatically, but you can if you want -->
+                        <removeUnusedImports>
+                            <engine>google-java-format</engine>
+                            <!-- optional. Defaults to `google-java-format`. Can be switched to `cleanthat-javaparser-unnecessaryimport` (e.g. to process JDK17 source files with a JDK8+ Runtime) -->
+                        </removeUnusedImports>
+                        <!-- apply a specific flavor of google-java-format and reflow long strings -->
+                        <googleJavaFormat>
+                            <version>1.24.0</version>
+                            <style>AOSP</style>
+                            <reflowLongStrings>true</reflowLongStrings>
+                            <formatJavadoc>false</formatJavadoc>
+                        </googleJavaFormat>
+                        <formatAnnotations/>
+
+                    </java>
+                    <pom>
+                        <includes>
+                            <include>pom.xml</include>
+                        </includes>
+
+                        <sortPom>
+                            <nrOfIndentSpace>4</nrOfIndentSpace>
+                            <expandEmptyElements>false</expandEmptyElements>
+                        </sortPom>
+                    </pom>
+
+                    <markdown>
+                        <includes>
+                            <include>**/*.md</include>
+                        </includes>
+
+                        <flexmark/>
+                        <!-- has its own section below -->
+                    </markdown>
+                    <json>
+                        <includes>
+                            <!-- You have to set the target manually -->
+                            <include>src/**/*.json</include>
+                        </includes>
+
+                        <jackson/>
+                        <!-- has its own section below -->
+                    </json>
+                    <yaml>
+                        <includes>
+                            <!-- You have to set the target manually -->
+                            <include>src/**/*.yaml</include>
+                        </includes>
+
+                        <jackson/>
+                        <!-- has its own section below -->
+                    </yaml>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
         </plugins>
     </build>
 
-    <profiles>
-
-
-    </profiles>
-
+    <profiles/>
 
 </project>
