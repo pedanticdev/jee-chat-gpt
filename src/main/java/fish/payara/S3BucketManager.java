@@ -1,5 +1,10 @@
 package fish.payara;
 
+import static software.amazon.awssdk.regions.Region.EU_NORTH_1;
+
+import dev.langchain4j.data.document.Document;
+import dev.langchain4j.data.document.loader.amazon.s3.AmazonS3DocumentLoader;
+import dev.langchain4j.data.document.parser.apache.pdfbox.ApachePdfBoxDocumentParser;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -9,6 +14,7 @@ import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -19,9 +25,9 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.core.ResponseBytes;
-import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.core.client.config.ClientOverrideConfiguration;
+import software.amazon.awssdk.core.retry.RetryPolicy;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.S3Configuration;
 import software.amazon.awssdk.services.s3.model.*;
 
 @ApplicationScoped
@@ -31,11 +37,11 @@ public class S3BucketManager {
     private static final Logger LOG = Logger.getLogger(S3BucketManager.class.getName());
 
     @Inject
-    @ConfigProperty(name = "S3_BUCKET_ACCESS_KEY")
+    @ConfigProperty(name = "AWS_S3_BUCKET_ACCESS_KEY")
     String accessKey;
 
     @Inject
-    @ConfigProperty(name = "S3_BUCKET_SECRET_KEY")
+    @ConfigProperty(name = "AWS_S3_BUCKET_SECRET_KEY")
     String secretKey;
 
     @Inject
@@ -51,19 +57,25 @@ public class S3BucketManager {
     String embeddedFileBucket;
 
     S3Client s3client;
+    AmazonS3DocumentLoader s3DocumentLoader;
 
     @PostConstruct
     void init() {
         AwsBasicCredentials awsCreds = AwsBasicCredentials.create(accessKey, secretKey);
 
+        ClientOverrideConfiguration build =
+                ClientOverrideConfiguration.builder()
+                        .apiCallTimeout(Duration.ofMinutes(2))
+                        .apiCallAttemptTimeout(Duration.ofSeconds(90))
+                        .retryPolicy(RetryPolicy.defaultRetryPolicy())
+                        .build();
         s3client =
                 S3Client.builder()
-                        .region(Region.of(DEFAULT_REGION))
+                        .region(EU_NORTH_1)
                         .credentialsProvider(StaticCredentialsProvider.create(awsCreds))
-                        .endpointOverride(URI.create(contaboUrl))
-                        .serviceConfiguration(
-                                S3Configuration.builder().pathStyleAccessEnabled(true).build())
+                        .overrideConfiguration(build)
                         .build();
+        s3DocumentLoader = new AmazonS3DocumentLoader(s3client);
     }
 
     public List<String> listNewObjects() {
@@ -72,6 +84,16 @@ public class S3BucketManager {
 
     public List<String> listEmbeddedObjects() {
         return listObjectKeys(embeddedFileBucket);
+    }
+
+    public List<Document> loadNewDocuments() {
+        return s3DocumentLoader.loadDocuments(
+                newEmbeddingFileBucket, new ApachePdfBoxDocumentParser());
+    }
+
+    public Document loadDocument(String documentKey) {
+        return s3DocumentLoader.loadDocument(
+                newEmbeddingFileBucket, documentKey, new ApachePdfBoxDocumentParser());
     }
 
     private List<String> listObjectKeys(String bucketName) {
@@ -168,9 +190,9 @@ public class S3BucketManager {
 
                 s3client.deleteObject(deleteRequest);
 
-                System.out.println("Moved object: " + objectKey);
+                LOG.log(Level.INFO, "Moved file %s".formatted(objectKey));
             } catch (S3Exception e) {
-                System.err.println("Error moving object: " + objectKey + ". " + e.getMessage());
+                LOG.log(Level.SEVERE, "Error moving object: " + objectKey + ". " + e.getMessage());
             }
         }
     }

@@ -2,11 +2,6 @@ package fish.payara.ai;
 
 import static java.util.stream.Collectors.joining;
 
-import dev.langchain4j.data.document.Document;
-import dev.langchain4j.data.document.DocumentSplitter;
-import dev.langchain4j.data.document.loader.FileSystemDocumentLoader;
-import dev.langchain4j.data.document.parser.TextDocumentParser;
-import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.data.embedding.Embedding;
 import dev.langchain4j.data.message.AiMessage;
 import dev.langchain4j.data.message.SystemMessage;
@@ -16,16 +11,12 @@ import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.input.Prompt;
 import dev.langchain4j.model.input.PromptTemplate;
 import dev.langchain4j.model.openai.OpenAiChatModel;
-import dev.langchain4j.model.openai.OpenAiEmbeddingModel;
-import dev.langchain4j.model.openai.OpenAiTokenizer;
 import dev.langchain4j.model.output.Response;
 import dev.langchain4j.rag.content.retriever.ContentRetriever;
-import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
 import dev.langchain4j.service.AiServices;
 import dev.langchain4j.store.embedding.EmbeddingMatch;
 import dev.langchain4j.store.embedding.EmbeddingStore;
-import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
-import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
+import fish.payara.InMemoryEmbeddingService;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -42,10 +33,12 @@ public class PayaraAiService {
     @Inject OpenAiChatModel model;
 
     @Inject
-    @ConfigProperty(name = "OPEN_API_KEY")
+    @ConfigProperty(name = "open.api.key")
     String apiKey;
 
-    PayaraCloudChat payaraCloudChat;
+    @Inject InMemoryEmbeddingService inMemoryEmbeddingService;
+
+    PayaraChat payaraCloudChat;
     GeneralPayaraChat generalPayaraChat;
     EmbeddingModel embeddingModel;
     EmbeddingStore<TextSegment> embeddingStore;
@@ -53,52 +46,48 @@ public class PayaraAiService {
     @PostConstruct
     void init() {
 
-        Document document =
-                FileSystemDocumentLoader.loadDocument(
-                        PayaraAiService.class.getResource("/payara-cloud.txt").getPath(),
-                        new TextDocumentParser());
+        //        Document document =
+        //                FileSystemDocumentLoader.loadDocument(
+        //                        PayaraAiService.class.getResource("/payara-cloud.txt").getPath(),
+        //                        new TextDocumentParser());
+        //
+        //        List<Document> documents = List.of(document);
+        //
+        //        // Split document into segments 100 tokens each
+        //        DocumentSplitter splitter =
+        //                DocumentSplitters.recursive(100, 0, new OpenAiTokenizer("gpt-3.5-turbo"));
+        //        List<TextSegment> segments = splitter.split(document);
+        //
+        //        // Embed segments (convert them into vectors that represent the meaning) using
+        // embedding
+        //        // model
+        //        embeddingModel =
+        //                OpenAiEmbeddingModel.builder()
+        //                        .apiKey(apiKey)
+        //                        .modelName("text-embedding-3-small")
+        //                        .logRequests(true)
+        //                        .logResponses(true)
+        //                        .build();
+        //
+        //        List<Embedding> embeddings = embeddingModel.embedAll(segments).content();
+        //
+        //        // Store embeddings into embedding store for further search / retrieval
+        //        embeddingStore = new InMemoryEmbeddingStore<>();
+        //        embeddingStore.addAll(embeddings, segments);
+        //
+        //        EmbeddingStoreIngestor ingestor =
+        //                EmbeddingStoreIngestor.builder()
+        //                        .documentSplitter(DocumentSplitters.recursive(300, 0))
+        //                        .embeddingModel(embeddingModel)
+        //                        .embeddingStore(embeddingStore)
+        //                        .build();
+        //
+        //        ingestor.ingest(documents);
 
-        List<Document> documents = List.of(document);
-
-        // Split document into segments 100 tokens each
-        DocumentSplitter splitter =
-                DocumentSplitters.recursive(100, 0, new OpenAiTokenizer("gpt-3.5-turbo"));
-        List<TextSegment> segments = splitter.split(document);
-
-        // Embed segments (convert them into vectors that represent the meaning) using embedding
-        // model
-        embeddingModel =
-                OpenAiEmbeddingModel.builder()
-                        .apiKey(apiKey)
-                        .modelName("text-embedding-3-small")
-                        .logRequests(true)
-                        .logResponses(true)
-                        .build();
-
-        List<Embedding> embeddings = embeddingModel.embedAll(segments).content();
-
-        // Store embeddings into embedding store for further search / retrieval
-        embeddingStore = new InMemoryEmbeddingStore<>();
-        embeddingStore.addAll(embeddings, segments);
-
-        EmbeddingStoreIngestor ingestor =
-                EmbeddingStoreIngestor.builder()
-                        .documentSplitter(DocumentSplitters.recursive(300, 0))
-                        .embeddingModel(embeddingModel)
-                        .embeddingStore(embeddingStore)
-                        .build();
-
-        ingestor.ingest(documents);
-
-        ContentRetriever contentRetriever =
-                EmbeddingStoreContentRetriever.builder()
-                        .embeddingStore(embeddingStore)
-                        .embeddingModel(embeddingModel)
-                        .maxResults(1)
-                        .build();
+        ContentRetriever contentRetriever = inMemoryEmbeddingService.getContentRetriever();
 
         payaraCloudChat =
-                AiServices.builder(PayaraCloudChat.class)
+                AiServices.builder(PayaraChat.class)
                         .chatLanguageModel(model)
                         .contentRetriever(contentRetriever)
                         .chatMemory(MessageWindowChatMemory.withMaxMessages(10))
@@ -168,6 +157,7 @@ Do NOT entertain questions, discussions or anything whatsoever outside of the ab
                         .collect(joining("\n\n"));
 
         Map<String, Object> variables = new HashMap<>();
+
         variables.put("question", question);
         variables.put("information", information);
 
@@ -176,9 +166,11 @@ Do NOT entertain questions, discussions or anything whatsoever outside of the ab
 
         AiMessage aiMessage =
                 model.generate(
-                                SystemMessage.systemMessage(PayaraCloudChat.SYSTEM_MESSAGE),
+                                SystemMessage.systemMessage(PayaraChat.SYSTEM_MESSAGE),
                                 prompt.toUserMessage())
                         .content();
-        return aiMessage.text();
+        return payaraCloudChat.ask(question).content();
+        //        return payaraCloudChat.chat(question);
+        //        return aiMessage.text();
     }
 }

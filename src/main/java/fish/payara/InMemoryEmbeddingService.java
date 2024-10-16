@@ -2,7 +2,6 @@ package fish.payara;
 
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.DocumentSplitter;
-import dev.langchain4j.data.document.loader.FileSystemDocumentLoader;
 import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.data.embedding.Embedding;
 import dev.langchain4j.data.segment.TextSegment;
@@ -14,22 +13,22 @@ import dev.langchain4j.rag.content.retriever.ContentRetriever;
 import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
 import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
-import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
+import dev.langchain4j.store.embedding.pgvector.PgVectorEmbeddingStore;
 import jakarta.annotation.PostConstruct;
 import jakarta.ejb.Schedule;
-import jakarta.ejb.Stateless;
+import jakarta.ejb.Singleton;
+import jakarta.ejb.Startup;
 import jakarta.inject.Inject;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-@Stateless
-public class EmbeddingService {
-    Logger log = Logger.getLogger(EmbeddingService.class.getName());
+@Singleton
+@Startup
+public class InMemoryEmbeddingService {
+    Logger log = Logger.getLogger(InMemoryEmbeddingService.class.getName());
 
     @Inject OpenAiChatModel model;
 
@@ -40,6 +39,10 @@ public class EmbeddingService {
     @Inject
     @ConfigProperty(name = "gpt.model")
     String gptModel;
+
+    @Inject
+    @ConfigProperty(name = "gpt.embedding.mode")
+    String gptEmbeddingMode;
 
     @Inject
     @ConfigProperty(name = "openai.text-embedding")
@@ -53,13 +56,30 @@ public class EmbeddingService {
 
     @PostConstruct
     void init() {
-        embeddingStore = new InMemoryEmbeddingStore<>();
-        // embeddingStore = OpenSearchEmbeddingStore
-        // .builder()
-        // .serverUrl("opensearch.mi-sika.com")
-        // .userName("admin")
-        // .password("AVG!bq**wN2kyN*Vn!ynYgufMx*o7b")
-        // .build();
+        //        embeddingStore = new InMemoryEmbeddingStore<>();
+        //        public ResultSet doStatement(Connection conn) throws SQLException {
+        //            conn = DriverManager
+        //
+        // .getConnection("jdbc:postgresql://eu-central-1.db.thenile.dev:5432/penta",
+        // "01929084-15b1-7748-ad01-62421c778de0", "9867099d-f76e-4141-9d77-6a84f40d0f32");
+        //            String query = "${COMMAND}";
+        //            try (Statement stmt = conn.createStatement()) {
+        //                return stmt.executeQuery(query);
+        //            } catch (SQLException e) {
+        //                throw e;
+        //            }
+        //        }
+        embeddingStore =
+                PgVectorEmbeddingStore.builder()
+                        .host("db")
+                        .port(5432)
+                        .database("vectordb")
+                        .user("vectoruser")
+                        .password("vectorpass")
+                        .table("embeddings")
+                        .dimension(384)
+                        .build();
+
         embeddingModel =
                 OpenAiEmbeddingModel.builder()
                         .apiKey(apiKey)
@@ -68,7 +88,10 @@ public class EmbeddingService {
                         .logResponses(true)
                         .build();
 
-        splitter = DocumentSplitters.recursive(100, 0, new OpenAiTokenizer(gptModel));
+        //        embeddingModel = new AllMiniLmL6V2QuantizedEmbeddingModel();
+
+        splitter = DocumentSplitters.recursive(100, 0, new OpenAiTokenizer(gptEmbeddingMode));
+        embedNewDocs();
     }
 
     @Schedule(minute = "*/1", hour = "*")
@@ -79,32 +102,26 @@ public class EmbeddingService {
 
         List<Document> documents = new ArrayList<>();
         List<String> embeddedObjects = new ArrayList<>();
+
         try {
             for (String string : strings) {
-                Path newFilePath = s3BucketManager.getNewFilePath(string);
-                if (newFilePath != null) {
-                    documents.add(FileSystemDocumentLoader.loadDocument(newFilePath));
-                    embeddedObjects.add(string);
-                    Files.deleteIfExists(newFilePath);
-                }
+                documents.add(s3BucketManager.loadDocument(string));
+                embeddedObjects.add(string);
             }
             List<TextSegment> textSegments = new ArrayList<>();
             for (Document document : documents) {
                 textSegments.addAll(splitter.split(document));
-
                 log.log(Level.INFO, "About to embed text segments {0}", textSegments);
                 List<Embedding> embeddings = embeddingModel.embedAll(textSegments).content();
 
                 log.log(Level.INFO, "About to embed {0}", embeddings);
                 embeddingStore.addAll(embeddings, textSegments);
-
                 EmbeddingStoreIngestor ingestor =
                         EmbeddingStoreIngestor.builder()
                                 .documentSplitter(DocumentSplitters.recursive(300, 0))
                                 .embeddingModel(embeddingModel)
                                 .embeddingStore(embeddingStore)
                                 .build();
-
                 ingestor.ingest(documents);
             }
         } catch (Exception e) {
