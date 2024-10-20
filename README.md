@@ -1,40 +1,51 @@
-# BudgetJourney - Discover Your Dream City Within Your Budget
+# Cloud-GPT: Enterprise Java Meets Generative AI
 
-Imagine you want to visit a city and have a specific budget in mind. BudgetJourney is an app designed to suggest
-multiple points of interest within the city, tailored to fit your budget constraints.
+A demo application showcasing the integration of Jakarta EE 10, MicroProfile, Payara Server/Cloud, and OpenAI's GPT API to build an intelligent travel recommendation system.
 
-This Java-based microservice application leverages the OpenAI GPT API to generate recommendations for points of
-interest. To optimize costs and reduce the volume of requests to the GPT API, all previous suggestions are cached using
-the Payara Data Grid through JCache.
+## Technologies
+- Jakarta EE 10
+- MicroProfile Config & Cache
+- Payara Server 6
+- Payara Cloud deployment support
+- OpenAI GPT API integration
 
-## Prerequisite
-
-* Java 1/17 (Java EE 8, Jakarta EE 10): https://sdkman.io
+## Prerequisites
+- Java 21+
+- Payara Server 6.2024.10 or later
+- Docker
 
 ## Configuration
-
-Open the `microprofile-config.properties` file and provide the following configuration settings:
-
-1. OpenAI API key:
-    ```shell
-    openai.key={YOUR_API_KEY}
-    ```
-
-    ```
-
-## Usage
-
-Start the app from a terminal:
-
-```shell
-docker compose up -d
-mvn mvn clean package -DskipTests  -Pproduction && /usr/bin/cp -f target/*.war deployments 
+1. Create `microprofile-config.properties`:
+```properties
+openai.key=${OPENAI_API_KEY}
 ```
 
-The application should automatically open a browser window on the following address: http://localhost:8080/jee-chatgpt
+## Deployment Options
 
-<img width="1505" alt="tokyo" src="https://user-images.githubusercontent.com/1537233/228314699-dfd48764-3565-4dca-8875-caf9ae3f3e8b.png">
+### Local Development (Payara Server)
+```bash
+mvn clean package
+docker compose up -d
+```
 
-To experience what BudgetJourney has to offer, simply provide a city name and budget limit. Please note that it may take
-30 seconds or more for the OpenAI GPT to generate suggestions. However, to enhance efficiency, all previous suggestions
-are cached using JCache and will be served from there whenever you inquire about the same city and budget again.
+### Payara Cloud
+1. Push to your GitHub repository
+2. Connect repository to Payara Cloud
+3. Deploy with a single click
+
+## Features
+- GPT-powered travel recommendations
+- Distributed caching via Payara Data Grid
+- MicroProfile Config for external configuration
+- Cloud-native deployment ready
+
+## Architecture
+- Jakarta EE REST endpoints
+- GenAI integration via OpenAI client
+- JCache for response caching
+- Containerized deployment
+
+Access the application at: http://localhost:8080/jee-chatgpt
+You can also access the app deployed to Payara Cloud at [Jakarta-101](https://jakarta101.com/jakarta-gpt)
+
+Note: Initial GPT responses may take 30+ seconds. Subsequent identical queries are served from cache.
