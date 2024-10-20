@@ -143,12 +143,4 @@ public class EmbeddingService {
                 .maxResults(1)
                 .build();
     }
-
-    public EmbeddingModel getEmbeddingModel() {
-        return embeddingModel;
-    }
-
-    public EmbeddingStore<TextSegment> getEmbeddingStore() {
-        return embeddingStore;
-    }
 }
