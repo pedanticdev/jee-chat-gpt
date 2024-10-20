@@ -3,10 +3,6 @@ services:
   app:
     environment:
       OPEN_API_KEY: ${OPEN_API_KEY}
-      S3_BUCKET_ACCESS_KEY: ${S3_BUCKET_ACCESS_KEY}
-      S3_BUCKET_SECRET_KEY: ${S3_BUCKET_SECRET_KEY}
-      AWS_S3_BUCKET_ACCESS_KEY: ${AWS_S3_BUCKET_ACCESS_KEY}
-      AWS_S3_BUCKET_SECRET_KEY: ${AWS_S3_BUCKET_SECRET_KEY}
       BLOB_SAS_TOKEN: ${BLOB_SAS_TOKEN}
       BLOB_SAS_URL: ${BLOB_SAS_URL}
       DB_PASSWORD: ${DB_PASSWORD}
@@ -29,25 +25,3 @@ services:
       context: .
       dockerfile: Dockerfile
     image: fish.payara/jee-gpt:${APP_IMAGE_TAG:-latest}
-    depends_on:
-      - db
-
-  db:
-    image: pgvector/pgvector:pg17
-    environment:
-      POSTGRES_DB: ${PGVECTOR_DB:-vectordb}
-      POSTGRES_USER: ${PGVECTOR_USER:-vectoruser}
-      POSTGRES_PASSWORD: ${PGVECTOR_PASSWORD:-vectorpass}
-    volumes:
-      - pgvector_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-    restart: always
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${PGVECTOR_USER:-vectoruser} -d ${PGVECTOR_DB:-vectordb}"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-volumes:
-  pgvector_data:
