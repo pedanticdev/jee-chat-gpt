@@ -88,7 +88,7 @@ public class PayaraAiChatBean implements Serializable {
 
         public String getUserTime() {
             DateTimeFormatter dateTimeFormatter =
-                    DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL);
+                    DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM);
             return dateTimeFormatter.format(chatTime);
         }
 

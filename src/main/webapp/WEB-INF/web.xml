@@ -122,59 +122,39 @@
         <mime-type>image/svg+xml</mime-type>
     </mime-mapping>
 
-    <!--    MyFaces config-->
-    <!--    <context-param>-->
-    <!--        <param-name>org.apache.myfaces.CACHE_EL_EXPRESSIONS</param-name>-->
-    <!--        <param-value>alwaysRecompile</param-value>-->
-    <!--    </context-param>-->
-
-    <!-- reduce saved view states -->
-    <!--    <context-param>-->
-    <!--        <param-name>org.apache.myfaces.NUMBER_OF_VIEWS_IN_SESSION</param-name>-->
-    <!--        <param-value>15</param-value>-->
-    <!--    </context-param>-->
-    <!--    <context-param>-->
-    <!--        <param-name>org.apache.myfaces.NUMBER_OF_SEQUENTIAL_VIEWS_IN_SESSION</param-name>-->
-    <!--        <param-value>3</param-value>-->
-    <!--    </context-param>-->
-
-    <!--    &lt;!&ndash; Disable ViewState compression (better performance but more memory usage) &ndash;&gt;-->
-    <!--    <context-param>-->
-    <!--        <param-name>org.apache.myfaces.COMPRESS_STATE_IN_SESSION</param-name>-->
-    <!--        <param-value>false</param-value>-->
-    <!--    </context-param>-->
-
-    <!--    <context-param>-->
-    <!--        <param-name>org.apache.myfaces.CHECK_ID_PRODUCTION_MODE</param-name>-->
-    <!--        <param-value>false</param-value>-->
-    <!--    </context-param>-->
-
-    <!--    &lt;!&ndash; Flush the response directly after the head to allow start loading resources on the browser side &ndash;&gt;-->
-    <!--    <context-param>-->
-    <!--        <param-name>org.apache.myfaces.EARLY_FLUSH_ENABLED</param-name>-->
-    <!--        <param-value>true</param-value>-->
-    <!--    </context-param>-->
-
-    <!--    <context-param>-->
-    <!--        <param-name>org.apache.myfaces.PRETTY_HTML</param-name>-->
-    <!--        <param-value>false</param-value>-->
-    <!--    </context-param>-->
-
-    <!--    &lt;!&ndash; Increase startup performance and EL resolution by disable deprecated features &ndash;&gt;-->
-    <!--    <context-param>-->
-    <!--        <param-name>org.apache.myfaces.SUPPORT_JSP_AND_FACES_EL</param-name>-->
-    <!--        <param-value>false</param-value>-->
-    <!--    </context-param>-->
-
-
-    <!--    &lt;!&ndash; Increase cache &ndash;&gt;-->
-    <!--    <context-param>-->
-    <!--        <param-name>org.apache.myfaces.VIEW_UNIQUE_IDS_CACHE_ENABLED</param-name>-->
-    <!--        <param-value>true</param-value>-->
-    <!--    </context-param>-->
-    <!--    <context-param>-->
-    <!--        <param-name>org.apache.myfaces.COMPONENT_UNIQUE_IDS_CACHE_SIZE</param-name>-->
-    <!--        <param-value>500</param-value>-->
-    <!--    </context-param>-->
+    <data-source>
+        <name>java:app/neon</name>
+        <class-name>org.postgresql.ds.PGPoolingDataSource</class-name>
+        <server-name>localhost</server-name>
+        <port-number>3306</port-number>
+        <database-name>mysql</database-name>
+        <user>test</user>
+        <password>test</password>
+        <!-- Example of how to use a Payara specific custom connection pool setting -->
+        <property>
+            <name>fish.payara.slow-query-threshold-in-seconds</name>
+            <value>5</value>
+        </property>
+        <property>
+            <name>fish.payara.log-jdbc-calls</name>
+            <value>true</value>
+        </property>
+        <property>
+            <name>fish.payara.sql-trace-listeners </name>
+            <value>fish.payara.examples.payaramicro.datasource.example.CustomSQLTracer</value>
+        </property>
+        <property>
+            <name>fish.payara.is-connection-validation-required</name>
+            <value>true</value>
+        </property>
+        <property>
+            <name>fish.payara.connection-validation-method</name>
+            <value>custom-validation</value>
+        </property>
+        <property>
+            <name>fish.payara.validation-classname</name>
+            <value>org.glassfish.api.jdbc.validation.MySQLConnectionValidation</value>
+        </property>
+    </data-source>
 
 </web-app>

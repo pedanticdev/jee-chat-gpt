@@ -33,8 +33,6 @@ public class LangChainChatService {
     @ConfigProperty(name = "model.temperature")
     Double temperature;
 
-    // StreamingChatLanguageModel model;
-
     @Inject OpenAiChatModel model;
 
     PoiChat poiChat;
