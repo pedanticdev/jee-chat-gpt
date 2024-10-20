@@ -6,7 +6,7 @@ import dev.langchain4j.model.openai.OpenAiChatModel;
 import dev.langchain4j.model.output.Response;
 import dev.langchain4j.rag.content.retriever.ContentRetriever;
 import dev.langchain4j.service.AiServices;
-import fish.payara.EmbeddingService;
+import fish.payara.PostgresEmbeddingService;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -18,7 +18,7 @@ public class PayaraAiService {
 
     @Inject OpenAiChatModel model;
 
-    @Inject EmbeddingService embeddingService;
+    @Inject PostgresEmbeddingService postgresEmbeddingService;
 
     PayaraChat payaraCloudChat;
     GeneralPayaraChat generalPayaraChat;
@@ -26,7 +26,7 @@ public class PayaraAiService {
     @PostConstruct
     void init() {
 
-        ContentRetriever contentRetriever = embeddingService.getContentRetriever();
+        ContentRetriever contentRetriever = postgresEmbeddingService.getContentRetriever();
 
         payaraCloudChat =
                 AiServices.builder(PayaraChat.class)

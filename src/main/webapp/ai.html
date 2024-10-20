@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG with Jakarta EE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reset.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/theme/night.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/highlight/monokai.min.css">
+    <style>
+        .reveal h1, .reveal h2 { text-transform: none; }
+        .reveal ul, .reveal ol { display: block; }
+    </style>
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        <section>
+            <h1>RAG with Jakarta EE</h1>
+            <p>Building Cloud-Native RAG Applications</p>
+        </section>
+
+        <section>
+            <h2>Generative AI Primer</h2>
+            <ul>
+                <li>AI systems that create new content</li>
+                <li>Based on Large Language Models (LLMs)</li>
+                <li>Trained on vast datasets</li>
+                <li>Can generate text, code, images and more</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>What is RAG?</h2>
+            <ul>
+                <li>Retrieval-Augmented Generation</li>
+                <li>Combines LLMs with enterprise data</li>
+                <li>Enhanced accuracy through context retrieval</li>
+                <li>Reduced hallucinations ... or fabrications</li>
+            </ul>
+        </section>
+        <section>
+            <h2>Why RAG?</h2>
+            <ul>
+                <li>Cost-effective vs model fine-tuning</li>
+                <li>Up-to-date information without retraining</li>
+                <li>Maintains data privacy and control</li>
+                <li>Traceable responses (source documents)</li>
+                <li>Faster implementation cycles</li>
+                <li>Lower computational requirements</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Architecture Overview</h2>
+            <ul>
+                <li>Payara Cloud for deployment</li>
+                <li>Neon DB as vector store</li>
+                <li>Azure Blob Storage for documents</li>
+                <li>LangChain4j for RAG operations</li>
+                <li>Zero-ops deployment model</li>
+
+            </ul>
+        </section>
+        <section>
+            <h2>Application Flow</h2>
+            <ul>
+                <li>Startup: Scan Azure Storage container</li>
+                <li>Process: Embed documents via LangChain4j</li>
+                <li>Storage: Save embeddings to Neon DB</li>
+                <li>Cleanup: Move processed files</li>
+                <li>Continuous operation until shutdown</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Key Components</h2>
+            <pre><code class="java">
+@ApplicationScoped
+public interface EmbeddingService {
+    ContentRetriever getContentRetriever();
+    void embedNewDocs();
+}
+            </code></pre>
+        </section>
+
+        <section>
+            <h2>Document Management</h2>
+            <pre><code class="java">
+public interface EmbeddingDocumentLoader {
+     java.util.List&lt;Document&gt; loadDocuments();
+    Document loadDocument(String documentKey);
+}
+            </code></pre>
+        </section>
+
+
+        <section>
+            <h2>Enterprise Features</h2>
+            <ul>
+                <li>Microprofile Config for config externalisation</li>
+                <li>Jakarta CDI for component management</li>
+                <li>Hikari Connection Pool for vector datasource management</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Best Practices</h2>
+            <ul>
+                <li>Async document processing</li>
+                <li>Batch embedding operations</li>
+                <li>Cloud storage optimization</li>
+                <li>Error handling and retries</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Future Developments</h2>
+            <ul>
+                <li>Enhanced security features</li>
+                <li>Multi-region deployment</li>
+                <li>Advanced embedding techniques</li>
+                <li>Additional vector store support</li>
+            </ul>
+        </section>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/notes/notes.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/markdown/markdown.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/highlight/highlight.min.js"></script>
+<script>
+    Reveal.initialize({
+        hash: true,
+        loop: true,
+        history: true,
+        controls: true,
+        slideNumber: true,
+        transition: 'convex',
+        plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+    });
+</script>
+</body>
+</html>
