@@ -6,7 +6,6 @@ import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.data.embedding.Embedding;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.model.embedding.EmbeddingModel;
-import dev.langchain4j.model.openai.OpenAiChatModel;
 import dev.langchain4j.model.openai.OpenAiEmbeddingModel;
 import dev.langchain4j.model.openai.OpenAiTokenizer;
 import dev.langchain4j.rag.content.retriever.ContentRetriever;
@@ -16,30 +15,41 @@ import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
 import dev.langchain4j.store.embedding.pgvector.PgVectorEmbeddingStore;
 import fish.payara.ai.EmbeddingDocumentLoader;
 import jakarta.annotation.PostConstruct;
-import jakarta.ejb.Schedule;
-import jakarta.ejb.Singleton;
-import jakarta.ejb.Startup;
+import jakarta.annotation.Resource;
+import jakarta.annotation.sql.DataSourceDefinition;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.sql.DataSource;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.omnifaces.cdi.Startup;
 
-@Singleton
 @Startup
-public class InMemoryEmbeddingService {
-    Logger log = Logger.getLogger(InMemoryEmbeddingService.class.getName());
+@Transactional
+@DataSourceDefinition(
+        name = "java:app/NeonDB",
+        className = "com.zaxxer.hikari.HikariDataSource",
+        properties = {
+            "driverClassName=org.postgresql.ds.PGSimpleDataSource",
+            "jdbcUrl=${MPCONFIG=DB_URL}",
+            "username=${MPCONFIG=DB_USER}",
+            "transactionIsolation=TRANSACTION_READ_COMMITTED",
+            "password=${MPCONFIG=DB_PASSWORD}"
+        })
+public class EmbeddingService {
+    Logger log = Logger.getLogger(EmbeddingService.class.getName());
 
-    @Inject OpenAiChatModel model;
+    @Resource(lookup = "java:app/NeonDB")
+    DataSource dataSource;
 
     @Inject
     @ConfigProperty(name = "OPEN_API_KEY")
     String apiKey;
-
-    @Inject
-    @ConfigProperty(name = "gpt.model")
-    String gptModel;
 
     @Inject
     @ConfigProperty(name = "gpt.embedding.mode")
@@ -54,31 +64,18 @@ public class InMemoryEmbeddingService {
     EmbeddingModel embeddingModel;
     EmbeddingStore<TextSegment> embeddingStore;
     DocumentSplitter splitter;
+    EmbeddingStoreIngestor ingestor;
+    final Timer timer = new Timer();
 
     @PostConstruct
     void init() {
-        //        embeddingStore = new InMemoryEmbeddingStore<>();
-        //        public ResultSet doStatement(Connection conn) throws SQLException {
-        //            conn = DriverManager
-        //
-        // .getConnection("jdbc:postgresql://eu-central-1.db.thenile.dev:5432/penta",
-        // "01929084-15b1-7748-ad01-62421c778de0", "9867099d-f76e-4141-9d77-6a84f40d0f32");
-        //            String query = "${COMMAND}";
-        //            try (Statement stmt = conn.createStatement()) {
-        //                return stmt.executeQuery(query);
-        //            } catch (SQLException e) {
-        //                throw e;
-        //            }
-        //        }
+
         embeddingStore =
-                PgVectorEmbeddingStore.builder()
-                        .host("db")
-                        .port(5432)
-                        .database("vectordb")
-                        .user("vectoruser")
-                        .password("vectorpass")
+                PgVectorEmbeddingStore.datasourceBuilder()
+                        .datasource(dataSource)
+                        .createTable(true)
+                        .dimension(3072)
                         .table("embeddings")
-                        .dimension(384)
                         .build();
 
         embeddingModel =
@@ -89,13 +86,25 @@ public class InMemoryEmbeddingService {
                         .logResponses(true)
                         .build();
 
-        //        embeddingModel = new AllMiniLmL6V2QuantizedEmbeddingModel();
-
         splitter = DocumentSplitters.recursive(100, 0, new OpenAiTokenizer(gptEmbeddingMode));
-        embedNewDocs();
+        ingestor =
+                EmbeddingStoreIngestor.builder()
+                        .documentSplitter(DocumentSplitters.recursive(300, 0))
+                        .embeddingModel(embeddingModel)
+                        .embeddingStore(embeddingStore)
+                        .build();
+
+        timer.scheduleAtFixedRate(
+                new TimerTask() {
+                    @Override
+                    public void run() {
+                        embedNewDocs();
+                    }
+                },
+                2 * 60 * 1000L,
+                60 * 1000L);
     }
 
-    @Schedule(minute = "*/1", hour = "*")
     public void embedNewDocs() {
         log.log(Level.INFO, "Starting document embedding");
         List<String> strings = documentLoader.listObjects();
@@ -103,7 +112,6 @@ public class InMemoryEmbeddingService {
 
         List<Document> documents = new ArrayList<>();
         List<String> embeddedObjects = new ArrayList<>();
-
         try {
             for (String string : strings) {
                 documents.add(documentLoader.loadDocument(string));
@@ -117,12 +125,6 @@ public class InMemoryEmbeddingService {
 
                 log.log(Level.INFO, "About to embed {0}", embeddings);
                 embeddingStore.addAll(embeddings, textSegments);
-                EmbeddingStoreIngestor ingestor =
-                        EmbeddingStoreIngestor.builder()
-                                .documentSplitter(DocumentSplitters.recursive(300, 0))
-                                .embeddingModel(embeddingModel)
-                                .embeddingStore(embeddingStore)
-                                .build();
                 ingestor.ingest(documents);
             }
         } catch (Exception e) {

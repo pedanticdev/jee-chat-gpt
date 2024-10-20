@@ -15,6 +15,7 @@ import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import lombok.extern.java.Log;
@@ -31,7 +32,7 @@ public class AzureBlobManager implements EmbeddingDocumentLoader {
     @Inject
     String blobSasUrl;
 
-    @ConfigProperty(name = "azure_blob_container")
+    @ConfigProperty(name = "azure_blob_container", defaultValue = "eclipsecon")
     @Inject
     String azureBlobContainer;
 
@@ -44,6 +45,7 @@ public class AzureBlobManager implements EmbeddingDocumentLoader {
 
     @PostConstruct
     void init() {
+
         blobServiceClient =
                 new BlobServiceClientBuilder()
                         .endpoint(blobSasUrl)
@@ -75,15 +77,29 @@ public class AzureBlobManager implements EmbeddingDocumentLoader {
             SyncPoller<BlobCopyInfo, Void> blobCopyInfoVoidSyncPoller =
                     targetBlob.beginCopy(sourceBlob.getBlobUrl(), Duration.ofSeconds(2));
             PollResponse<BlobCopyInfo> pollResponse = blobCopyInfoVoidSyncPoller.poll();
-            log.log(Level.INFO, "Copy identifier: %s%n", pollResponse.getValue().getCopyId());
+            log.log(
+                    Level.INFO,
+                    "Copy identifier: %s%n".formatted(pollResponse.getValue().getCopyId()));
             sourceBlob.delete();
         }
     }
 
     @Override
     public List<String> listObjects() {
-        return blobServiceClient.getBlobContainerClient(azureBlobContainer).listBlobs().stream()
-                .map(BlobItem::getName)
-                .toList();
+        List<String> objects = new ArrayList<>();
+        try {
+            objects.addAll(
+                    blobServiceClient
+                            .getBlobContainerClient(azureBlobContainer)
+                            .listBlobsByHierarchy("/")
+                            .stream()
+                            .filter(b -> !b.isPrefix())
+                            .map(BlobItem::getName)
+                            .toList());
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Error listing objects", e);
+        }
+
+        return objects;
     }
 }
