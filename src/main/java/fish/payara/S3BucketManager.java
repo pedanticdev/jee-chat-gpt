@@ -5,6 +5,7 @@ import static software.amazon.awssdk.regions.Region.EU_NORTH_1;
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.loader.amazon.s3.AmazonS3DocumentLoader;
 import dev.langchain4j.data.document.parser.apache.pdfbox.ApachePdfBoxDocumentParser;
+import fish.payara.ai.DocumentLoader;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -31,7 +32,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
 
 @ApplicationScoped
-public class S3BucketManager {
+public class S3BucketManager implements DocumentLoader {
     public static final String DEFAULT_REGION = "default";
     public static final String S3_SCHEME = "s3x://";
     private static final Logger LOG = Logger.getLogger(S3BucketManager.class.getName());
@@ -86,7 +87,7 @@ public class S3BucketManager {
         return listObjectKeys(embeddedFileBucket);
     }
 
-    public List<Document> loadNewDocuments() {
+    public List<Document> loadDocuments() {
         return s3DocumentLoader.loadDocuments(
                 newEmbeddingFileBucket, new ApachePdfBoxDocumentParser());
     }
