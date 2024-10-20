@@ -14,6 +14,7 @@ import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
 import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
 import dev.langchain4j.store.embedding.pgvector.PgVectorEmbeddingStore;
+import fish.payara.ai.EmbeddingDocumentLoader;
 import jakarta.annotation.PostConstruct;
 import jakarta.ejb.Schedule;
 import jakarta.ejb.Singleton;
@@ -48,7 +49,7 @@ public class InMemoryEmbeddingService {
     @ConfigProperty(name = "openai.text-embedding")
     String textEmbedding;
 
-    @Inject S3BucketManager s3BucketManager;
+    @Inject EmbeddingDocumentLoader documentLoader;
 
     EmbeddingModel embeddingModel;
     EmbeddingStore<TextSegment> embeddingStore;
@@ -97,7 +98,7 @@ public class InMemoryEmbeddingService {
     @Schedule(minute = "*/1", hour = "*")
     public void embedNewDocs() {
         log.log(Level.INFO, "Starting document embedding");
-        List<String> strings = s3BucketManager.listNewObjects();
+        List<String> strings = documentLoader.listObjects();
         log.log(Level.INFO, "About to embed found objects {0}", strings);
 
         List<Document> documents = new ArrayList<>();
@@ -105,7 +106,7 @@ public class InMemoryEmbeddingService {
 
         try {
             for (String string : strings) {
-                documents.add(s3BucketManager.loadDocument(string));
+                documents.add(documentLoader.loadDocument(string));
                 embeddedObjects.add(string);
             }
             List<TextSegment> textSegments = new ArrayList<>();
@@ -129,7 +130,7 @@ public class InMemoryEmbeddingService {
         }
         if (!embeddedObjects.isEmpty()) {
             log.log(Level.INFO, "Moving embedded objects {0}", embeddedObjects);
-            s3BucketManager.moveEmbeddedFiles(embeddedObjects);
+            documentLoader.moveEmbeddedDocument(embeddedObjects);
         }
     }
 

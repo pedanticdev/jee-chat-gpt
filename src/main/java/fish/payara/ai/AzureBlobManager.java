@@ -7,6 +7,7 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.models.BlobCopyInfo;
+import com.azure.storage.blob.models.BlobItem;
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.loader.azure.storage.blob.AzureBlobStorageDocumentLoader;
 import dev.langchain4j.data.document.parser.apache.pdfbox.ApachePdfBoxDocumentParser;
@@ -21,7 +22,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @ApplicationScoped
 @Log
-public class AzureBlobManager implements DocumentLoader {
+public class AzureBlobManager implements EmbeddingDocumentLoader {
     @ConfigProperty(name = "BLOB_SAS_TOKEN")
     @Inject
     String blobSasToken;
@@ -77,5 +78,12 @@ public class AzureBlobManager implements DocumentLoader {
             log.log(Level.INFO, "Copy identifier: %s%n", pollResponse.getValue().getCopyId());
             sourceBlob.delete();
         }
+    }
+
+    @Override
+    public List<String> listObjects() {
+        return blobServiceClient.getBlobContainerClient(azureBlobContainer).listBlobs().stream()
+                .map(BlobItem::getName)
+                .toList();
     }
 }
