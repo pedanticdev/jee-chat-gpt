@@ -2,7 +2,7 @@ name: Build and Push To Payara Cloud
 
 on:
   push:
-    branches: [ "main", "lang-chain" ]
+    branches: [ "main", "eclipsecon" ]
   pull_request:
     branches: [ "main" ]
 
