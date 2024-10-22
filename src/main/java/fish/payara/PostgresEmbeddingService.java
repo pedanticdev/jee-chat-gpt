@@ -48,7 +48,7 @@ public class PostgresEmbeddingService implements EmbeddingService {
     DataSource dataSource;
 
     @Inject
-    @ConfigProperty(name = "OPEN_API_KEY")
+    @ConfigProperty(name = "open.api.key")
     String apiKey;
 
     @Inject
@@ -58,6 +58,14 @@ public class PostgresEmbeddingService implements EmbeddingService {
     @Inject
     @ConfigProperty(name = "openai.text-embedding")
     String textEmbedding;
+
+    @Inject
+    @ConfigProperty(name = "embedding.timer.initial.delay.minutes", defaultValue = "2")
+    private long initialDelayMinutes;
+
+    @Inject
+    @ConfigProperty(name = "embedding.timer.interval.minutes", defaultValue = "60")
+    private long intervalMinutes;
 
     @Inject EmbeddingDocumentLoader documentLoader;
 
@@ -101,14 +109,14 @@ public class PostgresEmbeddingService implements EmbeddingService {
                         embedNewDocs();
                     }
                 },
-                2 * 60 * 1000L,
-                60 * 1000L);
+                initialDelayMinutes * 60 * 1000L,
+                intervalMinutes * 1000L);
     }
 
     public void embedNewDocs() {
         log.log(Level.INFO, "Starting document embedding");
         List<String> strings = documentLoader.listObjects();
-        log.log(Level.INFO, "About to embed found objects {0}", strings);
+        log.log(Level.INFO, "About to embed found blob objects {0}", strings);
 
         List<Document> documents = new ArrayList<>();
         List<String> embeddedObjects = new ArrayList<>();
