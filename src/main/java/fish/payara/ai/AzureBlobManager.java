@@ -40,6 +40,7 @@ public class AzureBlobManager implements EmbeddingDocumentLoader {
     @ConfigProperty(name = "s3.embedded-files.bucket")
     String embeddedFileBucket;
 
+    ApachePdfBoxDocumentParser pdfBoxDocumentParser;
     AzureBlobStorageDocumentLoader documentLoader;
     BlobServiceClient blobServiceClient;
 
@@ -52,17 +53,18 @@ public class AzureBlobManager implements EmbeddingDocumentLoader {
                         .sasToken(blobSasToken)
                         .buildClient();
         documentLoader = new AzureBlobStorageDocumentLoader(blobServiceClient);
+
+        pdfBoxDocumentParser = new ApachePdfBoxDocumentParser(true);
     }
 
     @Override
     public List<Document> loadDocuments() {
-        return documentLoader.loadDocuments(azureBlobContainer, new ApachePdfBoxDocumentParser());
+        return documentLoader.loadDocuments(azureBlobContainer, pdfBoxDocumentParser);
     }
 
     @Override
     public Document loadDocument(String documentKey) {
-        return documentLoader.loadDocument(
-                azureBlobContainer, documentKey, new ApachePdfBoxDocumentParser());
+        return documentLoader.loadDocument(azureBlobContainer, documentKey, pdfBoxDocumentParser);
     }
 
     @Override
@@ -74,13 +76,16 @@ public class AzureBlobManager implements EmbeddingDocumentLoader {
 
             BlobClient targetBlob =
                     blobContainerClient.getBlobClient(embeddedFileBucket + "/" + documentKey);
-            SyncPoller<BlobCopyInfo, Void> blobCopyInfoVoidSyncPoller =
-                    targetBlob.beginCopy(sourceBlob.getBlobUrl(), Duration.ofSeconds(2));
-            PollResponse<BlobCopyInfo> pollResponse = blobCopyInfoVoidSyncPoller.poll();
-            log.log(
-                    Level.INFO,
-                    "Copy identifier: %s%n".formatted(pollResponse.getValue().getCopyId()));
-            sourceBlob.delete();
+            if (Boolean.TRUE.equals(sourceBlob.exists())) {
+
+                SyncPoller<BlobCopyInfo, Void> blobCopyInfoVoidSyncPoller =
+                        targetBlob.beginCopy(sourceBlob.getBlobUrl(), Duration.ofSeconds(2));
+                PollResponse<BlobCopyInfo> pollResponse = blobCopyInfoVoidSyncPoller.poll();
+                log.log(
+                        Level.INFO,
+                        "Copy identifier: %s%n".formatted(pollResponse.getValue().getCopyId()));
+                sourceBlob.delete();
+            }
         }
     }
 
