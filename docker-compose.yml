@@ -1,11 +1,9 @@
-version: '3.9'
 services:
   app:
-
     environment:
       OPEN_API_KEY: ${OPEN_API_KEY}
-      S3_BUCKET_ACCESS_KEY: ${S3_BUCKET_ACCESS_KEY}
-      S3_BUCKET_SECRET_KEY: ${S3_BUCKET_SECRET_KEY}
+      BLOB_SAS_TOKEN: ${BLOB_SAS_TOKEN}
+      BLOB_SAS_URL: ${BLOB_SAS_URL}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_SERVER: ${DB_SERVER}
       DB_USER: ${DB_USER}
