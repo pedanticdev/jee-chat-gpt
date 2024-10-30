@@ -11,6 +11,8 @@ import com.azure.storage.blob.models.BlobItem;
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.loader.azure.storage.blob.AzureBlobStorageDocumentLoader;
 import dev.langchain4j.data.document.parser.apache.pdfbox.ApachePdfBoxDocumentParser;
+import io.opentelemetry.instrumentation.annotations.SpanAttribute;
+import io.opentelemetry.instrumentation.annotations.WithSpan;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -58,17 +60,20 @@ public class AzureBlobManager implements EmbeddingDocumentLoader {
     }
 
     @Override
+    @WithSpan("Load Azure Blobs")
     public List<Document> loadDocuments() {
         return documentLoader.loadDocuments(azureBlobContainer, pdfBoxDocumentParser);
     }
 
     @Override
-    public Document loadDocument(String documentKey) {
+    @WithSpan("Load Azure Blob Doc")
+    public Document loadDocument(@SpanAttribute("documentKey") String documentKey) {
         return documentLoader.loadDocument(azureBlobContainer, documentKey, pdfBoxDocumentParser);
     }
 
     @Override
-    public void moveEmbeddedDocument(List<String> documentKeys) {
+    @WithSpan("Move Embedded Azure Blob")
+    public void moveEmbeddedDocument(@SpanAttribute("documentKeys") List<String> documentKeys) {
         BlobContainerClient blobContainerClient =
                 blobServiceClient.getBlobContainerClient(azureBlobContainer);
         for (String documentKey : documentKeys) {
@@ -90,6 +95,7 @@ public class AzureBlobManager implements EmbeddingDocumentLoader {
     }
 
     @Override
+    @WithSpan("List Azure Blob objects")
     public List<String> listObjects() {
         List<String> objects = new ArrayList<>();
         try {

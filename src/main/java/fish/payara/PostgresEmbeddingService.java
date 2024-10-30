@@ -14,6 +14,7 @@ import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
 import dev.langchain4j.store.embedding.pgvector.PgVectorEmbeddingStore;
 import fish.payara.ai.EmbeddingDocumentLoader;
+import io.opentelemetry.instrumentation.annotations.WithSpan;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import jakarta.annotation.sql.DataSourceDefinition;
@@ -113,6 +114,7 @@ public class PostgresEmbeddingService implements EmbeddingService {
                 intervalMinutes * 1000L);
     }
 
+    @WithSpan("Postgres doc embedding")
     public void embedNewDocs() {
         log.log(Level.INFO, "Starting document embedding");
         List<String> strings = documentLoader.listObjects();
@@ -144,6 +146,7 @@ public class PostgresEmbeddingService implements EmbeddingService {
         }
     }
 
+    @WithSpan("Get Content Retriever")
     public ContentRetriever getContentRetriever() {
         return EmbeddingStoreContentRetriever.builder()
                 .embeddingStore(embeddingStore)

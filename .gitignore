@@ -23,5 +23,5 @@ jenkins_home/
 .env
 *.adoc
 jenkins/.env
-
+container/
 docs/*
