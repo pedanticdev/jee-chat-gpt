@@ -1,11 +1,9 @@
-version: '3.9'
 services:
   app:
-
     environment:
       OPEN_API_KEY: ${OPEN_API_KEY}
-      S3_BUCKET_ACCESS_KEY: ${S3_BUCKET_ACCESS_KEY}
-      S3_BUCKET_SECRET_KEY: ${S3_BUCKET_SECRET_KEY}
+      BLOB_SAS_TOKEN: ${BLOB_SAS_TOKEN}
+      BLOB_SAS_URL: ${BLOB_SAS_URL}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_SERVER: ${DB_SERVER}
       DB_USER: ${DB_USER}
@@ -26,3 +24,29 @@ services:
       context: .
       dockerfile: Dockerfile
     image: fish.payara/jee-gpt:${APP_IMAGE_TAG:-latest}
+    depends_on:
+      - telemetry
+    networks:
+      - telemetry-network
+
+  telemetry:
+    image: docker.io/grafana/otel-lgtm:latest
+    container_name: lgtm
+    ports:
+      - "3000:3000"  # Grafana UI
+      - "4317:4317"  # OTLP gRPC
+      - "4318:4318"  # OTLP HTTP
+    volumes:
+      - ./container/grafana:/data/grafana
+      - ./container/prometheus:/data/prometheus
+      - ./container/loki:/loki
+    environment:
+      - GF_PATHS_DATA=/data/grafana
+    restart: always
+    networks:
+      - telemetry-network
+
+
+networks:
+  telemetry-network:
+    driver: bridge
